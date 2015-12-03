@@ -70,7 +70,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     #clear{
       display: none;
     }
-    
+
+    :host {
+      --paper-input-container-focus-color: #2196f3;
+    }
+
   </style>
 
   <template>
@@ -133,14 +137,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       remoteSource:{
-          type: Boolean,
-          value:false
+        type: Boolean,
+        value:false
       },
-
-      /**
-       * `suggestionsInOverlay` Display the suggestions in an overlay above the next elements
-       */
-      suggestionsInOverlay: Boolean,
 
       minLength:{
         value:1
@@ -153,19 +152,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 
       _currentIndex:{
-           value:-1
+        value:-1
       },
 
       _scrollIndex:{
-           value:0
+        value:0
       },
 
       _maxViewableItems:{
-           value:7
+        value:7
       },
 
       _itemHeight:{
-           value:36
+        value:36
       },
 
       _value:{
@@ -177,7 +176,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // Element Lifecycle
 
     ready: function() {
-       this._value=this.value;
+      this._value=this.value;
     },
 
     attached: function() {
@@ -213,8 +212,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this._hideSuggestionsWrapper();
       this._emptyItems();
       var option = {
-          text: this.$.input.value,
-          value: this.value
+        text: this.$.input.value,
+        value: this.value
       };
       this._fireEvent(option,'reset');
     },
@@ -226,42 +225,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.$.suggestionsWrapper.style.display = 'none';
     },
 
-    
+
     _handleSuggestions:function(event){
-        if (!this.remoteSource) {
-            this._createSuggestions(event);
-        } else {
-            this._remoteSuggestions(event);
-        }
+      if (!this.remoteSource) {
+        this._createSuggestions(event);
+      } else {
+        this._remoteSuggestions(event);
+      }
     },
-    
+
     _remoteSuggestions:function(event){
-        var value = event.target.value;
-        var minLength=this.minLength;
-        var option = {
-            text: this.$.input.value,
-            value: value
-        };
-        if (value && value.length >= minLength) {
-            this._fireEvent(option, 'change');
-        } else {
-            this.$.clear.style.display = 'none';
-            this._suggestions = [];
-        }
+      var value = event.target.value;
+      var minLength=this.minLength;
+      var option = {
+        text: this.$.input.value,
+        value: value
+      };
+      if (value && value.length >= minLength) {
+        this._fireEvent(option, 'change');
+      } else {
+        this.$.clear.style.display = 'none';
+        this._suggestions = [];
+      }
     },
 
     _bindSuggestions:function(arr){
-        if (arr.length && arr.length > 0) {
-            this._suggestions = arr;
-            this._currentIndex = -1;
-            this._scrollIndex = 0;
-            this.$.clear.style.display = 'block';
-            this.$.suggestionsWrapper.style.display = 'block';
-        } else {
-            this.$.clear.style.display = 'none';
-            this._suggestions = [];
-        }
-    }, 
+      if (arr.length && arr.length > 0) {
+        this._suggestions = arr;
+        this._currentIndex = -1;
+        this._scrollIndex = 0;
+        this.$.clear.style.display = 'block';
+        this.$.suggestionsWrapper.style.display = 'block';
+      } else {
+        this.$.clear.style.display = 'none';
+        this._suggestions = [];
+      }
+    },
 
     _createSuggestions : function(event) {
       this._currentIndex=-1;
@@ -326,7 +325,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _getItems:function(){
-      return $(this).find('paper-material').find('paper-item');
+      return this.querySelectorAll('paper-item');
     },
 
     _emptyItems:function(){
@@ -334,11 +333,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _getId:function(){
-      var id=$(this).attr('id');
-      if(id===undefined) {
-          id = $(this).attr('data-id');
-      }
+      var id=this.getAttribute('id');
+      if(!id) id=this.dataset.id;
       return id;
+    },
+
+    _removeActive:function(items){
+      for(var i=0;i<items.length;i++){
+        items[i].classList.remove('active');
+      }
     },
 
     _keydown:function(){
@@ -346,9 +349,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var length=items.length;
       length--;
       if(this._currentIndex < length){
-        items.removeClass('active');
+        this._removeActive(items);
         this._currentIndex++;
-        $(items[this._currentIndex]).addClass('active');
+        items[this._currentIndex].classList.add('active');
         this._scrollDown();
       }
     },
@@ -356,9 +359,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _keyup:function(){
       var items=this._getItems();
       if(this._currentIndex >0){
-        items.removeClass('active');
+        this._removeActive(items);
         this._currentIndex--;
-        $(items[this._currentIndex]).addClass('active');
+        items[this._currentIndex].classList.add('active');
         this._scrollUp();
       }
     },
@@ -373,7 +376,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(viewIndex >= this._maxViewableItems){
         this._scrollIndex++;
         var scrollTop=(this._scrollIndex * this._itemHeight);
-        $(this).find('paper-material').scrollTop(scrollTop);
+        var paperMaterial=this.querySelector('paper-material');
+        paperMaterial.scrollTop=scrollTop;
       }
     },
 
@@ -382,13 +386,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(viewIndex < 0){
         this._scrollIndex--;
         var scrollTop=(this._scrollIndex * this._itemHeight);
-        $(this).find('paper-material').scrollTop(scrollTop);
+        var paperMaterial=this.querySelector('paper-material');
+        paperMaterial.scrollTop=scrollTop;
       }
     },
 
-    _fireEvent: function (option, event) {
+    _fireEvent: function (option, evt) {
       var id=this._getId();
-      $(window).trigger('autocomplete.' + event,{id:id,value:option.value,target:this,option:option});
+      this.fire('autocomplete.' + evt,{id:id,value:option.value,target:this,option:option});
     },
 
     _onKeypress:function(event){
@@ -411,16 +416,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _onBlur: function (event) {
       var option = {
-          text: this.$.input.value,
-          value: this.value
+        text: this.$.input.value,
+        value: this.value
       };
       this._fireEvent(option,'blur');
     },
 
     _onFocus: function (event) {
       var option = {
-         text: this.$.input.value,
-         value: this.value
+        text: this.$.input.value,
+        value: this.value
       };
       this._fireEvent(option,'focus');
     },
@@ -433,8 +438,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     getOption:function(){
       return {
-          text: this.$.input.value,
-          value: this.value
+        text: this.$.input.value,
+        value: this.value
       };
     },
 
@@ -443,13 +448,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.$.input.disabled=true;
     },
 
-    enabled:function(){
+    enable:function(){
       this.disabled=false;
       this.$.input.disabled=false;
     },
 
     suggestions: function (arr) {
-        this._bindSuggestions(arr);
+      this._bindSuggestions(arr);
     }
 
   });
