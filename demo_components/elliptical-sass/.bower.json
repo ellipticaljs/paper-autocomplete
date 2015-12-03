@@ -1,0 +1,64 @@
+{
+  "name": "elliptical-sass",
+  "description": "Sass library for responsive web components",
+  "version": "1.1.9",
+  "main": "dist/elliptical.css",
+  "authors": [
+    "S. Francis"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "reponsive",
+    "web",
+    "components",
+    "css"
+  ],
+  "homepage": "https://github.com/ellipticaljs/elliptical-sass",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".gitignore",
+    ".npmignore",
+    "gulpfile.js",
+    "lib",
+    "docs",
+    "index.js",
+    "umd.js",
+    "package.json",
+    "demo",
+    "index.html",
+    "build.json",
+    "bundle.json",
+    ".nvmrc",
+    ".eslintrc",
+    "bin",
+    "CHANGELOG.md",
+    "demos",
+    "stylesheets",
+    "_index.scss",
+    "_settings.scss",
+    "bk",
+    "sassdoc",
+    "test.scss"
+  ],
+  "dependencies": {
+    "sass-core-icons": "~1.0.4",
+    "sass-content-icons": "~1.0.4",
+    "sass-social-icons": "~1.0.3",
+    "sass-ubuntu": "~1.0.2",
+    "elliptical-css-register": "~1.0.2"
+  },
+  "_release": "1.1.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.9",
+    "commit": "c745580506d908df11d2c7eef9f144e236df2d3b"
+  },
+  "_source": "git://github.com/ellipticaljs/sass.git",
+  "_target": "~1.1.8",
+  "_originalSource": "elliptical-sass"
+}

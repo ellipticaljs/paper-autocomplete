@@ -1,0 +1,49 @@
+{
+  "name": "elliptical-css-register",
+  "description": "document registration of elliptical custom css tags",
+  "version":"1.0.2",
+  "main": "dist/elliptical.css-register.js",
+  "authors": [
+    "S. Francis"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "document",
+    "registration",
+    "of",
+    "elliptical",
+    "css",
+    "custom",
+    "tags"
+  ],
+  "moduleType": [],
+  "homepage": "https://github.com/ellipticaljs/css-register",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".gitignore",
+    ".npmignore",
+    "gulpfile.js",
+    "lib",
+    "docs",
+    "index.js",
+    "umd.js",
+    "package.json",
+    "demo",
+    "index.html",
+    "build.json",
+    "bundle.json",
+    ".nvmrc",
+    ".eslintrc",
+    "bin",
+    "CHANGELOG.md",
+    "demos",
+    "stylesheets",
+    "_index.scss",
+    "bk",
+    "sassdoc"
+  ]
+}

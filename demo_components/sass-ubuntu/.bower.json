@@ -1,0 +1,54 @@
+{
+  "name": "sass-ubuntu",
+  "description": "Ubuntu Embedded Font",
+  "version": "1.0.2",
+  "main": "dist/ubuntu.css",
+  "authors": [
+    "S. Francis"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "ubuntu",
+    "embedded",
+    "font"
+  ],
+  "moduleType": [],
+  "homepage": "https://github.com/ellipticaljs/sass-ubuntu",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".gitignore",
+    ".npmignore",
+    "gulpfile.js",
+    "lib",
+    "docs",
+    "index.js",
+    "umd.js",
+    "package.json",
+    "demo",
+    "index.html",
+    "build.json",
+    "bundle.json",
+    ".nvmrc",
+    ".eslintrc",
+    "bin",
+    "CHANGELOG.md",
+    "demos",
+    "stylesheets",
+    "_index.scss",
+    "bk",
+    "sassdoc"
+  ],
+  "_release": "1.0.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.2",
+    "commit": "fec98fa7d70c3972a5233af0e833642b43382439"
+  },
+  "_source": "git://github.com/ellipticaljs/sass-ubuntu.git",
+  "_target": "~1.0.2",
+  "_originalSource": "sass-ubuntu"
+}

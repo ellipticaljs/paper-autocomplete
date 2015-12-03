@@ -1,0 +1,54 @@
+{
+  "name": "sass-content-icons",
+  "description": "Content icon font",
+  "version": "1.0.4",
+  "main": "dist/content.css",
+  "authors": [
+    "S. Francis"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "content",
+    "icon",
+    "fonts"
+  ],
+  "homepage": "https://github.com/ellipticaljs/sass-content-icons",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".gitignore",
+    ".npmignore",
+    "gulpfile.js",
+    "lib",
+    "docs",
+    "index.js",
+    "umd.js",
+    "package.json",
+    "demo",
+    "index.html",
+    "build.json",
+    "bundle.json",
+    ".nvmrc",
+    ".eslintrc",
+    "bin",
+    "CHANGELOG.md",
+    "demos",
+    "stylesheets",
+    "_index.scss",
+    "bk",
+    "sassdoc"
+  ],
+  "_release": "1.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.0.4",
+    "commit": "e83a5130fea4b75693fca2ea404048adec55ae21"
+  },
+  "_source": "git://github.com/ellipticaljs/sass-content-icons.git",
+  "_target": "~1.0.4",
+  "_originalSource": "sass-content-icons"
+}

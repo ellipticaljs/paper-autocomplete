@@ -17,6 +17,11 @@
     "tests"
   ],
   "dependencies": {
-    "paper-autocomplete": "~1.0.0"
+    "paper-autocomplete": "~1.0.0",
+    "elliptical-sass": "~1.1.8",
+    "marked-element": "PolymerElements/marked-element#~1.1.1",
+    "mark-down": "elliptical-mark-down#~1.0.2",
+    "paper-toast": "PolymerElements/paper-toast#~1.1.1",
+    "css-docs": "elliptical-css-docs#~1.0.0"
   }
 }
