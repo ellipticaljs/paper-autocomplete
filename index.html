@@ -233,6 +233,18 @@
             </section>
             <!--end docs-->
 
+            <h3 class="margin-top two">Notes</h3>
+            <hr>
+            <p>The current 1.0.xx version only supports binding(locally or remotely) with object arrays, with the objects themselves having a text and value property.
+                Hence, remote binding will usually have to include an extra step of using map to get a valid array format to bind to paper-autocomplete. See the second example.
+            </p>
+            <mark-down>
+                ```js
+                  //valid object array format
+                  [{text:'text',value:'value'},....]
+
+                ```
+            </mark-down>
         </grid-columns>
     </grid-row>
 </section>
