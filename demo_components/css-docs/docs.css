@@ -149,6 +149,7 @@ section.docs .row-2:last-of-type{
     footer>.links{
         -webkit-flex-direction: column;
         flex-direction: column;
+
         margin-top:3em;
     }
     footer>.links>a{
