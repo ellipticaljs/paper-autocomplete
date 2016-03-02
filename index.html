@@ -235,16 +235,17 @@
 
             <h3 class="margin-top two">Notes</h3>
             <hr>
-            <p>The current 1.0.xx version only supports binding(locally or remotely) with object arrays, with the objects themselves having a text and value property.
-                Hence, remote binding will usually have to include an extra step of using map to get a valid array format to bind to paper-autocomplete. See the second example.
+            <p>
+                The component internally remaps the passed array to the template binding array (which will be an array of objects with a `text` and `value` properties). The passed array can be a simple array of strings. There are now two public properties, `textProperty` and `valueProperty`, that can be declaratively set in the element attributes, allowing to bind an arbitrary object array:
             </p>
             <mark-down>
-                ```js
-                  //valid object array format
-                  [{text:'text',value:'value'},....]
-
-                ```
+            ```html
+            <paper-autocomplete text-property="userName" value-property="id"></paper-autocomplete>
+            ```
             </mark-down>
+            <p>
+                That being said, the public method `getOption` and the public event `autocomplete.selected` do return the selected item as an object with text/value properties.
+            </p>
         </grid-columns>
     </grid-row>
 </section>
