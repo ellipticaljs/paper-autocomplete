@@ -15,7 +15,7 @@ bower install paper-autocomplete
 
 ```html
 
-<link rel="import" href="bower_components/paper-autocomplete.html">
+<link rel="import" href="bower_components/paper-autocomplete/paper-autocomplete.html">
 
 <paper-autocomplete id="my-id" label="Select"></paper-autocomplete>
 
