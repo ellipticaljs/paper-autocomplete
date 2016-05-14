@@ -304,6 +304,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           if (this._suggestions.length > 0) {
             this.$.suggestionsWrapper.style.display = 'block';
+          }else{            
+            this._hideSuggestionsWrapper();
           }
         }
       }else{
