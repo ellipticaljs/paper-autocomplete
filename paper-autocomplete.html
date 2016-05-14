@@ -375,8 +375,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _keyenter:function(){
-      var index=this._currentIndex;
-      this._selection(index);
+      if(this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1){
+        var index=this._currentIndex;
+        this._selection(index);
+      }
     },
 
     _scrollDown:function(){
