@@ -79,7 +79,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="{{label}}" no-label-float on-keyup="_onKeypress" disabled="{{disabled}}"></paper-input>
+      <paper-input id="input" label="{{label}}" no-label-float="{{noLabelFloat}}" on-keyup="_onKeypress" disabled="{{disabled}}"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
@@ -104,6 +104,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `label` Text to display as the input label
        */
       label: String,
+
+      /**
+       * `noLabelFloat` Set to true to disable the floating label.
+       */
+      noLabelFloat:{
+        type: Boolean,
+        value: false
+      },
 
       /**
        * `source` Array of objects with the options to execute the autocomplete feature
