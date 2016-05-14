@@ -79,7 +79,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="{{label}}" no-label-float on-keyup="_onKeypress" disabled="{{disabled}}"></paper-input>
+      <paper-input id="input" label="{{label}}" no-label-float="{{noLabelFloat}}" on-keyup="_onKeypress" disabled="{{disabled}}"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
@@ -104,6 +104,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `label` Text to display as the input label
        */
       label: String,
+
+      /**
+       * `noLabelFloat` Set to true to disable the floating label.
+       */
+      noLabelFloat:{
+        type: Boolean,
+        value: false
+      },
 
       /**
        * `source` Array of objects with the options to execute the autocomplete feature
@@ -296,6 +304,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           if (this._suggestions.length > 0) {
             this.$.suggestionsWrapper.style.display = 'block';
+          }else{            
+            this._hideSuggestionsWrapper();
           }
         }
       }else{
@@ -311,7 +321,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.$.input.value = selectedOption[this.textProperty];
       this.value = selectedOption[this.valueProperty];
       this._value=this.value;
-      this.label=this.$.input.value;
 
       if(!this.showClear){
         this.$.clear.style.display = 'none';
@@ -367,8 +376,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _keyenter:function(){
-      var index=this._currentIndex;
-      this._selection(index);
+      if(this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1){
+        var index=this._currentIndex;
+        this._selection(index);
+      }
     },
 
     _scrollDown:function(){
