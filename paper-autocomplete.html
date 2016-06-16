@@ -318,8 +318,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var selectedOption = this._suggestions[index];
       var self = this;
 
-      this.$.input.value = selectedOption[this.textProperty];
-      this.value = selectedOption[this.valueProperty];
+      this.$.input.value = selectedOption.text;
+      this.value = selectedOption.value;
       this._value=this.value;
 
       if(!this.showClear){
