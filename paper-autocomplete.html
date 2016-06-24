@@ -149,7 +149,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       value: {
         type: Object,
-        notify: true
+        notify: true,
+        observer: '_setValue'
       },
 
       showClear:{
@@ -471,6 +472,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _setErrorMessage: function(msgErr){
       this.$.input.errorMessage=msgErr;
     },
+    
+    //set the true input
+    _setValue: function(val){
+      this.$.input.value = val;
+    },
+    
 
     /* public */
     getValue : function() {
