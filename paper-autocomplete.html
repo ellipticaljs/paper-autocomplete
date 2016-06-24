@@ -79,7 +79,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="{{label}}" no-label-float="{{noLabelFloat}}" on-keyup="_onKeypress" disabled="{{disabled}}"></paper-input>
+      <paper-input id="input" label$="[[label]]" no-label-float="{{noLabelFloat}}" name$="[[name]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[auto-validate]]"  always-float-label required$="[[required]]"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
@@ -131,12 +131,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value:'value'
       },
 
+      //target the input invalid
+      invalid: {
+        type: Boolean,
+        notify: true,
+        observer: '_setInvalid'
+      },
+
+      //target the input errorMessage
+      errorMessage: {
+        type: String,
+        notify: true,
+        observer:'_setErrorMessage'
+      },
       /**
        * `value` Selected object from the suggestions
        */
       value: {
         type: Object,
-        notify: true
+        notify: true,
+        observer: '_setValue'
       },
 
       showClear:{
@@ -151,6 +165,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       minLength:{
         value:1
+      },
+      
+      /**
+       * `delay` threshold between two change event in remote mode
+      delay: {
+        type: Number,
+        value: 400
       },
 
       /**
@@ -177,8 +198,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _value:{
         value:undefined
-      }
+      },
 
+      _timeout: Object
     },
 
     // Element Lifecycle
@@ -250,7 +272,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: value
       };
       if (value && value.length >= minLength) {
-        this._fireEvent(option, 'change');
+        clearTimeout(this._timeout);
+        var self = this;
+        this._timeout = setTimeout(function(){
+          self._fireEvent(option, 'change');
+        }, self.delay);
       } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
@@ -304,7 +330,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           if (this._suggestions.length > 0) {
             this.$.suggestionsWrapper.style.display = 'block';
-          }else{            
+          }else{
             this._hideSuggestionsWrapper();
           }
         }
@@ -318,7 +344,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var selectedOption = this._suggestions[index];
       var self = this;
 
-      this.$.input.value = selectedOption.text;
+      this.$.input.value = selectedOption.value;//That's what i want in my input (and send by my fomr)
+      
+      //managment of auto-validate behavior
+      if(this.getAttribute('auto-validate') != undefined) { 
+        this.$.input.validate();
+      }
       this.value = selectedOption.value;
       this._value=this.value;
 
@@ -404,7 +435,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _fireEvent: function (option, evt) {
       var id=this._getId();
-      this.fire('autocomplete.' + evt,{id:id,value:option.value,target:this,option:option});
+      //have '-' here is easier to listen
+      this.fire('autocomplete-' + evt,{id:id,value:option.value,target:this,option:option});
     },
 
     _onKeypress:function(event){
@@ -430,6 +462,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text: this.$.input.value,
         value: this.value
       };
+      //managment of auto-validate behavior
+      if(this.getAttribute('auto-validate') != undefined) {
+        this.$.input.validate();
+      }
       this._fireEvent(option,'blur');
     },
 
@@ -440,7 +476,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       };
       this._fireEvent(option,'focus');
     },
-
+    //react to invalid form
+    _setInvalid: function(param) {
+      this.$.input.invalid=param;
+    },
+    //set error message to the input
+    _setErrorMessage: function(msgErr){
+      this.$.input.errorMessage=msgErr;
+    },
+    
+    //set the true input
+    _setValue: function(val){
+      this.$.input.value = val;
+    },
+    
 
     /* public */
     getValue : function() {
