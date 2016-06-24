@@ -166,6 +166,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       minLength:{
         value:1
       },
+      
+      /**
+       * `delay` threshold between two change event in remote mode
+      delay: {
+        type: Number,
+        value: 400
+      },
 
       /**
        * `_suggestions` Array with the actual suggestions to display
@@ -191,8 +198,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _value:{
         value:undefined
-      }
+      },
 
+      _timeout: Object
     },
 
     // Element Lifecycle
@@ -264,7 +272,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: value
       };
       if (value && value.length >= minLength) {
-        this._fireEvent(option, 'change');
+        clearTimeout(this._timeout);
+        var self = this;
+        this._timeout = setTimeout(function(){
+          self._fireEvent(option, 'change');
+        }, self.delay);
       } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
