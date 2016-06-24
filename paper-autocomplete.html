@@ -101,6 +101,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     properties: {
 
       /**
+       * Event source to type separator. Default parameter being backwards compatible '.' Can be set to '-' to resolve
+       * issue with listeners issue in Polymer:
+       * https://github.com/ellipticaljs/paper-autocomplete/issues/9
+       */
+      eventNamespace: {
+        type: String,
+        value: '.'
+      },
+
+      /**
        * `label` Text to display as the input label
        */
       label: String,
@@ -304,7 +314,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           if (this._suggestions.length > 0) {
             this.$.suggestionsWrapper.style.display = 'block';
-          }else{            
+          }else{
             this._hideSuggestionsWrapper();
           }
         }
@@ -404,7 +414,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _fireEvent: function (option, evt) {
       var id=this._getId();
-      this.fire('autocomplete.' + evt,{id:id,value:option.value,target:this,option:option});
+      this.fire('autocomplete' + this.eventNamespace + evt,{id:id,value:option.value,target:this,option:option});
     },
 
     _onKeypress:function(event){
