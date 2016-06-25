@@ -79,8 +79,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="{{label}}" no-label-float="{{noLabelFloat}}" on-keyup="_onKeypress" disabled="{{disabled}}"></paper-input>
-      <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+      <paper-input id="input" label="{{label}}" no-label-float="{{noLabelFloat}}" on-keyup="_onKeypress"
+                   disabled="{{disabled}}" value="{{text}}"></paper-input>
+      <paper-icon-button id="clear" icon="clear" on-click="clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
       <template is="dom-repeat" items="{{_suggestions}}">
@@ -99,6 +100,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'paper-autocomplete',
 
     properties: {
+
+      /**
+       * Event source to type separator. Default parameter being backwards compatible '.' Can be set to '-' to resolve
+       * issue with listeners issue in Polymer:
+       * https://github.com/ellipticaljs/paper-autocomplete/issues/9
+       */
+      eventNamespace: {
+        type: String,
+        value: '.'
+      },
 
       /**
        * `label` Text to display as the input label
@@ -132,10 +143,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /**
-       * `value` Selected object from the suggestions
+       * `value` Selected object `value` field, from the suggestions
        */
       value: {
         type: Object,
+        notify: true
+      },
+
+      /**
+       * `text` Selected object `text` field, from the suggestions
+       */
+      text: {
+        type: String,
         notify: true
       },
 
@@ -213,14 +232,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /**
      * Clears the input text
      */
-    _clear : function() {
+    clear : function() {
       this.value=this._value;
-      this.$.input.value='';
+      this.text='';
       this.$.clear.style.display = 'none';
       this._hideSuggestionsWrapper();
       this._emptyItems();
       var option = {
-        text: this.$.input.value,
+        text: this.text,
         value: this.value
       };
       this._fireEvent(option,'reset');
@@ -246,7 +265,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var value = event.target.value;
       var minLength=this.minLength;
       var option = {
-        text: this.$.input.value,
+        text: this.text,
         value: value
       };
       if (value && value.length >= minLength) {
@@ -304,7 +323,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           if (this._suggestions.length > 0) {
             this.$.suggestionsWrapper.style.display = 'block';
-          }else{            
+          }else{
             this._hideSuggestionsWrapper();
           }
         }
@@ -318,7 +337,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var selectedOption = this._suggestions[index];
       var self = this;
 
-      this.$.input.value = selectedOption.text;
+      this.text = selectedOption.text;
       this.value = selectedOption.value;
       this._value=this.value;
 
@@ -404,7 +423,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _fireEvent: function (option, evt) {
       var id=this._getId();
-      this.fire('autocomplete.' + evt,{id:id,value:option.value,target:this,option:option});
+      this.fire('autocomplete' + this.eventNamespace + evt,{id:id,value:option.value,target:this,option:option});
     },
 
     _onKeypress:function(event){
@@ -427,7 +446,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _onBlur: function (event) {
       var option = {
-        text: this.$.input.value,
+        text: this.text,
         value: this.value
       };
       this._fireEvent(option,'blur');
@@ -435,7 +454,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _onFocus: function (event) {
       var option = {
-        text: this.$.input.value,
+        text: this.text,
         value: this.value
       };
       this._fireEvent(option,'focus');
@@ -449,7 +468,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     getOption:function(){
       return {
-        text: this.$.input.value,
+        text: this.text,
         value: this.value
       };
     },
