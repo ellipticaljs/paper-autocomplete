@@ -75,6 +75,24 @@
                 ```
             </mark-down>
 
+            <h4 class="margin-top two">Support for <code>&lt;paper-input&gt;</code>'s <code>autoValidate</code>, <code>errorMessage</code>, <code>required</code> &amp; <code>validate()</code></h4>
+            <p>Require a truthy value and automatically validate.</p>
+            <paper-autocomplete label="A paper-autocomplete with no suggestions" id="input-validate" no-label-float required auto-validate error-message="Must not be empty!"></paper-autocomplete>
+            <button id="button-validate">Validate!</button>
+            <mark-down>
+                ```html
+                <xmp><paper-autocomplete label="A paper-autocomplete with no suggestions" id="input-validate" no-label-float required auto-validate error-message="Must not be empty!"></paper-autocomplete>
+                <button id="button-validate">Validate!</button>
+                </xmp>
+                ```
+                ```js
+                function onValidateButtonClick(){
+                  document.getElementById('input-validate').validate();
+                }
+                document.getElementById('button-validate').addEventListener('click', onValidateButtonClick);
+                ```
+            </mark-down>
+
             <p></p>
 
             <!--docs-->
@@ -84,12 +102,48 @@
                 <h4>Properties</h4>
                 <hr>
                 <flex-box class="space-between full-width row">
+                    <span>autoValidate</span>
+                    <flex-box class="column">
+                        <span>{Boolean}</span>
+                        <span>Set to true to auto-validate the input value</span>
+                    </flex-box>
+                    <span>default:false</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>errorMessage</span>
+                    <flex-box class="column">
+                        <span>{String}</span>
+                        <span>The error message to display when the input is invalid</span>
+                    </flex-box>
+                    <span>default:''</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
                     <span>label</span>
                     <flex-box class="column">
                         <span>{String}</span>
                         <span>The text input placeholder</span>
                     </flex-box>
                     <span>default:''</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>noLabelFloat</span>
+                    <flex-box class="column">
+                        <span>{Boolean}</span>
+                        <span>Set to true to disable the floating label</span>
+                    </flex-box>
+                    <span>default:false</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>required</span>
+                    <flex-box class="column">
+                        <span>{Boolean}</span>
+                        <span>Set to true to mark the input as required</span>
+                    </flex-box>
+                    <span>default:false</span>
                 </flex-box>
                 <hr>
                 <flex-box class="space-between full-width row">
@@ -116,7 +170,7 @@
                         <span>{Boolean}</span>
                         <span>Show the clear X button</span>
                     </flex-box>
-                    <span>default:true</span>
+                    <span>default:false</span>
                 </flex-box>
                 <hr>
                 <flex-box class="space-between full-width row">
@@ -184,6 +238,15 @@
                         <span>sets the component's current suggestions</span>
                     </flex-box>
                     <span>params:{Array}</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>validate</span>
+                    <flex-box class="column">
+                        <span>{Boolean}</span>
+                        <span>Validates the input element and sets an error style if needed</span>
+                    </flex-box>
+                    <span>params:none</span>
                 </flex-box>
             </section>
 

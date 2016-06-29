@@ -79,7 +79,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="{{label}}" no-label-float="{{noLabelFloat}}" on-keyup="_onKeypress" disabled="{{disabled}}"></paper-input>
+      <paper-input id="input" label="[[label]]" no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="[[disabled]]" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
@@ -101,6 +101,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     properties: {
 
       /**
+       * `autoValidate` Set to true to auto-validate the input value.
+       */
+      autoValidate: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * `errorMessage` The error message to display when the input is invalid.
+       */
+      errorMessage: {
+        type: String,
+      },
+
+      /**
        * `label` Text to display as the input label
        */
       label: String,
@@ -109,6 +124,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `noLabelFloat` Set to true to disable the floating label.
        */
       noLabelFloat:{
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * `required` Set to true to mark the input as required.
+       */
+      required: {
         type: Boolean,
         value: false
       },
@@ -466,6 +489,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     suggestions: function (arr) {
       this._bindSuggestions(arr);
+    },
+
+    validate: function(){
+      return this.$.input.validate();
     }
 
   });

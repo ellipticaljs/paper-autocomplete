@@ -6,6 +6,7 @@
         localBind();
         document.addEventListener('autocomplete.selected',onSelect);
         document.addEventListener('autocomplete.change',onChange)
+        document.getElementById('button-validate').addEventListener('click', onValidateButtonClick);
     });
 
     function localBind(){
@@ -251,6 +252,10 @@
 
         var inputLocal=document.querySelector('#input-local');
         inputLocal.source=states;
+    }
+
+    function onValidateButtonClick(){
+      document.getElementById('input-validate').validate();
     }
 
     function getToast(){
