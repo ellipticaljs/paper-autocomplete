@@ -254,6 +254,9 @@
 
         var inputLocal=document.querySelector('#input-local');
         inputLocal.source=states;
+
+        var inputHiddenClear=document.querySelector('#input-hidden-clear');
+        inputHiddenClear.source=states;
     }
 
     function onValidateButtonClick(){

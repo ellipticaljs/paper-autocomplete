@@ -285,7 +285,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._suggestions = arr;
         this._currentIndex = -1;
         this._scrollIndex = 0;
-        this.$.clear.style.display = 'block';
+
+        if(this.showClear){
+          this.$.clear.style.display = 'block';
+        }
         this.$.suggestionsWrapper.style.display = 'block';
       } else {
         this.$.clear.style.display = 'none';
@@ -302,8 +305,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(value && value.length >=minLength){
         value = value.toLowerCase();
 
-        // Shows the clear button.
-        this.$.clear.style.display = 'block';
+        if(this.showClear){
+          // Shows the clear button.
+          this.$.clear.style.display = 'block';
+        }
 
         // Search for the word in the source properties.
         if(this.source && this.source.length > 0){

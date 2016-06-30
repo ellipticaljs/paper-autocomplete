@@ -110,6 +110,22 @@
                 document.getElementById('input-value-source').addEventListener('input', onValueSourceInput);
                 ```
             </mark-down>
+
+            <h4 class="margin-top two">Hidden Clear Button</h4>
+            <paper-autocomplete label="Select State" id="input-hidden-clear" show-clear="false"></paper-autocomplete>
+            <mark-down>
+                ```html
+                <xmp><paper-autocomplete label="Select State" id="input-hidden-clear" show-clear="false"></paper-autocomplete>
+                <paper-input id="input-value-source" label="Type in this paper-input"></paper-input>
+                </xmp>
+                ```
+                ```js
+                HTMLImports.whenReady(function(){
+                   var inputLocal=document.querySelector('#input-hidden-clear');
+                   inputLocal.source=theLocalStatesArray;
+                });
+                ```
+            </mark-down>
             <p></p>
 
             <!--docs-->
