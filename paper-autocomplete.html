@@ -441,6 +441,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._keyup(event);
       }else if(which===13){
         this._keyenter();
+      }else if (which===27){
+        this._hideSuggestionsWrapper();
       }else{
         this._handleSuggestions(event);
       }
@@ -457,6 +459,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: this.value
       };
       this._fireEvent(option,'blur');
+
+      var self = this;
+      setTimeout(function() {
+        self._hideSuggestionsWrapper();
+      }, 150);
     },
 
     _onFocus: function (event) {
