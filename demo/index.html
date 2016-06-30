@@ -93,6 +93,23 @@
                 ```
             </mark-down>
 
+            <h4 class="margin-top two"><code>value</code> Assignment Support</h4>
+            <p>Type in the paper input to and see its value set in the paper-autocomplete.</p>
+            <paper-autocomplete label="A paper-autocomplete with no suggestions" id="input-value"></paper-autocomplete>
+            <paper-input id="input-value-source" label="Type in this paper-input"></paper-input>
+            <mark-down>
+                ```html
+                <xmp><paper-autocomplete label="A paper-autocomplete with no suggestions" id="input-value"></paper-autocomplete>
+                <paper-input id="input-value-source" label="Type in this paper-input"></paper-input>
+                </xmp>
+                ```
+                ```js
+                function onValueSourceInput(evt){
+                  document.getElementById('input-value').value = evt.target.value;
+                }
+                document.getElementById('input-value-source').addEventListener('input', onValueSourceInput);
+                ```
+            </mark-down>
             <p></p>
 
             <!--docs-->
