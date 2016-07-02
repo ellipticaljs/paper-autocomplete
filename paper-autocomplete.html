@@ -362,7 +362,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _getItems:function(){
-      return this.querySelectorAll('paper-item');
+      return this.$.suggestionsWrapper.querySelectorAll('paper-item');
     },
 
     _emptyItems:function(){
@@ -415,8 +415,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(viewIndex >= this._maxViewableItems){
         this._scrollIndex++;
         var scrollTop=(this._scrollIndex * this._itemHeight);
-        var paperMaterial=this.querySelector('paper-material');
-        paperMaterial.scrollTop=scrollTop;
+        this.$.suggestionsWrapper.scrollTop=scrollTop;
       }
     },
 
@@ -425,8 +424,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(viewIndex < 0){
         this._scrollIndex--;
         var scrollTop=(this._scrollIndex * this._itemHeight);
-        var paperMaterial=this.querySelector('paper-material');
-        paperMaterial.scrollTop=scrollTop;
+        this.$.suggestionsWrapper.scrollTop=scrollTop;
       }
     },
 
