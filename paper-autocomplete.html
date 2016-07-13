@@ -173,6 +173,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value:1
       },
 
+      eventNamespace:{
+        type:String,
+        value:'.'
+      },
+
       /**
        * `_suggestions` Array with the actual suggestions to display
        */
@@ -426,8 +431,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _fireEvent: function (option, evt) {
+      var separator = this.eventNamespace;
       var id=this._getId();
-      this.fire('autocomplete.' + evt,{id:id,value:option.value,target:this,option:option});
+      this.fire('autocomplete' + separator + evt,{id:id,value:option.value,target:this,option:option});
     },
 
     _onKeypress:function(event){
