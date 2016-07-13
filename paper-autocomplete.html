@@ -58,10 +58,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       cursor:pointer;
     }
 
-    paper-item.paper-item-0 {
-      min-height: 36px;
-    }
-
     paper-item.active{
       background:#eee;
       color:#333;
@@ -73,13 +69,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     :host {
       --paper-input-container-focus-color: #2196f3;
+      --paper-item-min-height: 36px;
     }
 
   </style>
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="{{label}}" no-label-float="{{noLabelFloat}}" on-keyup="_onKeypress" disabled="{{disabled}}"></paper-input>
+      <paper-input id="input" label="[[label]]" no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="[[disabled]]" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{value}}"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
@@ -101,6 +98,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     properties: {
 
       /**
+       * `autoValidate` Set to true to auto-validate the input value.
+       */
+      autoValidate: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * `errorMessage` The error message to display when the input is invalid.
+       */
+      errorMessage: {
+        type: String,
+      },
+
+      /**
        * `label` Text to display as the input label
        */
       label: String,
@@ -109,6 +121,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `noLabelFloat` Set to true to disable the floating label.
        */
       noLabelFloat:{
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * `required` Set to true to mark the input as required.
+       */
+      required: {
         type: Boolean,
         value: false
       },
@@ -262,7 +282,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._suggestions = arr;
         this._currentIndex = -1;
         this._scrollIndex = 0;
-        this.$.clear.style.display = 'block';
+
+        if(this.showClear){
+          this.$.clear.style.display = 'block';
+        }
         this.$.suggestionsWrapper.style.display = 'block';
       } else {
         this.$.clear.style.display = 'none';
@@ -279,8 +302,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(value && value.length >=minLength){
         value = value.toLowerCase();
 
-        // Shows the clear button.
-        this.$.clear.style.display = 'block';
+        if(this.showClear){
+          // Shows the clear button.
+          this.$.clear.style.display = 'block';
+        }
 
         // Search for the word in the source properties.
         if(this.source && this.source.length > 0){
@@ -304,7 +329,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           if (this._suggestions.length > 0) {
             this.$.suggestionsWrapper.style.display = 'block';
-          }else{            
+          }else{
             this._hideSuggestionsWrapper();
           }
         }
@@ -334,7 +359,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _getItems:function(){
-      return this.querySelectorAll('paper-item');
+      return this.$.suggestionsWrapper.querySelectorAll('paper-item');
     },
 
     _emptyItems:function(){
@@ -387,8 +412,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(viewIndex >= this._maxViewableItems){
         this._scrollIndex++;
         var scrollTop=(this._scrollIndex * this._itemHeight);
-        var paperMaterial=this.querySelector('paper-material');
-        paperMaterial.scrollTop=scrollTop;
+        this.$.suggestionsWrapper.scrollTop=scrollTop;
       }
     },
 
@@ -397,8 +421,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       if(viewIndex < 0){
         this._scrollIndex--;
         var scrollTop=(this._scrollIndex * this._itemHeight);
-        var paperMaterial=this.querySelector('paper-material');
-        paperMaterial.scrollTop=scrollTop;
+        this.$.suggestionsWrapper.scrollTop=scrollTop;
       }
     },
 
@@ -415,6 +438,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._keyup(event);
       }else if(which===13){
         this._keyenter();
+      }else if (which===27){
+        this._hideSuggestionsWrapper();
       }else{
         this._handleSuggestions(event);
       }
@@ -431,6 +456,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: this.value
       };
       this._fireEvent(option,'blur');
+
+      var self = this;
+      setTimeout(function() {
+        self._hideSuggestionsWrapper();
+      }, 150);
     },
 
     _onFocus: function (event) {
@@ -466,6 +496,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     suggestions: function (arr) {
       this._bindSuggestions(arr);
+    },
+
+    validate: function(){
+      return this.$.input.validate();
     }
 
   });
