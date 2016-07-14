@@ -25,12 +25,12 @@
             <hr>
             <h4>Local Data-Source Binding</h4>
             <p>
-               Directly bind a local array to paper-autocomplete.
+               Directly bind a local array to paper-autocomplete. The component internally will filter suggestions based on the component attribute settings.
             </p>
-            <paper-autocomplete label="Select State" id="input-local"></paper-autocomplete>
+            <paper-autocomplete label="Select State" id="input-local" no-label-float="true"></paper-autocomplete>
             <mark-down>
                 ```html
-                <xmp><paper-autocomplete label="Select State" id="input-local"></paper-autocomplete>
+                <xmp><paper-autocomplete label="Select State" id="input-local" no-label-float="true"></paper-autocomplete>
                 </xmp>
                 ```
                 ```js
@@ -41,11 +41,29 @@
 
                 ```
             </mark-down>
+ 
+            <blockquote class="info margin-top two">
+               <span class="bold">LOCAL DATA BINDING</span><br>
+               <div>
+                   The component internally remaps the passed array to the template binding array (which will be an array of objects with a `text` and `value` properties). The passed array can be a simple array of strings. 
+               </div><br>
+               <div>
+                   Public properties, `textProperty` and `valueProperty`, can be declaratively set in the element attributes, allowing to bind an arbitrary object array to the component's <span class="bold">source</span> property.
+               </div>
+               
+            </blockquote>
 
-
+            <mark-down>
+            ```html
+            <xmp>
+                <paper-autocomplete text-property="userName" value-property="id"></paper-autocomplete>
+            </xmp>
+            ```
+            </mark-down>
+            
             <h4 class="margin-top two">Remote Data-Source Binding</h4>
             <p>
-                Remote bind to the github user api.
+                Remote bind to the github user api. Remote data binding delegates the responsibility of filtering the data source to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the suggestions back to the component. The change event is fired based on the <span class="bold">min-length</span> attribute setting.
             </p>
             <paper-autocomplete label="Select User" id="input-remote" remote-source="true" min-length="2"></paper-autocomplete>
             <mark-down>
@@ -75,8 +93,52 @@
                 ```
             </mark-down>
 
+            <blockquote class="warning margin-top two">
+               <span class="bold">REMOTE DATA BINDING</span><br>
+               <div>
+                The filtered suggestions is expected to be mapped to an array of text/value pairs before being passed to the component.
+               </div>
+            </blockquote>
+
             <p></p>
 
+            <h4 class="margin-top two">Selected Suggestion</h4>
+            <p>
+               Setup a selected event listener to get the value of a suggested selection. 
+            </p>
+            <mark-down>
+                ```js
+                document.addEventListener('autocomplete.selected',onSelect);
+                function onSelect(event){
+                   var selected=event.detail.text;
+                }
+
+                ```
+            </mark-down>
+
+            <blockquote class="info margin-top two">
+               <span class="bold">SELECTED EVENT</span><br>
+               <div>
+                  Returns {id,value,text,target,option} for the selection.
+               </div>
+            </blockquote>
+
+            <blockquote class="warning margin-top two">
+               <span class="bold">EVENT NAMESPACING</span><br>
+               <div>
+                 Annotated event listeners in polymer components listening for custom events fired by another polymer components may throw an error if the 
+                 event name contains a "." You may set a different namespace delimiter in the component attribute.
+               </div>
+            </blockquote>
+            <mark-down>
+            ```html
+            <xmp>
+                <paper-autocomplete event-namespace="-"></paper-autocomplete>
+            </xmp>
+            ```
+            </mark-down>
+ 
+            <p>&nbsp;</p>
             <!--docs-->
             <h3>Public API</h3>
             <hr>
@@ -89,7 +151,16 @@
                         <span>{String}</span>
                         <span>The text input placeholder</span>
                     </flex-box>
-                    <span>default:''</span>
+                    <span>default: ""</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>noLabelFloat</span>
+                    <flex-box class="column">
+                        <span>{Boolean}</span>
+                        <span>Set to true to disable the floating label</span>
+                    </flex-box>
+                    <span>default: false</span>
                 </flex-box>
                 <hr>
                 <flex-box class="space-between full-width row">
@@ -98,25 +169,7 @@
                         <span>{Array}</span>
                         <span>Local array data source</span>
                     </flex-box>
-                    <span>default:[]</span>
-                </flex-box>
-                <hr>
-                <flex-box class="space-between full-width row">
-                    <span>value</span>
-                    <flex-box class="column">
-                        <span>{String}</span>
-                        <span>The current/selected value of the input</span>
-                    </flex-box>
-                    <span>default:''</span>
-                </flex-box>
-                <hr>
-                <flex-box class="space-between full-width row">
-                    <span>showClear</span>
-                    <flex-box class="column">
-                        <span>{Boolean}</span>
-                        <span>Show the clear X button</span>
-                    </flex-box>
-                    <span>default:false</span>
+                    <span>default: []</span>
                 </flex-box>
                 <hr>
                 <flex-box class="space-between full-width row">
@@ -125,7 +178,52 @@
                         <span>{Boolean}</span>
                         <span>Binds to a remote data source</span>
                     </flex-box>
-                    <span>default:false</span>
+                    <span>default: false</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>textProperty</span>
+                    <flex-box class="column">
+                        <span>{String}</span>
+                        <span>property of local datasource to as the text property</span>
+                    </flex-box>
+                    <span>default: "text"</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>valueProperty</span>
+                    <flex-box class="column">
+                        <span>{String}</span>
+                        <span>property of local datasource to as the value property</span>
+                    </flex-box>
+                    <span>default: "value"</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>value</span>
+                    <flex-box class="column">
+                        <span>{String}</span>
+                        <span>The current/selected value of the input</span>
+                    </flex-box>
+                    <span>default: ""</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>text</span>
+                    <flex-box class="column">
+                        <span>{String}</span>
+                        <span>The current/selected text of the input</span>
+                    </flex-box>
+                    <span>default: ""</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>disableShowClear</span>
+                    <flex-box class="column">
+                        <span>{Boolean}</span>
+                        <span>Disable showing the clear X button</span>
+                    </flex-box>
+                    <span>default: false</span>
                 </flex-box>
                 <hr>
                 <flex-box class="space-between full-width row">
@@ -134,7 +232,43 @@
                         <span>{Number}</span>
                         <span>Minimum length to trigger suggestions</span>
                     </flex-box>
-                    <span>default:1</span>
+                    <span>default: 1</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>required</span>
+                    <flex-box class="column">
+                        <span>{Boolean}</span>
+                        <span>Set to true to mark the input as required</span>
+                    </flex-box>
+                    <span>default: false</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>autoValidate</span>
+                    <flex-box class="column">
+                        <span>{Boolean}</span>
+                        <span>Set to true to auto-validate the input value</span>
+                    </flex-box>
+                    <span>default: false</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>errorMessage</span>
+                    <flex-box class="column">
+                        <span>{String}</span>
+                        <span>The error message to display when the input is invalid</span>
+                    </flex-box>
+                    <span>default: ""</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>eventNamespace</span>
+                    <flex-box class="column">
+                        <span>{String}</span>
+                        <span>Event type separator</span>
+                    </flex-box>
+                    <span>default: "."</span>
                 </flex-box>
             </section>
 
@@ -147,7 +281,7 @@
                         <span>{String}</span>
                         <span>Gets the current value of the input</span>
                     </flex-box>
-                    <span>params:none</span>
+                    <span>params: none</span>
                 </flex-box>
                 <hr>
                 <flex-box class="space-between full-width row">
@@ -156,7 +290,16 @@
                         <span>{Object}</span>
                         <span>Gets the current text/value option of the input</span>
                     </flex-box>
-                    <span>params:none</span>
+                    <span>params: none</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>setOption</span>
+                    <flex-box class="column">
+                        <span>{void}</span>
+                        <span>Sets the current text/value option of the input</span>
+                    </flex-box>
+                    <span>params: {Object}</span>
                 </flex-box>
                 <hr>
                 <flex-box class="space-between full-width row">
@@ -165,7 +308,7 @@
                         <span>{void}</span>
                         <span>disables the input</span>
                     </flex-box>
-                    <span>params:none</span>
+                    <span>params: none</span>
                 </flex-box>
                 <hr>
                 <flex-box class="space-between full-width row">
@@ -174,7 +317,16 @@
                         <span>{void}</span>
                         <span>enables the input</span>
                     </flex-box>
-                    <span>params:none</span>
+                    <span>params: none</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>validate</span>
+                    <flex-box class="column">
+                        <span>{void}</span>
+                        <span>validates the input</span>
+                    </flex-box>
+                    <span>params: none</span>
                 </flex-box>
                 <hr>
                 <flex-box class="space-between full-width row">
@@ -183,7 +335,25 @@
                         <span>{void}</span>
                         <span>sets the component's current suggestions</span>
                     </flex-box>
-                    <span>params:{Array}</span>
+                    <span>params: {Array}</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>clear</span>
+                    <flex-box class="column">
+                        <span>{void}</span>
+                        <span>clears the current input</span>
+                    </flex-box>
+                    <span>params: none</span>
+                </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>reset</span>
+                    <flex-box class="column">
+                        <span>{void}</span>
+                        <span>resets the current input</span>
+                    </flex-box>
+                    <span>params: none</span>
                 </flex-box>
             </section>
 
@@ -193,7 +363,7 @@
                 <flex-box class="full-width row-2">
                     <span>autocomplete.selected</span>
                     <flex-box class="column">
-                        <span>{id,value,target,option}</span>
+                        <span>{id,value,text,target,option}</span>
                         <span>Fires when a selection is made</span>
                     </flex-box>
                 </flex-box>
@@ -201,7 +371,7 @@
                 <flex-box class="full-width row-2">
                     <span>autocomplete.change</span>
                     <flex-box class="column">
-                        <span>{id,value,target,option}</span>
+                        <span>{id,value,text,target,option}</span>
                         <span>Fires on input change</span>
                     </flex-box>
                 </flex-box>
@@ -209,7 +379,7 @@
                 <flex-box class="full-width row-2">
                     <span>autocomplete.focus</span>
                     <flex-box class="column">
-                        <span>{id,value,target,option}</span>
+                        <span>{id,value,text,target,option}</span>
                         <span>Fires on input focus</span>
                     </flex-box>
                 </flex-box>
@@ -217,8 +387,16 @@
                 <flex-box class="full-width row-2">
                     <span>autocomplete.blur</span>
                     <flex-box class="column">
-                        <span>{id,value,target,option}</span>
+                        <span>{id,value,text,target,option}</span>
                         <span>Fires on input blur</span>
+                    </flex-box>
+                </flex-box>
+                <hr>
+                <flex-box class="full-width row-2">
+                    <span>autocomplete.reset</span>
+                    <flex-box class="column">
+                        <span>{id,value,text,target,option}</span>
+                        <span>Fires on input reset/clear</span>
                     </flex-box>
                 </flex-box>
             </section>
@@ -230,31 +408,23 @@
                     <div>sets the components input container focus color</div>
                     <span>#2196f3</span>
                 </flex-box>
+                <hr>
+                <flex-box class="space-between full-width row">
+                    <span>--paper-item-min-height</span>
+                    <div>paper item min height</div>
+                    <span>36px</span>
+                </flex-box>
             </section>
             <!--end docs-->
 
-            <h3 class="margin-top two">Notes</h3>
-            <hr>
-            <p>
-                The component internally remaps the passed array to the template binding array (which will be an array of objects with a `text` and `value` properties). The passed array can be a simple array of strings. There are now two public properties, `textProperty` and `valueProperty`, that can be declaratively set in the element attributes, allowing to bind an arbitrary object array:
-            </p>
-            <mark-down>
-            ```html
-            <xmp>
-                <paper-autocomplete text-property="userName" value-property="id"></paper-autocomplete>
-            </xmp>
-            ```
-            </mark-down>
-            <p>
-                That being said, the public method `getOption` and the public event `autocomplete.selected` do return the selected item as an object with text/value properties.
-            </p>
+          
         </grid-columns>
     </grid-row>
 </section>
 <footer>
     <h5>Component Demo</h5>
     <flex-box class="links">
-        <a href="https://github.com/ellipticaljs/paper-autocomplete/tree/master/demo">Demo Source</a>
+        <a href="https://github.com/ellipticaljs/paper-autocomplete/tree/gh-pages">Demo Source</a>
         <a href="https://github.com/ellipticaljs/paper-autocomplete">Project Home</a>
     </flex-box>
 </footer>

@@ -3,3 +3,10 @@ paper-autocomplete{
     max-width:100%;
 }
 
+.bold{
+   font-weight:500;
+}
+
+blockquote{
+	font-family:RobotoDraft;
+}

@@ -1,8 +1,12 @@
 
 
 (function(){
+    var inputLocal,inputRemote,paperToast;
 
     HTMLImports.whenReady(function(){
+        inputLocal=document.querySelector('#input-local');
+        inputRemote=document.querySelector('#input-remote');
+        paperToast=document.querySelector('paper-toast');
         localBind();
         document.addEventListener('autocomplete.selected',onSelect);
         document.addEventListener('autocomplete.change',onChange)
@@ -249,24 +253,18 @@
             }
         ];
 
-        var inputLocal=document.querySelector('#input-local');
+        
         inputLocal.source=states;
     }
 
-    function getToast(){
-        return document.querySelector('paper-toast');
-    }
-
+   
     function onSelect(event){
-        var selected=event.detail.option.text;
-        var paperToast=getToast();
+        var selected=event.detail.text;
         paperToast.text='Selected: ' + selected;
         paperToast.show();
     }
 
     function onChange(event){
-        var input=document.querySelector('#input-remote');
-        var paperToast=getToast();
         var search=event.detail.option.text;
         var url='https://api.github.com/search/users?q=' + search + '+in:login';
         var req= new XMLHttpRequest();
@@ -277,7 +275,7 @@
                 var arr=data.items.map(function(obj){
                     return {text:obj.login,value:obj.login};
                 });
-                input.suggestions(arr);
+                inputRemote.suggestions(arr);
             }
             else{
                 paperToast.text='Api Error';
