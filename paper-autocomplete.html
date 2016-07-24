@@ -158,6 +158,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value:false
       },
 
+      eventNamespace:{
+         type:String,
+         value:'-'
+      },
+
       minLength:{
         value:1
       },
@@ -394,7 +399,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _fireEvent: function (option, evt) {
       var id=this._getId();
-      this.fire('autocomplete.' + evt,{id:id,value:option.value,text:option.text,target:this,option:option});
+      var event='autocomplete' + this.eventNamespace + evt;
+      this.fire(event,{id:id,value:option.value,text:option.text,target:this,option:option});
     },
 
     _onKeypress:function(event){
