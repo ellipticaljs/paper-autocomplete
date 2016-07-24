@@ -123,13 +123,6 @@
                </div>
             </blockquote>
 
-            <blockquote class="warning margin-top two">
-               <span class="bold">EVENT NAMESPACING</span><br>
-               <div>
-                 Annotated event listeners in polymer components listening for custom events fired by another polymer components may throw an error if the 
-                 event name contains a "." You may set a different namespace delimiter in the component attribute.
-               </div>
-            </blockquote>
             <mark-down>
             ```html
             <xmp>
@@ -268,7 +261,7 @@
                         <span>{String}</span>
                         <span>Event type separator</span>
                     </flex-box>
-                    <span>default: "."</span>
+                    <span>default: "-"</span>
                 </flex-box>
             </section>
 
