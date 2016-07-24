@@ -8,8 +8,8 @@
         inputRemote=document.querySelector('#input-remote');
         paperToast=document.querySelector('paper-toast');
         localBind();
-        document.addEventListener('autocomplete.selected',onSelect);
-        document.addEventListener('autocomplete.change',onChange)
+        document.addEventListener('autocomplete-selected',onSelect);
+        document.addEventListener('autocomplete-change',onChange)
     });
 
     function localBind(){
