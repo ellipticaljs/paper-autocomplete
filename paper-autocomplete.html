@@ -486,6 +486,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     reset:function(){
       this._clear();
+    },
+
+    hideSuggestions:function(){
+      var self=this;
+      setTimeout(function() {
+        self.$.clear.style.display = 'none';
+        self._hideSuggestionsWrapper();
+      }, 300);
     }
 
 
