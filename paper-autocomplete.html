@@ -19,12 +19,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="paper-autocomplete">
   <style>
-    :host {
-      display: block;
-      box-sizing: border-box;
-      position: relative;
-    }
-    
+:host {
+  display: block;
+  box-sizing: border-box;
+  position: relative;
+}
+
     .input-wrapper {
       @apply(--layout-horizontal);
     }
@@ -45,13 +45,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     paper-item {
       position: relative;
       line-height:18px;
+      color:#444;
     }
     paper-item:hover{
       background:#eee;
       color:#333;
       cursor:pointer;
     }
-    
+
     paper-item.active{
       background:#eee;
       color:#333;
@@ -68,7 +69,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="[[label]]" no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}"></paper-input>
+      <paper-input id="input" label="[[label]]" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]" no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
@@ -83,420 +84,426 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </dom-module>
 
 <script>
-  Polymer({
-    is: 'paper-autocomplete',
-    properties: {
-      /**
-       * `autoValidate` Set to true to auto-validate the input value.
-       */
-      autoValidate: {
-        type: Boolean,
-        value: false
-      },
-
-      /**
-       * `errorMessage` The error message to display when the input is invalid.
-       */
-      errorMessage: {
-        type: String,
-      },
-      /**
-       * `label` Text to display as the input label
-       */
-      label: String,
-      /**
-       * `noLabelFloat` Set to true to disable the floating label.
-       */
-      noLabelFloat:{
-        type: Boolean,
-        value: false
-      },
-
-       /**
-       * `required` Set to true to mark the input as required.
-       */
-      required: {
-        type: Boolean,
-        value: false
-      },
-
-      /**
-       * `source` Array of objects with the options to execute the autocomplete feature
-       */
-      source: Array,
-      /**
-       *
-       */
-      textProperty:{
-        type:String,
-        value:'text'
-      },
-      valueProperty:{
-        type:String,
-        value:'value'
-      },
-      /**
-       * `value` Selected object from the suggestions
-       */
-      value: {
-        type: Object,
-        notify: true
-      },
-
-      text:{
-        type:String,
-        notify:true
-      },
-
-      disableShowClear:{
-        type:Boolean,
-        value:false
-      },
-
-      remoteSource:{
-        type: Boolean,
-        value:false
-      },
-
-      eventNamespace:{
-         type:String,
-         value:'-'
-      },
-
-      minLength:{
-        value:1
-      },
-      /**
-       * `_suggestions` Array with the actual suggestions to display
-       */
-      _suggestions: Array,
-      _currentIndex:{
-        value:-1
-      },
-      _scrollIndex:{
-        value:0
-      },
-      _maxViewableItems:{
-        value:7
-      },
-      _itemHeight:{
-        value:36
-      },
-      _value:{
-        value:undefined
-      },
-      _text:{
-        value:undefined
-      }
-    },
-    // Element Lifecycle
-    ready: function() {
-      this._value=this.value;
-    },
-
-    attached: function() {
-      // `attached` fires once the element and its parents have been inserted
-      // into a document.
-      //
-      // This is a good place to perform any work related to your element's
-      // visual state or active behavior (measuring sizes, beginning animations,
-      // loading resources, etc).
-    },
-    detached: function() {
-      // The analog to `attached`, `detached` fires when the element has been
-      // removed from a document.
-      //
-      // Use this to clean up anything you did in `attached`.
-    },
-    listeners: {
-      'input.focus':'_onFocus',
-      'input.blur':'_onBlur'
-    },
-
-    // Element Behavior
+Polymer({
+  is: 'paper-autocomplete',
+  properties: {
     /**
-     * Clears the input text
+     * `autoValidate` Set to true to auto-validate the input value.
      */
-    _clear : function() {
-      this.value=this._value;
-      this.text=this._text;
+    autoValidate: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * `errorMessage` The error message to display when the input is invalid.
+     */
+    errorMessage: {
+      type: String,
+    },
+    /**
+     * `label` Text to display as the input label
+     */
+    label: String,
+    /**
+     * `pattern` Pattern to validate input field
+     */
+     pattern:String,
+    /**
+     * `allowedPattern` allowedPattern to validate input field
+     */
+     allowedPattern:String,
+    /**
+     * `noLabelFloat` Set to true to disable the floating label.
+     */
+    noLabelFloat:{
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * `required` Set to true to mark the input as required.
+     */
+    required: {
+      type: Boolean,
+      value: false
+    },
+
+    /**
+     * `source` Array of objects with the options to execute the autocomplete feature
+     */
+    source: Array,
+    /**
+     *
+     */
+    textProperty:{
+      type:String,
+      value:'text'
+    },
+    valueProperty:{
+      type:String,
+      value:'value'
+    },
+    /**
+     * `value` Selected object from the suggestions
+     */
+    value: {
+      type: Object,
+      notify: true
+    },
+
+    text:{
+      type:String,
+      notify:true
+    },
+
+    disableShowClear:{
+      type:Boolean,
+      value:false
+    },
+
+    remoteSource:{
+      type: Boolean,
+      value:false
+    },
+
+    eventNamespace:{
+      type:String,
+      value:'-'
+    },
+
+    minLength:{
+      value:1
+    },
+    /**
+     * `_suggestions` Array with the actual suggestions to display
+     */
+    _suggestions: Array,
+    _currentIndex:{
+      value:-1
+    },
+    _scrollIndex:{
+      value:0
+    },
+    _maxViewableItems:{
+      value:7
+    },
+    _itemHeight:{
+      value:36
+    },
+    _value:{
+      value:undefined
+    },
+    _text:{
+      value:undefined
+    }
+  },
+  // Element Lifecycle
+  ready: function() {
+    this._value=this.value;
+  },
+
+  attached: function() {
+    // `attached` fires once the element and its parents have been inserted
+    // into a document.
+    //
+    // This is a good place to perform any work related to your element's
+    // visual state or active behavior (measuring sizes, beginning animations,
+    // loading resources, etc).
+  },
+  detached: function() {
+    // The analog to `attached`, `detached` fires when the element has been
+    // removed from a document.
+    //
+    // Use this to clean up anything you did in `attached`.
+  },
+  listeners: {
+    'input.focus':'_onFocus',
+    'input.blur':'_onBlur'
+  },
+
+  // Element Behavior
+  /**
+   * Clears the input text
+   */
+  _clear : function() {
+    this.value=this._value;
+    this.text=this._text;
+    this.$.clear.style.display = 'none';
+    this._hideSuggestionsWrapper();
+    this._emptyItems();
+    var option = {
+      text: this.text,
+      value: this.value
+    };
+    this._fireEvent(option,'reset');
+  },
+
+  /**
+   * Hide the suggestions wrapper
+   */
+  _hideSuggestionsWrapper: function() {
+    this.$.suggestionsWrapper.style.display = 'none';
+  },
+
+  _handleSuggestions:function(event){
+    if (!this.remoteSource) {
+      this._createSuggestions(event);
+    } else {
+      this._remoteSuggestions(event);
+    }
+  },
+
+  _remoteSuggestions:function(event){
+    var value = event.target.value;
+    var minLength=this.minLength;
+    var option = {
+      text: this.text,
+      value: value
+    };
+    if (value && value.length >= minLength) {
+      this._fireEvent(option, 'change');
+    } else {
       this.$.clear.style.display = 'none';
-      this._hideSuggestionsWrapper();
-      this._emptyItems();
-      var option = {
-        text: this.text,
-        value: this.value
-      };
-      this._fireEvent(option,'reset');
-    },
+      this._suggestions = [];
+    }
+  },
 
-    /**
-     * Hide the suggestions wrapper
-     */
-    _hideSuggestionsWrapper: function() {
-      this.$.suggestionsWrapper.style.display = 'none';
-    },
+  _bindSuggestions:function(arr){
+    if (arr.length && arr.length > 0) {
+      this._suggestions = arr;
+      this._currentIndex = -1;
+      this._scrollIndex = 0;
+      if(!this.disableShowClear) this.$.clear.style.display = 'block';
+      this.$.suggestionsWrapper.style.display = 'block';
+    } else {
+      this.$.clear.style.display = 'none';
+      this._suggestions = [];
+    }
+  },
 
-    _handleSuggestions:function(event){
-      if (!this.remoteSource) {
-        this._createSuggestions(event);
-      } else {
-        this._remoteSuggestions(event);
-      }
-    },
-
-    _remoteSuggestions:function(event){
-      var value = event.target.value;
-      var minLength=this.minLength;
-      var option = {
-        text: this.text,
-        value: value
-      };
-      if (value && value.length >= minLength) {
-        this._fireEvent(option, 'change');
-      } else {
-        this.$.clear.style.display = 'none';
+  _createSuggestions : function(event) {
+    this._currentIndex=-1;
+    this._scrollIndex=0;
+    var value = event.target.value;
+    var minLength=this.minLength;
+    if(value && value.length >=minLength){
+      value = value.toLowerCase();
+      // Shows the clear button.
+      if(!this.disableShowClear) this.$.clear.style.display = 'block';
+      // Search for the word in the source properties.
+      if(this.source && this.source.length > 0){
         this._suggestions = [];
-      }
-    },
-
-    _bindSuggestions:function(arr){
-      if (arr.length && arr.length > 0) {
-        this._suggestions = arr;
-        this._currentIndex = -1;
-        this._scrollIndex = 0;
-        if(!this.disableShowClear) this.$.clear.style.display = 'block';
-        this.$.suggestionsWrapper.style.display = 'block';
-      } else {
-        this.$.clear.style.display = 'none';
-        this._suggestions = [];
-      }
-    },
-
-    _createSuggestions : function(event) {
-      this._currentIndex=-1;
-      this._scrollIndex=0;
-      var value = event.target.value;
-      var minLength=this.minLength;
-      if(value && value.length >=minLength){
-        value = value.toLowerCase();
-        // Shows the clear button.
-        if(!this.disableShowClear) this.$.clear.style.display = 'block';
-        // Search for the word in the source properties.
-        if(this.source && this.source.length > 0){
-          this._suggestions = [];
-          var length = this.source.length;
-          var objText,objValue;
-          for(var i = 0; i < length; i++){
-            var item = this.source[i];
-            if(typeof item==='object'){
-              objText=item[this.textProperty];
-              objValue=item[this.valueProperty]
-            }else{
-              objText=item.toString();
-              objValue=objText;
-            }
-            if(objText.toLowerCase().indexOf(value)===0){
-              // Adds the item to the suggestions list.
-              this.push('_suggestions', {text : objText , value : objValue});
-            }
+        var length = this.source.length;
+        var objText,objValue;
+        for(var i = 0; i < length; i++){
+          var item = this.source[i];
+          if(typeof item==='object'){
+            objText=item[this.textProperty];
+            objValue=item[this.valueProperty]
+          }else{
+            objText=item.toString();
+            objValue=objText;
           }
-          if (this._suggestions.length > 0) {
-            this.$.suggestionsWrapper.style.display = 'block';
-          }else{            
-            this._hideSuggestionsWrapper();
+          if(objText.toLowerCase().indexOf(value)===0){
+            // Adds the item to the suggestions list.
+            this.push('_suggestions', {text : objText , value : objValue});
           }
         }
-      }else{
-        this.$.clear.style.display = 'none';
-        this._suggestions = [];
+        if (this._suggestions.length > 0) {
+          this.$.suggestionsWrapper.style.display = 'block';
+        }else{            
+          this._hideSuggestionsWrapper();
+        }
       }
-    },
-
-    _selection : function(index) {
-      var selectedOption = this._suggestions[index];
-      var self = this;
-      this.text = selectedOption.text;
-      this.value = selectedOption.value;
-      this._value=this.value;
-      this._text=this.text;
+    }else{
       this.$.clear.style.display = 'none';
-      this._emptyItems();
-      this._fireEvent(selectedOption,'selected');
-      setTimeout(function() {
-        self._hideSuggestionsWrapper();
-      }, 300);
-    },
-
-    _getItems:function(){
-      return this.querySelectorAll('paper-item');
-    },
-
-    _emptyItems:function(){
       this._suggestions = [];
-    },
-
-    _getId:function(){
-      var id=this.getAttribute('id');
-      if(!id) id=this.dataset.id;
-      return id;
-    },
-
-    _removeActive:function(items){
-      for(var i=0;i<items.length;i++){
-        items[i].classList.remove('active');
-      }
-    },
-
-    _keydown:function(){
-      var items=this._getItems();
-      var length=items.length;
-      length--;
-      if(this._currentIndex < length){
-        this._removeActive(items);
-        this._currentIndex++;
-        items[this._currentIndex].classList.add('active');
-        this._scrollDown();
-      }
-    },
-
-    _keyup:function(){
-      var items=this._getItems();
-      if(this._currentIndex >0){
-        this._removeActive(items);
-        this._currentIndex--;
-        items[this._currentIndex].classList.add('active');
-        this._scrollUp();
-      }
-    },
-
-    _keyenter:function(){
-      if(this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1){
-        var index=this._currentIndex;
-        this._selection(index);
-      }
-    },
-
-    _scrollDown:function(){
-      var viewIndex=this._currentIndex-this._scrollIndex;
-      if(viewIndex >= this._maxViewableItems){
-        this._scrollIndex++;
-        var scrollTop=(this._scrollIndex * this._itemHeight);
-        var paperMaterial=this.querySelector('paper-material');
-        paperMaterial.scrollTop=scrollTop;
-      }
-    },
-
-    _scrollUp:function(){
-      var viewIndex=this._currentIndex-this._scrollIndex;
-      if(viewIndex < 0){
-        this._scrollIndex--;
-        var scrollTop=(this._scrollIndex * this._itemHeight);
-        var paperMaterial=this.querySelector('paper-material');
-        paperMaterial.scrollTop=scrollTop;
-      }
-    },
-
-    _fireEvent: function (option, evt) {
-      var id=this._getId();
-      var event='autocomplete' + this.eventNamespace + evt;
-      this.fire(event,{id:id,value:option.value,text:option.text,target:this,option:option});
-    },
-
-    _onKeypress:function(event){
-      var which=event.which;
-      if(which===40){
-        this._keydown();
-      }else if(which===38){
-        this._keyup(event);
-      }else if(which===13){
-        this._keyenter();
-      }else{
-        this._handleSuggestions(event);
-      }
-    },
-
-    _onSelect:function(event){
-      var index=event.model.index;
-      this._selection(index);
-    },
-
-    _onBlur: function (event) {
-      var self=this;
-      var option = {
-        text: this.text,
-        value: this.value
-      };
-      
-      this._fireEvent(option,'blur');
-      setTimeout(function() {
-        self.$.clear.style.display = 'none';
-        self._hideSuggestionsWrapper();
-      }, 300);
-    },
-
-    _onFocus: function (event) {
-      var option = {
-        text: this.text,
-        value: this.value
-      };
-      this._fireEvent(option,'focus');
-    },
-
-    /* public */
-    getValue : function() {
-      return this.value;
-    },
-
-    getOption:function(){
-      return {
-        text: this.text,
-        value: this.value
-      };
-    },
-
-    setOption:function(option){
-       this.text=option.text;
-       this.value=option.value;
-    },
-
-    disable: function(){
-      this.disabled=true;
-      this.$.input.disabled=true;
-    },
-
-    enable:function(){
-      this.disabled=false;
-      this.$.input.disabled=false;
-    },
-
-    suggestions: function (arr) {
-      this._bindSuggestions(arr);
-    },
-
-    validate: function(){
-      return this.$.input.validate();
-    },
-
-    clear:function(){
-      this._value='';
-      this._text='';
-      this._clear();
-    },
-
-    reset:function(){
-      this._clear();
-    },
-
-    hideSuggestions:function(){
-      var self=this;
-      setTimeout(function() {
-        self.$.clear.style.display = 'none';
-        self._hideSuggestionsWrapper();
-      }, 300);
     }
+  },
 
+  _selection : function(index) {
+    var selectedOption = this._suggestions[index];
+    var self = this;
+    this.text = selectedOption.text;
+    this.value = selectedOption.value;
+    this._value=this.value;
+    this._text=this.text;
+    this.$.clear.style.display = 'none';
+    this._emptyItems();
+    this._fireEvent(selectedOption,'selected');
+    setTimeout(function() {
+      self._hideSuggestionsWrapper();
+    }, 300);
+  },
 
+  _getItems:function(){
+    return this.querySelectorAll('paper-item');
+  },
 
-  });
+  _emptyItems:function(){
+    this._suggestions = [];
+  },
+
+  _getId:function(){
+    var id=this.getAttribute('id');
+    if(!id) id=this.dataset.id;
+    return id;
+  },
+
+  _removeActive:function(items){
+    for(var i=0;i<items.length;i++){
+      items[i].classList.remove('active');
+    }
+  },
+
+  _keydown:function(){
+    var items=this._getItems();
+    var length=items.length;
+    length--;
+    if(this._currentIndex < length){
+      this._removeActive(items);
+      this._currentIndex++;
+      items[this._currentIndex].classList.add('active');
+      this._scrollDown();
+    }
+  },
+
+  _keyup:function(){
+    var items=this._getItems();
+    if(this._currentIndex >0){
+      this._removeActive(items);
+      this._currentIndex--;
+      items[this._currentIndex].classList.add('active');
+      this._scrollUp();
+    }
+  },
+
+  _keyenter:function(){
+    if(this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1){
+      var index=this._currentIndex;
+      this._selection(index);
+    }
+  },
+
+  _scrollDown:function(){
+    var viewIndex=this._currentIndex-this._scrollIndex;
+    if(viewIndex >= this._maxViewableItems){
+      this._scrollIndex++;
+      var scrollTop=(this._scrollIndex * this._itemHeight);
+      var paperMaterial=this.querySelector('paper-material');
+      paperMaterial.scrollTop=scrollTop;
+    }
+  },
+
+  _scrollUp:function(){
+    var viewIndex=this._currentIndex-this._scrollIndex;
+    if(viewIndex < 0){
+      this._scrollIndex--;
+      var scrollTop=(this._scrollIndex * this._itemHeight);
+      var paperMaterial=this.querySelector('paper-material');
+      paperMaterial.scrollTop=scrollTop;
+    }
+  },
+
+  _fireEvent: function (option, evt) {
+    var id=this._getId();
+    var event='autocomplete' + this.eventNamespace + evt;
+    this.fire(event,{id:id,value:option.value,text:option.text,target:this,option:option});
+  },
+
+  _onKeypress:function(event){
+    var which=event.which;
+    if(which===40){
+      this._keydown();
+    }else if(which===38){
+      this._keyup(event);
+    }else if(which===13){
+      this._keyenter();
+    }else{
+      this._handleSuggestions(event);
+    }
+  },
+
+  _onSelect:function(event){
+    var index=event.model.index;
+    this._selection(index);
+  },
+
+  _onBlur: function (event) {
+    var self=this;
+    var option = {
+      text: this.text,
+      value: this.value
+    };
+
+    this._fireEvent(option,'blur');
+    setTimeout(function() {
+      self.$.clear.style.display = 'none';
+      self._hideSuggestionsWrapper();
+    }, 300);
+  },
+
+  _onFocus: function (event) {
+    var option = {
+      text: this.text,
+      value: this.value
+    };
+    this._fireEvent(option,'focus');
+  },
+
+  /* public */
+  getValue : function() {
+    return this.value;
+  },
+
+  getOption:function(){
+    return {
+      text: this.text,
+      value: this.value
+    };
+  },
+
+  setOption:function(option){
+    this.text=option.text;
+    this.value=option.value;
+  },
+
+  disable: function(){
+    this.disabled=true;
+    this.$.input.disabled=true;
+  },
+
+  enable:function(){
+    this.disabled=false;
+    this.$.input.disabled=false;
+  },
+
+  suggestions: function (arr) {
+    this._bindSuggestions(arr);
+  },
+
+  validate: function(){
+    return this.$.input.validate();
+  },
+
+  clear:function(){
+    this._value='';
+    this._text='';
+    this._clear();
+  },
+
+  reset:function(){
+    this._clear();
+  },
+
+  hideSuggestions:function(){
+    var self=this;
+    setTimeout(function() {
+      self.$.clear.style.display = 'none';
+      self._hideSuggestionsWrapper();
+    }, 300);
+  }
+
+});
 </script>
