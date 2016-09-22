@@ -329,7 +329,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _getItems:function(){
-      return this.querySelectorAll('paper-item');
+      var wantsShadow = window.Polymer.Settings.dom === 'shadow';
+      var hasShadow = Boolean(Element.prototype.createShadowRoot);
+      var useShadow = wantsShadow && hasShadow;
+
+      if(useShadow){
+        return this.shadowRoot.querySelectorAll('paper-item');
+      }else{
+        //must be using shady
+        return this.querySelectorAll('paper-item')
+      }
     },
 
     _emptyItems:function(){
