@@ -35,6 +35,10 @@
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
-    "web-component-tester": "*"
+    "web-component-tester": "*",
+    "iron-demo-helpers": "^1.2.5",
+    "paper-toast": "^1.3.0",
+    "elliptical-sass": "^1.2.29",
+    "css-docs": "https://github.com/ellipticaljs/css-docs.git#^1.0.3"
   }
 }

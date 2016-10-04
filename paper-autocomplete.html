@@ -16,6 +16,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-material/paper-material.html">
 
+<!--
+  `paper-autocomplete`
+
+  TODO: more coming
+
+  ### Styling
+
+  `<paper-autocomplete>` provides the following custom properties and mixins
+  for styling:
+
+  Custom property | Description | Default
+  ----------------|-------------|----------
+  `--paper-input-container-focus-color` | sets the components input container focus color | #2196f3
+  `--paper-item-min-height` | paper item min height | `{}`
+
+  @demo demo/index.html
+-->
 
 <dom-module id="paper-autocomplete">
   <style>
@@ -24,7 +41,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       box-sizing: border-box;
       position: relative;
     }
-    
+
     .input-wrapper {
       @apply(--layout-horizontal);
     }
@@ -51,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       color:#333;
       cursor:pointer;
     }
-    
+
     paper-item.active{
       background:#eee;
       color:#333;
@@ -442,7 +459,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text: this.text,
         value: this.value
       };
-      
+
       this._fireEvent(option,'blur');
       setTimeout(function() {
         self.$.clear.style.display = 'none';
