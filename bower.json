@@ -39,6 +39,6 @@
     "iron-demo-helpers": "^1.2.5",
     "paper-toast": "^1.3.0",
     "elliptical-sass": "^1.2.29",
-    "css-docs": "https://github.com/ellipticaljs/css-docs.git#^1.0.3"
+    "css-docs": "^1.0.3"
   }
 }
