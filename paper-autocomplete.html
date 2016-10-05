@@ -166,6 +166,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       minLength:{
         value:1
       },
+
+      useShadowDom:{
+        type:Boolean,
+        value:false
+      },
       /**
        * `_suggestions` Array with the actual suggestions to display
        */
@@ -329,7 +334,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _getItems:function(){
-      return this.querySelectorAll('paper-item');
+      var supportsShadow = Boolean(Element.prototype.createShadowRoot);
+      var useShadow = this.useShadowDom;
+      if(useShadow && supportsShadow) return this.shadowRoot.querySelectorAll('paper-item');
+      else return this.querySelectorAll('paper-item');
     },
 
     _emptyItems:function(){
