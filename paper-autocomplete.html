@@ -68,7 +68,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="[[label]]" no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}"></paper-input>
+      <paper-input id="input" label="[[label]]" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"  no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
@@ -171,10 +171,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         type:Boolean,
         value:false
       },
+
+     /**
+      * `pattern` Pattern to validate input field
+      */
+      pattern:String,
+
+      /**
+       * allowedPattern` allowedPattern to validate input field
+       */
+      allowedPattern:String,
+
       /**
        * `_suggestions` Array with the actual suggestions to display
        */
       _suggestions: Array,
+
       _currentIndex:{
         value:-1
       },
@@ -243,11 +255,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _handleSuggestions:function(event){
-      if (!this.remoteSource) {
-        this._createSuggestions(event);
-      } else {
-        this._remoteSuggestions(event);
-      }
+      if (!this.remoteSource) this._createSuggestions(event);
+      else this._remoteSuggestions(event);
     },
 
     _remoteSuggestions:function(event){
@@ -257,9 +266,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text: this.text,
         value: value
       };
-      if (value && value.length >= minLength) {
-        this._fireEvent(option, 'change');
-      } else {
+      if (value && value.length >= minLength) this._fireEvent(option, 'change');
+      else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
       }
@@ -306,11 +314,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               this.push('_suggestions', {text : objText , value : objValue});
             }
           }
-          if (this._suggestions.length > 0) {
-            this.$.suggestionsWrapper.style.display = 'block';
-          }else{            
-            this._hideSuggestionsWrapper();
-          }
+
+          if (this._suggestions.length > 0) this.$.suggestionsWrapper.style.display = 'block';
+          else this._hideSuggestionsWrapper();
+
         }
       }else{
         this.$.clear.style.display = 'none';
