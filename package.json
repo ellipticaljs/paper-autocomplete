@@ -3,7 +3,7 @@
   "description": "Material Design autocomplete component.",
   "version": "1.1.6",
   "author": "S. Francis <sfrancis@misinteractive.com>",
-  "contributors":[
+  "contributors": [
     "Rodolfo Oviedo <rodo1111@gmail.com>",
     "Alfonso Aguilar <laltfuns@gmail.com>",
     "Oliver Hamlet <oliver.hamlet@gmail.com>",
@@ -17,12 +17,17 @@
     "type": "git",
     "url": "https://github.com/ellipticaljs/paper-autocomplete.git"
   },
+  "scripts": {
+    "serve": "polymer serve",
+    "postinstall": "bower i"
+  },
   "devDependencies": {
+    "fs-extra": "^0.8.1",
     "gulp": "^3.8.7",
-    "gulp-util": "^2.2.14",
     "gulp-concat": "^2.2.0",
     "gulp-tap": "^0.1.1",
-    "fs-extra": "^0.8.1",
-    "gulp-uglify": "^0.2.1"
+    "gulp-uglify": "^0.2.1",
+    "gulp-util": "^2.2.14",
+    "polymer-cli": "^0.16.0"
   }
 }
