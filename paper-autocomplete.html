@@ -16,6 +16,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-material/paper-material.html">
 
+<!--
+  `paper-autocomplete`
+
+  Paper Input Autocomplete field to offer a type-ahead functionality for Polymer v1.0.0 or greater.
+
+  paper-autocomplete extends earlier efforts such as this (https://github.com/rodo1111/paper-input-autocomplete)
+  to provide keyboard support, remote binding and results scrolling.
+
+  ### Styling
+
+  `<paper-autocomplete>` provides the following custom properties and mixins
+  for styling:
+
+  Custom property | Description | Default
+  ----------------|-------------|----------
+  `--paper-input-container-focus-color` | sets the components input container focus color | #2196f3
+  `--paper-item-min-height` | paper item min height | `{}`
+
+  @demo demo/index.html
+-->
 
 <dom-module id="paper-autocomplete">
   <style>
@@ -24,7 +44,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       box-sizing: border-box;
       position: relative;
     }
-    
+
     .input-wrapper {
       @apply(--layout-horizontal);
     }
@@ -51,7 +71,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       color:#333;
       cursor:pointer;
     }
-    
+
     paper-item.active{
       background:#eee;
       color:#333;
@@ -100,10 +120,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       errorMessage: {
         type: String,
       },
+
       /**
        * `label` Text to display as the input label
        */
       label: String,
+
       /**
        * `noLabelFloat` Set to true to disable the floating label.
        */
@@ -124,17 +146,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `source` Array of objects with the options to execute the autocomplete feature
        */
       source: Array,
+
       /**
-       *
+       * Property of local datasource to as the text property
        */
       textProperty:{
         type:String,
         value:'text'
       },
+
+      /**
+       * Property of local datasource to as the value property
+       */
       valueProperty:{
         type:String,
         value:'value'
       },
+
       /**
        * `value` Selected object from the suggestions
        */
@@ -143,30 +171,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         notify: true
       },
 
+      /**
+       * The current/selected text of the input
+       */
       text:{
         type:String,
-        notify:true
+        notify:true,
+        value:''
       },
 
+      /**
+       * Disable showing the clear X button
+       */
       disableShowClear:{
         type:Boolean,
         value:false
       },
 
+      /**
+       * Binds to a remote data source
+       */
       remoteSource:{
         type: Boolean,
         value:false
       },
 
+      /**
+       * Event type separator
+       */
       eventNamespace:{
          type:String,
          value:'-'
       },
 
+      /**
+       * Minimum length to trigger suggestions
+       */
       minLength:{
         value:1
       },
 
+      /**
+       * Indicates if shadow dom is used
+       */
       useShadowDom:{
         type:Boolean,
         value:false
@@ -411,7 +458,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         paperMaterial.scrollTop=scrollTop;
       }
     },
-
     _fireEvent: function (option, evt) {
       var id=this._getId();
       var event='autocomplete' + this.eventNamespace + evt;
@@ -442,7 +488,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text: this.text,
         value: this.value
       };
-      
+
       this._fireEvent(option,'blur');
       setTimeout(function() {
         self.$.clear.style.display = 'none';
@@ -459,10 +505,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     /* public */
+    /**
+     * Gets the current value of the input
+     * @returns {String}
+     */
     getValue : function() {
       return this.value;
     },
 
+    /**
+     * Gets the current text/value option of the input
+     * @returns {Object}
+     */
     getOption:function(){
       return {
         text: this.text,
@@ -470,39 +524,66 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       };
     },
 
+    /**
+     * Sets the current text/value option of the input
+     * @param {Object} option
+     */
     setOption:function(option){
        this.text=option.text;
        this.value=option.value;
     },
 
+    /**
+     * Disables the input
+     */
     disable: function(){
       this.disabled=true;
       this.$.input.disabled=true;
     },
 
+    /**
+     * Enables the input
+     */
     enable:function(){
       this.disabled=false;
       this.$.input.disabled=false;
     },
 
+    /**
+     * Sets the component's current suggestions
+     * @param {Array} arr
+     */
     suggestions: function (arr) {
       this._bindSuggestions(arr);
     },
 
+    /**
+     * Validates the input
+     * @returns {Boolean}
+     */
     validate: function(){
       return this.$.input.validate();
     },
 
+    /**
+     * Clears the current input
+     */
     clear:function(){
       this._value='';
       this._text='';
       this._clear();
     },
 
+    /**
+     * Resets the current input
+     */
     reset:function(){
       this._clear();
     },
 
+    /**
+     * Hides the suggestions popup
+     */
     hideSuggestions:function(){
       var self=this;
       setTimeout(function() {
@@ -511,7 +592,54 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }, 300);
     }
 
+    /**
+     * Fired when a selection is made
+     *
+     * @event autocomplete-selected
+     * @param {String} id
+     * @param {String} text
+     * @param {Element} target
+     * @param {Object} option
+     */
 
+    /**
+     * Fired on input change
+     *
+     * @event autocomplete-change
+     * @param {String} id
+     * @param {String} text
+     * @param {Element} target
+     * @param {Object} option
+     */
 
+    /**
+     * Fired on input focus
+     *
+     * @event autocomplete-focus
+     * @param {String} id
+     * @param {String} text
+     * @param {Element} target
+     * @param {Object} option
+     */
+
+    /**
+     * Fired on input blur
+     *
+     * @event autocomplete-blur
+     * @param {String} id
+     * @param {String} text
+     * @param {Element} target
+     * @param {Object} option
+     */
+
+    /**
+     * Fired on input reset/clear
+     *
+     * @event autocomplete-reset-blur
+     * @param {String} id
+     * @param {String} text
+     * @param {Element} target
+     * @param {Object} option
+     */
   });
 </script>
