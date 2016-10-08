@@ -92,23 +92,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
 
   <template>
-    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper"
-         aria-expanded$="[[_isSuggestionsOpened]]">
-
-      <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
-      <label for="input" class="sr-only">[[label]]</label>
-
+    <div class="input-wrapper">
       <paper-input id="input" label="[[label]]" no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress"
                    disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]"
                    required$="[[required]]" value="{{text}}" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"
-
-                   role="textbox" aria-autocomplete="list"
-                   aria-multiline="false" aria-activedescendant$="[[_idElementHighlighted]]"
-                   aria-disabled$="[[disabled]]"></paper-input>
+                   role="combobox" tabindex="0" aria-autocomplete="list" aria-multiline="false"
+                   aria-activedescendant$="[[_idElementHighlighted]]" aria-disabled$="[[disabled]]"
+                   aria-controls="selectedStatus suggestionsWrapper" aria-haspopup="true" aria-owns="suggestionsWrapper"
+                   aria-expanded$="[[_isSuggestionsOpened]]"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
 
       <!-- to announce current selection to screen reader -->
-      <span role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
+      <span id="selectedStatus" role="region" aria-live="assertive" class="sr-only" tabindex="-1">
+        [[_textOfHighlightedElement]]
+      </span>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
       <template is="dom-repeat" items="{{_suggestions}}">
@@ -137,7 +134,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `errorMessage` The error message to display when the input is invalid.
        */
       errorMessage: {
-        type: String,
+        type: String
       },
 
       /**
@@ -294,8 +291,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Text value of the current highlighted value to be announce to the screen reader
        */
       _textOfHighlightedElement: {
-        type: String,
-        computed: 'computeFullName(first, last)'
+        type: String
       },
 
       /**
