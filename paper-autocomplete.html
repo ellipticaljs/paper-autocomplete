@@ -92,7 +92,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
 
   <template>
-    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper"
+    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper autocompleteStatus"
          aria-expanded$="[[_isSuggestionsOpened]]">
 
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
@@ -104,11 +104,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                    role="textbox" aria-autocomplete="list"
                    aria-multiline="false" aria-activedescendant$="[[_idElementHighlighted]]"
-                   aria-disabled$="[[disabled]]"></paper-input>
+                   aria-disabled$="[[disabled]]" aria-controls="autocompleteStatus suggestionsWrapper"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
 
       <!-- to announce current selection to screen reader -->
-      <span role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
+      <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
       <template is="dom-repeat" items="{{_suggestions}}">
@@ -294,8 +294,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Text value of the current highlighted value to be announce to the screen reader
        */
       _textOfHighlightedElement: {
-        type: String,
-        computed: 'computeFullName(first, last)'
+        type: String
       },
 
       /**
