@@ -1,7 +1,7 @@
 {
   "name": "paper-autocomplete",
   "description": "Material Design autocomplete component.",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "author": "S. Francis <sfrancis@misinteractive.com>",
   "contributors": [
     "Rodolfo Oviedo <rodo1111@gmail.com>",
@@ -10,7 +10,8 @@
     "alejost848 <alejost848@gmail.com>",
     "Tobias Koppers @sokra",
     "David Ford <dford@smart-soft.com>",
-    "Arun Kumar TK <aruntknambiar@gmail.com>"
+    "Arun Kumar TK <aruntknambiar@gmail.com>",
+    "Jaime Vega <jhuesos@gmail.com>"
   ],
   "license": "MIT",
   "repository": {
@@ -18,7 +19,7 @@
     "url": "https://github.com/ellipticaljs/paper-autocomplete.git"
   },
   "scripts": {
-    "serve": "polymer serve",
+    "serve": "polymer serve -o",
     "postinstall": "bower i"
   },
   "devDependencies": {
