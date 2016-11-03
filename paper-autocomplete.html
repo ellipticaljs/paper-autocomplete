@@ -88,7 +88,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="[[label]]" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"  no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}" char-counter$="[[charCounter]]" maxlength$="[[maxlength]]"></paper-input>
+      <paper-input id="input" label="[[label]]" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"  no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}"  always-float-label="[[alwaysFloatLabel]]" char-counter$="[[charCounter]]" maxlength$="[[maxlength]]"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
@@ -130,6 +130,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `noLabelFloat` Set to true to disable the floating label.
        */
       noLabelFloat:{
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * `alwaysFloatLabel` Set to true to always float label
+       */
+      alwaysFloatLabel: {
         type: Boolean,
         value: false
       },
