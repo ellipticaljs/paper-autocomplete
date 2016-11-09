@@ -94,7 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-material elevation="1" id="suggestionsWrapper">
       <template is="dom-repeat" items="{{_suggestions}}">
         <paper-item on-click="_onSelect">
-          <div>{{item.text}}</div>
+          <div>{{getItemText(item)}}</div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
@@ -309,6 +309,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this._fireEvent(option,'reset');
     },
 
+	/**
+	 * Get the text property from the suggestion
+	 * @param {Object} suggestion The suggestion item
+	 * @return {String}
+	 */
+	getItemText: function(suggestion) {
+		return suggestion[this.textProperty];
+	},
+
     /**
      * Hide the suggestions wrapper
      */
@@ -390,8 +399,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _selection : function(index) {
       var selectedOption = this._suggestions[index];
       var self = this;
-      this.text = selectedOption.text;
-      this.value = selectedOption.value;
+      this.text = selectedOption[this.textProperty];
+      this.value = selectedOption[this.valueProperty];
       this._value=this.value;
       this._text=this.text;
       this.$.clear.style.display = 'none';
@@ -476,7 +485,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _fireEvent: function (option, evt) {
       var id=this._getId();
       var event='autocomplete' + this.eventNamespace + evt;
-      this.fire(event,{id:id,value:option.value,text:option.text,target:this,option:option});
+      this.fire(event,{id:id,value:option[this.valueProperty] || option.value,text:option[this.textProperty] || option.text,target:this,option:option
+	  });
     },
 
     _onKeypress:function(event){
