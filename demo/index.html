@@ -150,8 +150,8 @@
       <script>
         var paperToast = document.querySelector('paper-toast');
 
-        document.addEventListener('autocomplete-selected', onSelect);
-        document.addEventListener('autocomplete-change', onChange);
+        document.querySelector('#input-remote').addEventListener('autocomplete-selected', onSelect);
+        document.querySelector('#input-remote').addEventListener('autocomplete-change', onChange);
 
         function onSelect(event) {
           var selected = event.detail.text;
@@ -172,6 +172,55 @@
                 return {text: obj.login, value: obj.login};
               });
               input.suggestions(arr);
+            }
+          };
+          req.send();
+        }
+      </script>
+    </template>
+  </demo-snippet>
+
+  <h3>Remote Data-Source Binding with Custom Text & Value properties</h3>
+  <p>
+    Remote bind to the github user api. Remote data binding delegates the responsibility of filtering the data source to
+    the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the suggestions
+    back to the component. The change event is fired based on the <span class="bold">min-length</span> attribute
+    setting.
+  </p>
+
+  <demo-snippet>
+    <template is="dom-bind">
+
+      <paper-autocomplete label="Select User"
+                          id="input-remote-custom-properties"
+                          text-property="login"
+                          value-property="id"
+                          min-length="2"
+                          remote-source>
+      </paper-autocomplete>
+
+      <script>
+        var paperToast = document.querySelector('paper-toast');
+
+        document.querySelector('#input-remote-custom-properties').addEventListener('autocomplete-selected', onCustomSelect);
+        document.querySelector('#input-remote-custom-properties').addEventListener('autocomplete-change', onCustomChange);
+
+        function onCustomSelect(event) {
+          var selected = event.detail.text;
+          paperToast.text = 'Selected: ' + selected + ' with a value ' + event.detail.value;
+          paperToast.show();
+        }
+
+        function onCustomChange(event) {
+          var input = document.querySelector('#input-remote-custom-properties');
+          var search = event.detail.option.text;
+          var url = 'https://api.github.com/search/users?q=' + search + '+in:login';
+          var req = new XMLHttpRequest();
+          req.open('GET', encodeURI(url));
+          req.onload = function () {
+            if (req.status === 200) {
+              var data = JSON.parse(req.response);
+              input.suggestions(data.items);
             }
           };
           req.send();
