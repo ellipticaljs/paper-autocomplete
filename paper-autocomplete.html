@@ -85,17 +85,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       --paper-input-container-focus-color: #2196f3;
       --paper-item-min-height: 36px;
     }
+
+    .sr-only {
+      position: absolute;
+      clip: rect(1px, 1px, 1px, 1px);
+    }
   </style>
 
   <template>
-    <div class="input-wrapper">
-      <paper-input id="input" label="[[label]]" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"  no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}" char-counter$="[[charCounter]]" maxlength$="[[maxlength]]"></paper-input>
+    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper autocompleteStatus"
+         aria-expanded$="[[_isSuggestionsOpened]]">
+
+      <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
+      <label for="input" class="sr-only">[[label]]</label>
+
+      <paper-input id="input"
+                   label="[[label]]"
+                   no-label-float="[[noLabelFloat]]"
+                   on-keyup="_onKeypress"
+                   disabled="{{disabled}}"
+                   auto-validate$="[[autoValidate]]"
+                   error-message$="[[errorMessage]]"
+                   required$="[[required]]"
+                   value="{{text}}"
+                   allowed-pattern="[[allowedPattern]]"
+                   pattern="[[pattern]]"
+                   no-label-float="[[noLabelFloat]]"
+                   auto-validate$="[[autoValidate]]"
+                   always-float-label="[[alwaysFloatLabel]]"
+                   char-counter$="[[charCounter]]"
+                   maxlength$="[[maxlength]]"
+
+                   role="textbox" aria-autocomplete="list"
+                   aria-multiline="false" aria-activedescendant$="[[_idElementHighlighted]]"
+                   aria-disabled$="[[disabled]]" aria-controls="autocompleteStatus suggestionsWrapper"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+
+      <!-- to announce current selection to screen reader -->
+      <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
     </div>
-    <paper-material elevation="1" id="suggestionsWrapper">
+    <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
       <template is="dom-repeat" items="{{_suggestions}}">
-        <paper-item on-click="_onSelect">
-          <div>{{item.text}}</div>
+        <paper-item on-click="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+          <div>{{_getItemText(item)}}</div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
