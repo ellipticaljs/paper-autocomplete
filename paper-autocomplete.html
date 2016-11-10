@@ -126,7 +126,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
       <template is="dom-repeat" items="{{_suggestions}}">
         <paper-item on-click="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>{{getItemText(item)}}</div>
+          <div>{{_getItemText(item)}}</div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
@@ -380,6 +380,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: this.value
       };
       this._fireEvent(option,'reset');
+    },
+
+    /**
+     * Get the text property from the suggestion
+     * @param {Object} suggestion The suggestion item
+     * @return {String}
+     */
+    _getItemText: function(suggestion) {
+      return suggestion[this.textProperty];
+    },
+
+    /**
+     * Show the suggestions wrapper
+     */
+    _showSuggestionsWrapper: function() {
+      this.$.suggestionsWrapper.style.display = 'block';
+      this._isSuggestionsOpened = true;
     },
 
     /**
