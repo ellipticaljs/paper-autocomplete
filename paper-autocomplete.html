@@ -132,9 +132,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <script>
   Polymer({
     is: 'paper-autocomplete',
-    behavior: [
+
+    behaviors: [
       Polymer.Templatizer
     ],
+
     properties: {
       /**
        * `autoValidate` Set to true to auto-validate the input value.
