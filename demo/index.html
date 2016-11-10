@@ -12,6 +12,7 @@
   <link rel="import" href="../../elliptical-sass/elliptical-sass.html">
   <link rel="import" href="../../css-docs/css-docs.html">
   <link rel="import" href="../paper-autocomplete.html">
+  <link rel="import" href="../paper-autocomplete-custom.html">
   <link rel="import" href="./autocomplete-example.html">
 
   <link rel="stylesheet" href="demo.css">
@@ -48,11 +49,7 @@
   <demo-snippet>
     <template is="dom-bind">
 
-      <paper-autocomplete label="Select State" id="input-local" no-label-float="true">
-        <template custom-item>
-          <paper-autocomplete-item item="[[item]]"></paper-autocomplete-item>
-        </template>
-      </paper-autocomplete>
+      <paper-autocomplete-custom id="input-local"></paper-autocomplete-custom>
 
       <script>
         var states = [
@@ -118,8 +115,6 @@
         ];
 
         var inputLocal = document.querySelector('#input-local');
-
-        debugger;
         inputLocal.source = states;
       </script>
     </template>

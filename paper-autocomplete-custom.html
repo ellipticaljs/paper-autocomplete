@@ -8,14 +8,8 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="./paper-autocomplete.html">
 <link rel="import" href="../paper-item/paper-item.html">
-<link rel="import" href="../paper-ripple/paper-ripple.html">
-<link rel="import" href="../paper-material/paper-material.html">
-<link rel="import" href="./paper-autocomplete-behavior.html">
 
 <!--
   `paper-autocomplete`
@@ -38,41 +32,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   @demo demo/index.html
 -->
 
-<dom-module id="paper-autocomplete-item">
-  <style>
-    :host {
-
-    }
-  </style>
-
+<dom-module id="paper-autocomplete-custom">
   <template>
-    <paper-item on-click="_onSelect">
-
-      <div>[[item.text]]</div>
-      <paper-ripple></paper-ripple>
-    </paper-item>
+    <paper-autocomplete label="Select State" id="input-local" no-label-float="true" source="[[source]]">
+      <template custom-item>
+        <paper-item>
+          <div>This is a result: <b>[[item.text]]</b></div>
+        </paper-item>
+      </template>
+    </paper-autocomplete>
   </template>
 </dom-module>
 
 <script>
   Polymer({
-    is: 'paper-autocomplete-item',
+    is: 'paper-autocomplete-custom',
     properties: {
-      item: {
-        type: Object,
-        value: {
-          text: 'text',
-          value: 'value'
-        }
-      }
+      source: Array
     },
 
-    attached: function () {
-      console.log(this);
+    ready: function () {
+      this.$$('paper-autocomplete').query = this._ourQuery;
     },
 
-    _onSelect: function(evebt) {
-      console.log(event);
+    _ourQuery: function (source, value) {
+      return source.filter(function (item) {
+        return item.text.indexOf(value) !== -1;
+      });
     }
   });
 </script>
