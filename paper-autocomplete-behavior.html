@@ -359,7 +359,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
             if (objText.toLowerCase().indexOf(value) === 0) {
               // Adds the item to the suggestions list.
-              this.push('_suggestions', {text: objText, value: objValue});
+              this.push('_suggestions', {text: objText, value: objValue, item: item});
             }
           }
 

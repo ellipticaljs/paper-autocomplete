@@ -16,6 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-material/paper-material.html">
 <link rel="import" href="./paper-autocomplete-behavior.html">
+<link rel="import" href="./paper-autocomplete-item.html">
 
 <!--
   `paper-autocomplete`
@@ -126,10 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
     <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
       <template is="dom-repeat" items="{{_suggestions}}">
-        <paper-item on-click="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>{{_getItemText(item)}}</div>
-          <paper-ripple></paper-ripple>
-        </paper-item>
+        <paper-autocomplete-item item="[[item]]" index="[[index]]"></paper-autocomplete-item>
       </template>
     </paper-material>
   </template>

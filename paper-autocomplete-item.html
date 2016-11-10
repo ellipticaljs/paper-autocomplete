@@ -47,7 +47,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <paper-item on-click="_onSelect">
-      <div>{{item.text}}</div>
+
+      <div>[[item.text]]</div>
       <paper-ripple></paper-ripple>
     </paper-item>
   </template>
@@ -57,7 +58,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   Polymer({
     is: 'paper-autocomplete-item',
     properties: {
+      item: {
+        type: Object
+      }
+    },
 
+    _onSelect: function(evebt) {
+      console.log(event);
     }
   });
 </script>
