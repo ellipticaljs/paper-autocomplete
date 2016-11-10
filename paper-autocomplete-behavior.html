@@ -60,6 +60,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /**
+       * `alwaysFloatLabel` Set to true to always float label
+       */
+      alwaysFloatLabel: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
        * `required` Set to true to mark the input as required.
        */
       required: {
@@ -191,6 +199,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _text: {
         value: undefined
+      },
+
+      /**
+       * This value is used as a base to generate unique individual ids that need to be added to each suggestion for
+       * accessibility reasons.
+       */
+      _idItemSeed: {
+        type: String,
+        value: 'aria-' + new Date().getTime() + '-' + (Math.floor(Math.random() * 1000)),
+        readOnly: true
+      },
+
+      /**
+       * Id of the DOM element currently highlighted
+       */
+      _idElementHighlighted: {
+        type: String,
+        value: ''
+      },
+
+      /**
+       * Text value of the current highlighted value to be announce to the screen reader
+       */
+      _textOfHighlightedElement: {
+        type: String
+      },
+
+      /**
+       * `true` if the suggestions list is opened, `false otherwise`
+       */
+      _isSuggestionsOpened: {
+        type: Boolean,
+        value: false
       }
     },
     // Element Lifecycle
@@ -235,10 +276,30 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     /**
+     * Get the text property from the suggestion
+     * @param {Object} suggestion The suggestion item
+     * @return {String}
+     */
+    _getItemText: function (suggestion) {
+      return suggestion[this.textProperty];
+    },
+
+    /**
+     * Show the suggestions wrapper
+     */
+    _showSuggestionsWrapper: function () {
+      this.$.suggestionsWrapper.style.display = 'block';
+      this._isSuggestionsOpened = true;
+    },
+
+    /**
      * Hide the suggestions wrapper
      */
     _hideSuggestionsWrapper: function () {
       this.$.suggestionsWrapper.style.display = 'none';
+      this._isSuggestionsOpened = false;
+      this._idElementHighlighted = '';
+      this._textOfHighlightedElement = '';
     },
 
     _handleSuggestions: function (event) {
@@ -266,7 +327,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._currentIndex = -1;
         this._scrollIndex = 0;
         if (!this.disableShowClear) this.$.clear.style.display = 'block';
-        this.$.suggestionsWrapper.style.display = 'block';
+        this._showSuggestionsWrapper();
       } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
@@ -302,9 +363,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           }
 
-          if (this._suggestions.length > 0) this.$.suggestionsWrapper.style.display = 'block';
-          else this._hideSuggestionsWrapper();
-
+          if (this._suggestions.length > 0) {
+            this._showSuggestionsWrapper();
+          } else {
+            this._hideSuggestionsWrapper();
+          }
         }
       } else {
         this.$.clear.style.display = 'none';
@@ -315,8 +378,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _selection: function (index) {
       var selectedOption = this._suggestions[index];
       var self = this;
-      this.text = selectedOption.text;
-      this.value = selectedOption.value;
+      this.text = selectedOption[this.textProperty];
+      this.value = selectedOption[this.valueProperty];
       this._value = this.value;
       this._text = this.text;
       this.$.clear.style.display = 'none';
@@ -347,6 +410,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _removeActive: function (items) {
       for (var i = 0; i < items.length; i++) {
         items[i].classList.remove('active');
+        items[i].setAttribute('aria-selected', "false");
       }
     },
 
@@ -358,6 +422,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._removeActive(items);
         this._currentIndex++;
         items[this._currentIndex].classList.add('active');
+        items[this._currentIndex].setAttribute('aria-selected', "true");
+        this._idElementHighlighted = items[this._currentIndex].id;
+        this._textOfHighlightedElement = this._suggestions[this._currentIndex].text;
         this._scrollDown();
       }
     },
@@ -368,6 +435,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._removeActive(items);
         this._currentIndex--;
         items[this._currentIndex].classList.add('active');
+        items[this._currentIndex].setAttribute('aria-selected', "true");
+        this._idElementHighlighted = items[this._currentIndex].id;
+        this._textOfHighlightedElement = this._suggestions[this._currentIndex].text;
         this._scrollUp();
       }
     },
@@ -401,7 +471,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _fireEvent: function (option, evt) {
       var id = this._getId();
       var event = 'autocomplete' + this.eventNamespace + evt;
-      this.fire(event, {id: id, value: option.value, text: option.text, target: this, option: option});
+
+      this.fire(event, {
+        id: id,
+        value: option[this.valueProperty] || option.value,
+        text: option[this.textProperty] || option.text,
+        target: this,
+        option: option
+      });
     },
 
     _onKeypress: function (event) {
@@ -530,6 +607,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         self.$.clear.style.display = 'none';
         self._hideSuggestionsWrapper();
       }, 300);
+    },
+
+    /**
+     * Generate a suggestion id for a certain index
+     * @param {number} index Position of the element in the suggestions list
+     * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
+     * @private
+     */
+    _getSuggestionId: function (index) {
+      return this._idItemSeed + '-' + index;
     }
 
     /**
