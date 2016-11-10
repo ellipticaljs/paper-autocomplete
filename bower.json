@@ -1,10 +1,11 @@
 {
   "name": "paper-autocomplete",
-  "version": "1.2.0",
+  "version": "1.4.1",
   "authors": [
     "S. Francis",
     "Rodolfo Oviedo <rodo1111@gmail.com>",
-    "Alfonso Aguilar <laltfuns@gmail.com>"
+    "Alfonso Aguilar <laltfuns@gmail.com>",
+    "Jaime Vega <jhuesos@gmail.com>"
   ],
   "description": "Paper autocomplete element.",
   "keywords": [
@@ -17,8 +18,7 @@
   "homepage": "https://github.com/ellipticaljs/paper-autocomplete/",
   "ignore": [
     "/.*",
-    "/test/",
-    "/demo/"
+    "/test/"
   ],
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0",

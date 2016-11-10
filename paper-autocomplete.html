@@ -88,13 +88,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <template>
     <div class="input-wrapper">
-      <paper-input id="input" label="[[label]]" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"  no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}"></paper-input>
+      <paper-input id="input" label="[[label]]" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"  no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}"  always-float-label="[[alwaysFloatLabel]]" char-counter$="[[charCounter]]" maxlength$="[[maxlength]]"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper">
       <template is="dom-repeat" items="{{_suggestions}}">
         <paper-item on-click="_onSelect">
-          <div>{{item.text}}</div>
+          <div>{{getItemText(item)}}</div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
@@ -130,6 +130,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `noLabelFloat` Set to true to disable the floating label.
        */
       noLabelFloat:{
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * `alwaysFloatLabel` Set to true to always float label
+       */
+      alwaysFloatLabel: {
         type: Boolean,
         value: false
       },
@@ -230,6 +238,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       allowedPattern:String,
 
       /**
+       * Set to `true` to show a character counter.
+       */
+      charCounter: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * The maximum length of the input value.
+       */
+      maxlength: {
+        type: Number
+      },
+
+      /**
        * `_suggestions` Array with the actual suggestions to display
        */
       _suggestions: Array,
@@ -293,6 +316,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       };
       this._fireEvent(option,'reset');
     },
+
+	/**
+	 * Get the text property from the suggestion
+	 * @param {Object} suggestion The suggestion item
+	 * @return {String}
+	 */
+	getItemText: function(suggestion) {
+		return suggestion[this.textProperty];
+	},
 
     /**
      * Hide the suggestions wrapper
@@ -375,8 +407,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _selection : function(index) {
       var selectedOption = this._suggestions[index];
       var self = this;
-      this.text = selectedOption.text;
-      this.value = selectedOption.value;
+      this.text = selectedOption[this.textProperty];
+      this.value = selectedOption[this.valueProperty];
       this._value=this.value;
       this._text=this.text;
       this.$.clear.style.display = 'none';
@@ -461,7 +493,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _fireEvent: function (option, evt) {
       var id=this._getId();
       var event='autocomplete' + this.eventNamespace + evt;
-      this.fire(event,{id:id,value:option.value,text:option.text,target:this,option:option});
+
+      this.fire(event, {
+        id: id,
+        value: option[this.valueProperty] || option.value,
+        text: option[this.textProperty] || option.text,
+        target: this,
+        option: option
+      });
     },
 
     _onKeypress:function(event){
