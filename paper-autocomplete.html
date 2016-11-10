@@ -84,17 +84,49 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       --paper-input-container-focus-color: #2196f3;
       --paper-item-min-height: 36px;
     }
+
+    .sr-only {
+      position: absolute;
+      clip: rect(1px, 1px, 1px, 1px);
+    }
   </style>
 
   <template>
-    <div class="input-wrapper">
-      <paper-input id="input" label="[[label]]" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"  no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress" disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]" value="{{text}}"  always-float-label="[[alwaysFloatLabel]]" char-counter$="[[charCounter]]" maxlength$="[[maxlength]]"></paper-input>
+    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper autocompleteStatus"
+         aria-expanded$="[[_isSuggestionsOpened]]">
+
+      <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
+      <label for="input" class="sr-only">[[label]]</label>
+
+      <paper-input id="input"
+                   label="[[label]]"
+                   no-label-float="[[noLabelFloat]]"
+                   on-keyup="_onKeypress"
+                   disabled="{{disabled}}"
+                   auto-validate$="[[autoValidate]]"
+                   error-message$="[[errorMessage]]"
+                   required$="[[required]]"
+                   value="{{text}}"
+                   allowed-pattern="[[allowedPattern]]"
+                   pattern="[[pattern]]"
+                   no-label-float="[[noLabelFloat]]"
+                   auto-validate$="[[autoValidate]]"
+                   always-float-label="[[alwaysFloatLabel]]"
+                   char-counter$="[[charCounter]]"
+                   maxlength$="[[maxlength]]"
+
+                   role="textbox" aria-autocomplete="list"
+                   aria-multiline="false" aria-activedescendant$="[[_idElementHighlighted]]"
+                   aria-disabled$="[[disabled]]" aria-controls="autocompleteStatus suggestionsWrapper"></paper-input>
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+
+      <!-- to announce current selection to screen reader -->
+      <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
     </div>
-    <paper-material elevation="1" id="suggestionsWrapper">
+    <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
       <template is="dom-repeat" items="{{_suggestions}}">
-        <paper-item on-click="_onSelect">
-          <div>{{getItemText(item)}}</div>
+        <paper-item on-click="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+          <div>{{_getItemText(item)}}</div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
@@ -274,6 +306,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
       _text:{
         value:undefined
+      },
+
+      /**
+       * This value is used as a base to generate unique individual ids that need to be added to each suggestion for
+       * accessibility reasons.
+       */
+      _idItemSeed: {
+        type: String,
+        value: 'aria-' + new Date().getTime() + '-' + (Math.floor(Math.random() * 1000)),
+        readOnly: true
+      },
+
+      /**
+       * Id of the DOM element currently highlighted
+       */
+      _idElementHighlighted: {
+        type: String,
+        value: ''
+      },
+
+      /**
+       * Text value of the current highlighted value to be announce to the screen reader
+       */
+      _textOfHighlightedElement: {
+        type: String
+      },
+
+      /**
+       * `true` if the suggestions list is opened, `false otherwise`
+       */
+      _isSuggestionsOpened: {
+        type: Boolean,
+        value: false
       }
     },
     // Element Lifecycle
@@ -317,20 +382,31 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this._fireEvent(option,'reset');
     },
 
-	/**
-	 * Get the text property from the suggestion
-	 * @param {Object} suggestion The suggestion item
-	 * @return {String}
-	 */
-	getItemText: function(suggestion) {
-		return suggestion[this.textProperty];
-	},
+    /**
+     * Get the text property from the suggestion
+     * @param {Object} suggestion The suggestion item
+     * @return {String}
+     */
+    _getItemText: function(suggestion) {
+      return suggestion[this.textProperty];
+    },
+
+    /**
+     * Show the suggestions wrapper
+     */
+    _showSuggestionsWrapper: function() {
+      this.$.suggestionsWrapper.style.display = 'block';
+      this._isSuggestionsOpened = true;
+    },
 
     /**
      * Hide the suggestions wrapper
      */
     _hideSuggestionsWrapper: function() {
       this.$.suggestionsWrapper.style.display = 'none';
+      this._isSuggestionsOpened = false;
+      this._idElementHighlighted = '';
+      this._textOfHighlightedElement = '';
     },
 
     _handleSuggestions:function(event){
@@ -358,7 +434,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._currentIndex = -1;
         this._scrollIndex = 0;
         if(!this.disableShowClear) this.$.clear.style.display = 'block';
-        this.$.suggestionsWrapper.style.display = 'block';
+        this._showSuggestionsWrapper();
       } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
@@ -394,9 +470,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           }
 
-          if (this._suggestions.length > 0) this.$.suggestionsWrapper.style.display = 'block';
-          else this._hideSuggestionsWrapper();
-
+          if (this._suggestions.length > 0) {
+            this._showSuggestionsWrapper();
+          }else{
+            this._hideSuggestionsWrapper();
+          }
         }
       }else{
         this.$.clear.style.display = 'none';
@@ -439,6 +517,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _removeActive:function(items){
       for(var i=0;i<items.length;i++){
         items[i].classList.remove('active');
+        items[i].setAttribute('aria-selected', "false");
       }
     },
 
@@ -450,6 +529,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._removeActive(items);
         this._currentIndex++;
         items[this._currentIndex].classList.add('active');
+        items[this._currentIndex].setAttribute('aria-selected', "true");
+        this._idElementHighlighted = items[this._currentIndex].id;
+        this._textOfHighlightedElement = this._suggestions[this._currentIndex].text;
         this._scrollDown();
       }
     },
@@ -460,6 +542,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._removeActive(items);
         this._currentIndex--;
         items[this._currentIndex].classList.add('active');
+        items[this._currentIndex].setAttribute('aria-selected', "true");
+        this._idElementHighlighted = items[this._currentIndex].id;
+        this._textOfHighlightedElement = this._suggestions[this._currentIndex].text;
         this._scrollUp();
       }
     },
@@ -629,6 +714,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         self.$.clear.style.display = 'none';
         self._hideSuggestionsWrapper();
       }, 300);
+    },
+
+    /**
+     * Generate a suggestion id for a certain index
+     * @param {number} index Position of the element in the suggestions list
+     * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
+     * @private
+     */
+    _getSuggestionId: function (index) {
+      return this._idItemSeed + '-' + index;
     }
 
     /**
