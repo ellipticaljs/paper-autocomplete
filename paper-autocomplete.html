@@ -132,8 +132,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <script>
   Polymer({
     is: 'paper-autocomplete',
-    behaviors: [Polymer.Templatizer],
-
     properties: {
       /**
        * `autoValidate` Set to true to auto-validate the input value.
@@ -171,7 +169,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: false
       },
 
-      /**
+       /**
        * `required` Set to true to mark the input as required.
        */
       required: {
@@ -256,9 +254,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value:false
       },
 
-      /**
-       * `pattern` Pattern to validate input field
-       */
+     /**
+      * `pattern` Pattern to validate input field
+      */
       pattern:String,
 
       /**
