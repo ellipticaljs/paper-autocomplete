@@ -59,8 +59,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'paper-autocomplete-item',
     properties: {
       item: {
-        type: Object
+        type: Object,
+        value: {
+          text: 'text',
+          value: 'value'
+        }
       }
+    },
+
+    attached: function () {
+      console.log(this);
     },
 
     _onSelect: function(evebt) {

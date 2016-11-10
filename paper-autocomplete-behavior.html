@@ -363,6 +363,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
           }
 
+          debugger;
+          var itemsTpl = this._suggestions.forEach(function (result) {
+            // clone the template and bind with the model
+            var clone = this.stamp({item: result});
+//            clone.item = result;
+
+            Polymer.dom(this.$.repeater).appendChild(clone.root);
+          }.bind(this));
+
+          // append clone.root to DOM instead
+
+
           if (this._suggestions.length > 0) {
             this._showSuggestionsWrapper();
           } else {

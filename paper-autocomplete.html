@@ -50,38 +50,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     .input-wrapper {
       @apply(--layout-horizontal);
     }
+
     .input-wrapper paper-input {
       @apply(--layout-flex);
     }
+
     #suggestionsWrapper {
       display: none;
       background-color: white;
-      max-height:252px;
-      overflow-y:scroll;
+      max-height: 252px;
+      overflow-y: scroll;
       width: 100%;
       position: absolute;
       z-index: 1000;
     }
+
     :host[suggestions-in-overlay="true"] #suggestionsWrapper {
     }
+
     paper-item {
       position: relative;
-      line-height:18px;
-    }
-    paper-item:hover{
-      background:#eee;
-      color:#333;
-      cursor:pointer;
+      line-height: 18px;
     }
 
-    paper-item.active{
-      background:#eee;
-      color:#333;
+    paper-item:hover {
+      background: #eee;
+      color: #333;
+      cursor: pointer;
     }
-    #clear{
+
+    paper-item.active {
+      background: #eee;
+      color: #333;
+    }
+
+    #clear {
       display: none;
-      margin-top:auto;
+      margin-top: auto;
     }
+
     :host {
       --paper-input-container-focus-color: #2196f3;
       --paper-item-min-height: 36px;
@@ -126,9 +133,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
-      <template is="dom-repeat" items="{{_suggestions}}">
-        <paper-autocomplete-item item="[[item]]" index="[[index]]"></paper-autocomplete-item>
-      </template>
+        <div id="repeater"></div>
+        <content id="templates" select="[custom-item]"></content>
     </paper-material>
   </template>
 </dom-module>
@@ -136,6 +142,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <script>
   Polymer({
     is: 'paper-autocomplete',
-    behaviors: [Polymer.PaperAutocompleteBehavior]
+    behaviors: [Polymer.PaperAutocompleteBehavior, Polymer.Templatizer],
+
+    ready: function () {
+      var template = Polymer.dom(this.$.templates).getDistributedNodes()[0];
+
+      // templatize must be called once before stamp is called
+      this.templatize(template);
+
+    }
   });
 </script>
