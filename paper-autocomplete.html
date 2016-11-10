@@ -98,9 +98,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
       <label for="input" class="sr-only">[[label]]</label>
 
-      <paper-input id="input" label="[[label]]" no-label-float="[[noLabelFloat]]" on-keyup="_onKeypress"
-                   disabled="{{disabled}}" auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]"
-                   required$="[[required]]" value="{{text}}" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"
+      <paper-input id="input"
+                   label="[[label]]"
+                   no-label-float="[[noLabelFloat]]"
+                   on-keyup="_onKeypress"
+                   disabled="{{disabled}}"
+                   auto-validate$="[[autoValidate]]"
+                   error-message$="[[errorMessage]]"
+                   required$="[[required]]"
+                   value="{{text}}"
+                   allowed-pattern="[[allowedPattern]]"
+                   pattern="[[pattern]]"
+                   no-label-float="[[noLabelFloat]]"
+                   auto-validate$="[[autoValidate]]"
+                   always-float-label="[[alwaysFloatLabel]]"
+                   char-counter$="[[charCounter]]"
+                   maxlength$="[[maxlength]]"
 
                    role="textbox" aria-autocomplete="list"
                    aria-multiline="false" aria-activedescendant$="[[_idElementHighlighted]]"
@@ -113,7 +126,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
       <template is="dom-repeat" items="{{_suggestions}}">
         <paper-item on-click="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>{{item.text}}</div>
+          <div>{{getItemText(item)}}</div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
@@ -149,6 +162,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * `noLabelFloat` Set to true to disable the floating label.
        */
       noLabelFloat:{
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * `alwaysFloatLabel` Set to true to always float label
+       */
+      alwaysFloatLabel: {
         type: Boolean,
         value: false
       },
@@ -247,6 +268,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * allowedPattern` allowedPattern to validate input field
        */
       allowedPattern:String,
+
+      /**
+       * Set to `true` to show a character counter.
+       */
+      charCounter: {
+        type: Boolean,
+        value: false
+      },
+
+      /**
+       * The maximum length of the input value.
+       */
+      maxlength: {
+        type: Number
+      },
 
       /**
        * `_suggestions` Array with the actual suggestions to display
@@ -349,14 +385,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     /**
      * Hide the suggestions wrapper
      */
-    _showSuggestionsWrapper: function() {
-      this.$.suggestionsWrapper.style.display = 'block';
-      this._isSuggestionsOpened = true;
-    },
-
-    /**
-     * Hide the suggestions wrapper
-     */
     _hideSuggestionsWrapper: function() {
       this.$.suggestionsWrapper.style.display = 'none';
       this._isSuggestionsOpened = false;
@@ -440,8 +468,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _selection : function(index) {
       var selectedOption = this._suggestions[index];
       var self = this;
-      this.text = selectedOption.text;
-      this.value = selectedOption.value;
+      this.text = selectedOption[this.textProperty];
+      this.value = selectedOption[this.valueProperty];
       this._value=this.value;
       this._text=this.text;
       this.$.clear.style.display = 'none';
@@ -533,7 +561,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _fireEvent: function (option, evt) {
       var id=this._getId();
       var event='autocomplete' + this.eventNamespace + evt;
-      this.fire(event,{id:id,value:option.value,text:option.text,target:this,option:option});
+
+      this.fire(event, {
+        id: id,
+        value: option[this.valueProperty] || option.value,
+        text: option[this.textProperty] || option.text,
+        target: this,
+        option: option
+      });
     },
 
     _onKeypress:function(event){
