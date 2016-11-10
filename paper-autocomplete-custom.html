@@ -1,0 +1,40 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="./paper-autocomplete.html">
+<link rel="import" href="../paper-item/paper-item.html">
+
+<!--
+  `paper-autocomplete-custom`
+
+  Example of how to use autocomplete with custom template
+-->
+
+<dom-module id="paper-autocomplete-custom">
+  <template>
+    <paper-autocomplete label="Select State" id="input-local" no-label-float="true" source="[[source]]">
+      <template custom-item>
+        <paper-item>
+          <div>This is a result: <b>[[item.text]]</b></div>
+        </paper-item>
+      </template>
+    </paper-autocomplete>
+  </template>
+</dom-module>
+
+<script>
+  Polymer({
+    is: 'paper-autocomplete-custom',
+    properties: {
+      source: Array
+    },
+
+    ready: function () {
+      this.$$('paper-autocomplete').query = this._ourQuery;
+    },
+
+    _ourQuery: function (source, value) {
+      return source.filter(function (item) {
+        return item.text.indexOf(value) !== -1;
+      });
+    }
+  });
+</script>

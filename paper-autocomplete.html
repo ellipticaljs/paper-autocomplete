@@ -12,7 +12,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-material/paper-material.html">
 
@@ -124,12 +123,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
     </div>
     <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
-      <template is="dom-repeat" items="{{_suggestions}}">
-        <paper-item on-click="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>{{_getItemText(item)}}</div>
-          <paper-ripple></paper-ripple>
-        </paper-item>
-      </template>
+        <div id="repeater"></div>
+        <content id="templates" select="[custom-item]"></content>
     </paper-material>
   </template>
 </dom-module>
@@ -137,6 +132,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <script>
   Polymer({
     is: 'paper-autocomplete',
+
+    behaviors: [
+      Polymer.Templatizer
+    ],
+
     properties: {
       /**
        * `autoValidate` Set to true to auto-validate the input value.
@@ -342,8 +342,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     },
     // Element Lifecycle
-    ready: function() {
-      this._value=this.value;
+    ready: function () {
+      var template = Polymer.dom(this.$.templates).getDistributedNodes()[0];
+
+      // templatize must be called once before stamp is called
+      this.templatize(template);
     },
 
     attached: function() {
@@ -451,35 +454,48 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Shows the clear button.
         if(!this.disableShowClear) this.$.clear.style.display = 'block';
         // Search for the word in the source properties.
-        if(this.source && this.source.length > 0){
-          this._suggestions = [];
-          var length = this.source.length;
-          var objText,objValue;
-          for(var i = 0; i < length; i++){
-            var item = this.source[i];
-            if(typeof item==='object'){
-              objText=item[this.textProperty];
-              objValue=item[this.valueProperty]
-            }else{
-              objText=item.toString();
-              objValue=objText;
-            }
-            if(objText.toLowerCase().indexOf(value)===0){
-              // Adds the item to the suggestions list.
-              this.push('_suggestions', {text : objText , value : objValue});
-            }
-          }
+        if (this.source && this.source.length > 0) {
+          this._suggestions = this.query(this.source, value);
+
+          Polymer.dom(this.$.repeater).innerHTML = '';
+            this._suggestions.forEach(function (result) {
+            // clone the template and bind with the model
+            var clone = this.stamp({item: result});
+            Polymer.dom(this.$.repeater).appendChild(clone.root);
+          }.bind(this));
 
           if (this._suggestions.length > 0) {
             this._showSuggestionsWrapper();
-          }else{
+          } else {
             this._hideSuggestionsWrapper();
           }
         }
-      }else{
+      } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
       }
+    },
+
+    query: function (source, value) {
+      var suggestions = [];
+      var length = source.length;
+      var objText, objValue;
+      for (var i = 0; i < length; i++) {
+        var item = source[i];
+        if (typeof item === 'object') {
+          objText = item[this.textProperty];
+          objValue = item[this.valueProperty]
+        } else {
+          objText = item.toString();
+          objValue = objText;
+        }
+        if (objText.toLowerCase().indexOf(value) === 0) {
+          // Adds the item to the suggestions list.
+          suggestions.push({text: objText, value: objValue, item: item});
+        }
+      }
+
+      return suggestions;
     },
 
     _selection : function(index) {
