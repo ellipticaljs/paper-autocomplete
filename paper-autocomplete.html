@@ -357,7 +357,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: false
       }
     },
+
     // Element Lifecycle
+
     ready: function () {
       this._value = this.value;
     },
@@ -475,6 +477,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               objText = item.toString();
               objValue = objText;
             }
+
             if (objText.toLowerCase().indexOf(value) === 0) {
               // Adds the item to the suggestions list.
               this.push('_suggestions', {text: objText, value: objValue});
@@ -643,7 +646,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this._fireEvent(option, 'focus');
     },
 
-    /* public */
+    /**
+     * Generate a suggestion id for a certain index
+     * @param {number} index Position of the element in the suggestions list
+     * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
+     * @private
+     */
+    _getSuggestionId: function (index) {
+      return this._idItemSeed + '-' + index;
+    },
+
+    /****************************
+     * PUBLIC
+     ****************************/
+
     /**
      * Gets the current value of the input
      * @returns {String}
@@ -730,16 +746,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         self.$.clear.style.display = 'none';
         self._hideSuggestionsWrapper();
       }, 300);
-    },
-
-    /**
-     * Generate a suggestion id for a certain index
-     * @param {number} index Position of the element in the suggestions list
-     * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
-     * @private
-     */
-    _getSuggestionId: function (index) {
-      return this._idItemSeed + '-' + index;
     }
 
     /**
