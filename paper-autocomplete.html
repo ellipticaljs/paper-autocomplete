@@ -24,6 +24,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   paper-autocomplete extends earlier efforts such as this (https://github.com/rodo1111/paper-input-autocomplete)
   to provide keyboard support, remote binding and results scrolling.
 
+  ### Custom search
+  This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
+  all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
+  component search for items that start with the recent query (case insensitive).
+  You can override this behavior providing your own query function, as long as these two requirements are fulfill:
+  - The query function is synchronous.
+  - The API is respected and the method always return an Array.
+
   ### Styling
 
   `<paper-autocomplete>` provides the following custom properties and mixins
@@ -461,28 +469,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       var minLength = this.minLength;
       if (value && value.length >= minLength) {
         value = value.toLowerCase();
+
         // Shows the clear button.
         if (!this.disableShowClear) this.$.clear.style.display = 'block';
+
         // Search for the word in the source properties.
         if (this.source && this.source.length > 0) {
-          this._suggestions = [];
-          var length = this.source.length;
-          var objText, objValue;
-          for (var i = 0; i < length; i++) {
-            var item = this.source[i];
-            if (typeof item === 'object') {
-              objText = item[this.textProperty];
-              objValue = item[this.valueProperty]
-            } else {
-              objText = item.toString();
-              objValue = objText;
-            }
-
-            if (objText.toLowerCase().indexOf(value) === 0) {
-              // Adds the item to the suggestions list.
-              this.push('_suggestions', {text: objText, value: objValue});
-            }
-          }
+          // Call queryFn. User can override queryFn() to provide custom search functionality
+          this._suggestions = this.queryFn(this.source, value);
 
           if (this._suggestions.length > 0) {
             this._showSuggestionsWrapper();
@@ -746,6 +740,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         self.$.clear.style.display = 'none';
         self._hideSuggestionsWrapper();
       }, 300);
+    },
+
+    /**
+     * Query function is called on each keystroke to query the data source and returns the suggestions that matches
+     * with the filtering logic included.
+     * @param {Array} datasource An array containing all items before filtering
+     * @param {string} query Current value in the input field
+     * @returns {Array} an array containing only those items in the data source that matches the filtering logic.
+     */
+    queryFn: function (datasource, query) {
+      var queryResult = [];
+
+      datasource.forEach(function (item) {
+        var objText, objValue;
+
+        if (typeof item === 'object') {
+          objText = item[this.textProperty];
+          objValue = item[this.valueProperty]
+        } else {
+          objText = item.toString();
+          objValue = objText;
+        }
+
+        if (objText.toLowerCase().indexOf(query) === 0) {
+          // Adds the item to the suggestions list.
+          queryResult.push({text: objText, value: objValue});
+        }
+      }.bind(this));
+
+      return queryResult;
     }
 
     /**
