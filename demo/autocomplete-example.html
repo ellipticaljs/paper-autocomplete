@@ -90,6 +90,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: "autocomplete-example",
     ready: function () {
       Polymer.dom(this).querySelector('paper-autocomplete').source = states;
+
+      this.querySelector('paper-autocomplete').addEventListener('autocomplete-selected', this.onSelect);
+    },
+
+    onSelect: function () {
+      var paperToast = document.querySelector('paper-toast');
+      var selected = event.detail.text;
+      paperToast.text = 'Selected: ' + selected;
+      paperToast.show();
     }
   });
 </script>
