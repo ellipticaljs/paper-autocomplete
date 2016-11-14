@@ -31,6 +31,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   You can override this behavior providing your own query function, as long as these two requirements are fulfill:
   - The query function is synchronous.
   - The API is respected and the method always return an Array.
+  The template use to render each suggestion depends on the structure of each object that this method returns. For the
+  default template, each suggestion should follow this object structure:
+  ```
+    {
+      text: objText,
+      value: objValue
+    }
+  ```
 
   ### Styling
 
@@ -51,6 +59,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       display: block;
       box-sizing: border-box;
       position: relative;
+
+      --paper-input-container-focus-color: #2196f3;
+      --paper-item-min-height: 36px;
     }
 
     .input-wrapper {
@@ -74,18 +85,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host[suggestions-in-overlay="true"] #suggestionsWrapper {
     }
 
-    paper-item {
+    :host ::content paper-item {
       position: relative;
       line-height: 18px;
     }
 
-    paper-item:hover {
+    :host ::content paper-item:hover {
       background: #eee;
       color: #333;
       cursor: pointer;
     }
 
-    paper-item.active {
+    :host ::content paper-item.active {
       background: #eee;
       color: #333;
     }
@@ -93,11 +104,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     #clear {
       display: none;
       margin-top: auto;
-    }
-
-    :host {
-      --paper-input-container-focus-color: #2196f3;
-      --paper-item-min-height: 36px;
     }
 
     .sr-only {
@@ -141,20 +147,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- to announce current selection to screen reader -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
     </div>
+
     <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
-      <template is="dom-repeat" items="{{_suggestions}}">
-        <paper-item on-click="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>{{_getItemText(item)}}</div>
+      <!-- suggestions will be render here -->
+    </paper-material>
+
+    <!-- Default suggestion template -->
+    <template id="defaultTemplate">
+      <div on-tap="_onSelect">
+        <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+          <div>[[_getItemText(item)]]</div>
           <paper-ripple></paper-ripple>
         </paper-item>
-      </template>
-    </paper-material>
+      </div>
+    </template>
+
+    <!-- Custom template -->
+    <content id="templates" select="template"></content>
   </template>
 </dom-module>
 
 <script>
   Polymer({
     is: 'paper-autocomplete',
+
+    behaviors: [
+      Polymer.Templatizer
+    ],
+
     properties: {
       /**
        * `autoValidate` Set to true to auto-validate the input value.
@@ -303,6 +323,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /**
+       * Reference to the current suggestion template
+       */
+      _suggestionTemplate: {
+        type: Object,
+        value: function () {
+          var customTemplate = this.getEffectiveChildren();
+
+          return customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
+        }
+      },
+
+      /**
        * `_suggestions` Array with the actual suggestions to display
        */
       _suggestions: Array,
@@ -370,6 +402,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     ready: function () {
       this._value = this.value;
+
+      // This is important to be able to access component methods inside the templates used with Templatizer
+      this.dataHost = this;
+
+      // templatize must be called once before stamp is called
+      this.templatize(this._suggestionTemplate);
     },
 
     listeners: {
@@ -435,14 +473,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _remoteSuggestions: function (event) {
       var value = event.target.value;
-      var minLength = this.minLength;
       var option = {
         text: this.text,
         value: value
       };
 
-      if (value && value.length >= minLength) {
+      if (value && value.length >= this.minLength) {
         this._fireEvent(option, 'change');
+        this._renderSuggestions(this._suggestions);
       } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
@@ -478,6 +516,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           // Call queryFn. User can override queryFn() to provide custom search functionality
           this._suggestions = this.queryFn(this.source, value);
 
+          this._renderSuggestions(this._suggestions);
+
           if (this._suggestions.length > 0) {
             this._showSuggestionsWrapper();
           } else {
@@ -488,6 +528,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.clear.style.display = 'none';
         this._suggestions = [];
       }
+    },
+
+    /**
+     * Render suggestions in the suggestionsWrapper container
+     * @param {Array} suggestions An array containing the suggestions to be rendered. This value is not optional, so
+     *    in case no suggestions need to be rendered, you should either not call this method or provide an empty array.
+     */
+    _renderSuggestions: function (suggestions) {
+      var suggestionsContainer = this.$.suggestionsWrapper;
+
+      suggestionsContainer.innerHTML = '';
+
+      suggestions.forEach(function (result, index) {
+        // clone the template and bind with the model
+        var clone = this.stamp({
+          item: result,
+          index: index
+        });
+
+        suggestionsContainer.appendChild(clone.root);
+      }.bind(this));
     },
 
     _selection: function (index) {
@@ -764,8 +825,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         if (objText.toLowerCase().indexOf(query) === 0) {
-          // Adds the item to the suggestions list.
-          queryResult.push({text: objText, value: objValue});
+          // NOTE: the structure of the result object matches with the current template. For custom templates, you
+          // might need to return more data
+          queryResult.push({
+            text: objText,
+            value: objValue
+          });
         }
       }.bind(this));
 
