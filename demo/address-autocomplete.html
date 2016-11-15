@@ -1,0 +1,130 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../paper-autocomplete.html">
+
+<!--
+  Example of usage of autocomplete with custom template
+-->
+
+<dom-module id="address-autocomplete">
+  <style>
+
+  </style>
+  <template>
+    <paper-autocomplete
+      label="Select Account"
+      id="input-local"
+      no-label-float="true"
+      source="[[accounts]]"
+      text-property="accountNumber"
+      value-property="id">
+      <template>
+        <div on-tap="_onSelect">
+          <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+            <div>
+              <div>[[item.companyName]]</div>
+              <div>[[item.accountNumber]]</div>
+            </div>
+            <paper-ripple></paper-ripple>
+          </paper-item>
+        </div>
+      </template>
+    </paper-autocomplete>
+  </template>
+</dom-module>
+
+<script>
+  var accounts = [
+      {"companyName":"Medhurst Group","accountNumber":"GE42 HE04 5984 5023 3261 28","id":"61aa0bb3-0ea9-45b2-a399-eb068fc535b6"},
+      {"companyName":"Zemlak and Sons","accountNumber":"GT30 MRUJ NOYD VD52 WFGW XTNB QCWF","id":"7fa52f45-c2f6-491d-ab60-810e61720253"},
+      {"companyName":"Emard, Heathcote and Rodriguez","accountNumber":"GE22 OS36 9571 4570 4313 69","id":"647636bb-ca39-491b-934a-971ae7ee799a"},
+      {"companyName":"Harvey, Koepp and Skiles","accountNumber":"MC38 8733 6302 15CO N5H3 WUOH 766","id":"ac34ddd2-a2a0-48e6-9459-852cb06397c0"},
+      {"companyName":"Moen-Padberg","accountNumber":"FR78 5375 0679 74B8 RNUM 9QQE S82","id":"4733f9d7-d723-4e6c-9920-6bbea01b4b10"},
+      {"companyName":"Bahringer, Purdy and Lueilwitz","accountNumber":"GB40 AVZH 6271 6084 0379 25","id":"209af640-61ce-4c38-98dd-22fb361352da"},
+      {"companyName":"Bartell, Roberts and Strosin","accountNumber":"IT93 X642 1322 956M J41J TUD1 AO3","id":"e916cfce-d0bc-4ba7-8d6e-882626a14b41"},
+      {"companyName":"Price Inc","accountNumber":"FR70 6740 9427 286D UHIY ANFN Z41","id":"42bff9fd-3571-4504-9046-ab8e32ab3618"},
+      {"companyName":"Kshlerin-Metz","accountNumber":"FR67 1447 0340 40OW DU8Q PVSZ Z74","id":"4f316079-e72d-40a0-b451-5def7ffa21b0"},
+      {"companyName":"King and Sons","accountNumber":"HR54 8640 1360 1935 8832 8","id":"7b121dbc-6845-49e9-8a79-5d0681b9d1e6"},
+      {"companyName":"Runolfsson-Runte","accountNumber":"CZ44 8154 0873 8066 3293 6557","id":"e2527ee0-9af2-4ac5-a36c-efd68bee40fe"},
+      {"companyName":"Morissette Inc","accountNumber":"FR31 4547 6013 95Z5 JYZF SI6W C58","id":"494c33f6-c0a5-42c7-a627-8bd585c953b5"},
+      {"companyName":"Klocko, Halvorson and Weber","accountNumber":"PT04 7967 3545 3660 3284 1138 4","id":"f48235d4-7321-4d3d-b2dd-fc7e52c4046f"},
+      {"companyName":"Renner Group","accountNumber":"FR38 9372 0492 44AI TOFP CQ7V R50","id":"3cca3a18-0560-416e-9ad6-2bd06bcc466f"},
+      {"companyName":"Reinger, Bode and Hahn","accountNumber":"FR55 8288 9216 96GB O2AO ERA6 U14","id":"e1c45dd1-1abc-4c98-9c95-e08af90b2704"},
+      {"companyName":"Marks, Zemlak and Denesik","accountNumber":"PL57 8564 3770 0917 6346 4898 8442","id":"9c182dd3-0c17-41d5-b6c8-c77a965ce408"},
+      {"companyName":"Johnston, Parker and Hickle","accountNumber":"SE17 8588 0484 5036 0373 6773","id":"edeb4333-824e-4b38-94f3-3ab88b2404c6"},
+      {"companyName":"Hackett, Pacocha and Tremblay","accountNumber":"VG57 IIXV 7638 1740 5291 5590","id":"e8766e34-7c2f-490a-b2e7-308e6615c937"},
+      {"companyName":"Hammes, Kirlin and Terry","accountNumber":"BA67 7688 6129 2639 2914","id":"a8e92c3a-5951-4625-a848-0a422c49c2ad"},
+      {"companyName":"Jacobson Inc","accountNumber":"AT44 2312 1717 5784 7855","id":"95193add-a046-4f1e-bdc0-9e56ec7ea5ac"},
+      {"companyName":"Bernhard, Crona and Breitenberg","accountNumber":"HR09 3821 2998 1029 7028 9","id":"be5d9c16-ab58-4f8d-8a07-c153c92020de"},
+      {"companyName":"Durgan, Frami and Kuhn","accountNumber":"RO32 HWNP P0P8 EA3I ERDS 23YT","id":"fc2a86b4-e646-49e1-97a6-a7ee22d5c893"},
+      {"companyName":"Stoltenberg-Osinski","accountNumber":"FR51 3687 4702 88EU XB9Q 4MXW I42","id":"fb4f5d48-caf3-4675-a439-9debbef5a061"},
+      {"companyName":"Ankunding, Smith and Leffler","accountNumber":"RS45 1641 5158 1113 2855 81","id":"07fb660c-951c-487a-be7c-38580670bf7b"},
+      {"companyName":"Harvey and Sons","accountNumber":"MU37 TTRE 3849 7030 1339 4306 951U DH","id":"0d921826-b907-41f6-80e6-60d6b027a14c"},
+      {"companyName":"Hilll-Johnston","accountNumber":"FR07 9006 8615 389Q DZAJ TGXA L62","id":"70d5d1ee-2cb7-465b-b5b8-f98227f8d1b9"},
+      {"companyName":"Adams, Shields and Feeney","accountNumber":"MC32 3779 9532 56JJ B7WN 4APV 419","id":"fb77a560-f003-49a2-9ae3-d3d4392a587b"},
+      {"companyName":"Macejkovic, Bergstrom and Kunze","accountNumber":"HR38 2529 9889 8253 8719 9","id":"8c120cca-f96e-4f04-bf2b-6ce504683f3c"},
+      {"companyName":"Runte-Spinka","accountNumber":"GR84 5639 771W QOXU FLDG YCUW 1O1","id":"b7c88870-505d-40dc-a3d4-c7e47161eead"},
+      {"companyName":"McCullough Group","accountNumber":"IS77 9923 0143 2412 1758 6750 94","id":"b50b3f2a-c0b2-41ba-b0a0-49991d556623"},
+      {"companyName":"Ruecker, Schultz and Moore","accountNumber":"FR27 9358 8283 81XE MQJ9 UD6Z B55","id":"a2fd8cad-8bc6-4bd0-9fda-7d18e9dae650"},
+      {"companyName":"Wiegand, Beahan and Kertzmann","accountNumber":"MR80 9172 8914 6084 0178 1466 996","id":"81177646-fe13-47ed-bd72-fdca582e53b3"},
+      {"companyName":"Stark, Deckow and Rempel","accountNumber":"GI61 TBYE E9KG TN8R W0QJ PQQ","id":"bede1e6d-8452-4d1e-96a7-f2a95932e7ac"},
+      {"companyName":"Stehr, Kozey and Johns","accountNumber":"AT91 1069 8191 5359 8661","id":"e7aab6d4-e3bd-4d11-8f5a-d342a894d29a"},
+      {"companyName":"Mills Inc","accountNumber":"FR23 5776 8889 37BX BS3A 1FNW T37","id":"d1410d2c-cd74-4fc1-9cc3-278d8419a2f2"},
+      {"companyName":"Crist, Skiles and Nienow","accountNumber":"BE87 0818 7391 1265","id":"2e6c0ebb-3a59-4d42-b6a5-bf846b81f3f5"},
+      {"companyName":"Blanda-Frami","accountNumber":"MR81 2219 7534 8435 3890 2163 556","id":"3142bdaf-be9c-4740-853b-42e9f3db768b"},
+      {"companyName":"Kihn-Reichel","accountNumber":"LI41 6772 90RL 2SR7 8ZY8 F","id":"e1f6081a-feb9-428f-8b50-c1099697b333"},
+      {"companyName":"Ondricka-Bayer","accountNumber":"FR51 3969 8994 40AJ P6DT UJAZ O92","id":"cb411aea-5591-4a65-8d76-682d38e0ee71"},
+      {"companyName":"Mayer-Herman","accountNumber":"FR92 0908 0633 17E5 MFWL VKU7 Z52","id":"95cee244-fdf0-42f2-86cf-b47428619007"},
+      {"companyName":"Haag, Olson and Jerde","accountNumber":"KW87 ANNS HQKN ILKA PW4G 0XME CU5T 7G","id":"56bedf72-9133-4a1e-b1b9-a4532c83cbf9"},
+      {"companyName":"Doyle LLC","accountNumber":"FR72 8979 8596 62WU G2GF JRJR C29","id":"84173887-ee15-4c6f-89ee-6ec7c9398089"},
+      {"companyName":"Macejkovic LLC","accountNumber":"GT69 YLRQ ARR5 F03Y NWRS OHHP UOLU","id":"11312e36-a468-460a-9b9d-ee4e4dc978b8"},
+      {"companyName":"Maggio, Torphy and Dooley","accountNumber":"DK39 2549 0183 9099 11","id":"ee42a061-4bb7-47f0-a044-a573478bef71"},
+      {"companyName":"Kling-Beatty","accountNumber":"AE80 4863 0876 8895 2715 261","id":"f12b209d-156e-47ee-9d3b-536fb919c9af"},
+      {"companyName":"Harris and Sons","accountNumber":"FR23 0641 2303 15U8 EWL2 LRDI X66","id":"c25d1d4b-3599-455f-b36a-0debd4524ff5"},
+      {"companyName":"Berge, Gibson and Hermann","accountNumber":"FR65 8329 8954 90MC 9FJE QLAF T88","id":"bc35dbaf-681f-42b0-81bc-d845ea064e10"},
+      {"companyName":"Hirthe, Borer and Parker","accountNumber":"NO46 5775 1320 183","id":"7180892d-2216-49bf-b504-2a7703309270"},
+      {"companyName":"Bode Group","accountNumber":"EE61 7633 0406 0044 2526","id":"376d0312-2e0c-415c-87d6-418e9bec9ca1"},
+      {"companyName":"Considine, Strosin and Heller","accountNumber":"PK85 MNMA NAZX PXHW O4JV P3JH","id":"d39f18b5-1a3f-4da0-8e56-03c5e092d6d1"}
+    ];
+
+  Polymer({
+    is: "address-autocomplete",
+
+    properties: {
+      accounts: {
+        type: Array,
+        value: accounts
+      }
+    },
+
+    ready: function () {
+      var autocomplete = this.querySelector('paper-autocomplete');
+      autocomplete.addEventListener('autocomplete-selected', this.onSelect);
+
+      autocomplete.queryFn = this._queryFn;
+    },
+
+    onSelect: function () {
+      var paperToast = document.querySelector('paper-toast');
+      var selected = event.detail.text;
+      paperToast.text = 'Selected: ' + selected;
+      paperToast.show();
+    },
+
+    _queryFn: function (datasource, query) {
+      return datasource.filter(function (item) {
+          return (
+            item.companyName.toLowerCase().indexOf(query) > 1 || item.accountNumber.toLowerCase().indexOf(query) > 1
+          );
+        });
+    }
+  });
+</script>

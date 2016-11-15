@@ -136,7 +136,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                    char-counter$="[[charCounter]]"
                    maxlength$="[[maxlength]]"
 
-                   role="textbox" aria-autocomplete="list"
+                   role="textbox"
+                   aria-autocomplete="list"
                    aria-multiline="false"
                    aria-activedescendant$="[[_idElementHighlighted]]"
                    aria-disabled$="[[disabled]]"
@@ -145,6 +146,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
 
       <!-- to announce current selection to screen reader -->
+      <!-- TODO: test this with complex custom templates -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
     </div>
 
@@ -527,6 +529,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
+        this._renderSuggestions(this._suggestions);
       }
     },
 
