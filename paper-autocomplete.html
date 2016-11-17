@@ -605,7 +605,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         items[this._currentIndex].setAttribute('aria-selected', "true");
         this._idElementHighlighted = items[this._currentIndex].id;
         this._textOfHighlightedElement = this._suggestions[this._currentIndex].text;
-        this._scrollDown();
+        this._scroll('down');
       }
     },
 
@@ -618,7 +618,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         items[this._currentIndex].setAttribute('aria-selected', "true");
         this._idElementHighlighted = items[this._currentIndex].id;
         this._textOfHighlightedElement = this._suggestions[this._currentIndex].text;
-        this._scrollUp();
+        this._scroll('up');
       }
     },
 
@@ -629,25 +629,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
     },
 
-    _scrollDown: function () {
+    /**
+     * Move scroll (if needed) to display the active element in the suggestions list.
+     * @param {string} direction Direction to scroll. Possible values are `'up'` and `'down'`.
+     */
+    _scroll: function (direction) {
+      var modifier, isSelectedOutOfView;
+
       var viewIndex = this._currentIndex - this._scrollIndex;
-      if (viewIndex >= this._maxViewableItems) {
-        this._scrollIndex++;
+
+      if (direction === 'up') {
+        modifier = -1;
+        isSelectedOutOfView = viewIndex < 0;
+      } else {
+        modifier = +1;
+        isSelectedOutOfView = viewIndex >= this._maxViewableItems
+      }
+
+      // Only when the current active element is out of view, we need to move the position of the scroll
+      if (isSelectedOutOfView) {
+        this._scrollIndex = this._scrollIndex + modifier;
+
         var scrollTop = (this._scrollIndex * this._itemHeight);
         var paperMaterial = this.querySelector('paper-material');
         paperMaterial.scrollTop = scrollTop;
       }
     },
 
-    _scrollUp: function () {
-      var viewIndex = this._currentIndex - this._scrollIndex;
-      if (viewIndex < 0) {
-        this._scrollIndex--;
-        var scrollTop = (this._scrollIndex * this._itemHeight);
-        var paperMaterial = this.querySelector('paper-material');
-        paperMaterial.scrollTop = scrollTop;
-      }
-    },
     _fireEvent: function (option, evt) {
       var id = this._getId();
       var event = 'autocomplete' + this.eventNamespace + evt;
