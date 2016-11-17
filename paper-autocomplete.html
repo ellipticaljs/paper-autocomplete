@@ -349,12 +349,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         value: 0
       },
 
+      /**
+       * Max number of suggestions to be displayed without scrolling
+       */
       _maxViewableItems: {
         value: 7
       },
 
+      /**
+       * Height of each suggestion element in pixels
+       */
       _itemHeight: {
-        value: 36
+        value: 36,
+        observer: '_itemHeightChanged'
       },
 
       // TODO: check if we need _value and _text properties. It seems they can be removed
@@ -471,6 +478,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _handleSuggestions: function (event) {
       if (!this.remoteSource) this._createSuggestions(event);
       else this._remoteSuggestions(event);
+
+      var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
+      if (firstSuggestionElement !== null) {
+        // Update maxHeight of suggestions wrapper depending on the height of each item result
+        this._itemHeight = firstSuggestionElement.offsetHeight;
+      }
     },
 
     _remoteSuggestions: function (event) {
@@ -720,6 +733,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      */
     _getSuggestionId: function (index) {
       return this._idItemSeed + '-' + index;
+    },
+
+    /**
+     * When item height is changed, the maxHeight of the suggestionWrapper need to be updated
+     */
+    _itemHeightChanged: function () {
+      this.$.suggestionsWrapper.style.maxHeight = this._itemHeight * this._maxViewableItems + 'px';
     },
 
     /****************************
