@@ -90,17 +90,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     :host[suggestions-in-overlay="true"] #suggestionsWrapper {
     }
 
+    paper-item,
     :host ::content paper-item {
       position: relative;
       line-height: 18px;
     }
 
+    paper-item:hover,
     :host ::content paper-item:hover {
       background: #eee;
       color: #333;
       cursor: pointer;
     }
 
+    paper-item.active,
     :host ::content paper-item.active {
       background: #eee;
       color: #333;
@@ -293,14 +296,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       minLength: {
         value: 1
-      },
-
-      /**
-       * Indicates if shadow dom is used
-       */
-      useShadowDom: {
-        type: Boolean,
-        value: false
       },
 
       /**
@@ -592,10 +587,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _getItems: function () {
-      var supportsShadow = Boolean(Element.prototype.createShadowRoot);
-      var useShadow = this.useShadowDom;
-      if (useShadow && supportsShadow) return this.shadowRoot.querySelectorAll('paper-item');
-      else return this.querySelectorAll('paper-item');
+      return this.$.suggestionsWrapper.querySelectorAll('paper-item');
     },
 
     _emptyItems: function () {

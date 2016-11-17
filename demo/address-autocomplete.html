@@ -121,7 +121,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     ready: function () {
-      var autocomplete = this.querySelector('paper-autocomplete');
+      var autocomplete = this.$$('paper-autocomplete');
       autocomplete.addEventListener('autocomplete-selected', this.onSelect);
 
       autocomplete.queryFn = this._queryFn;
