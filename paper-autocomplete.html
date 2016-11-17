@@ -343,7 +343,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /**
        * `_suggestions` Array with the actual suggestions to display
        */
-      _suggestions: Array,
+      _suggestions: {
+        type: Array,
+        observer: '_onSuggestionsChanged'
+      },
 
       _currentIndex: {
         value: -1
@@ -482,12 +485,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _handleSuggestions: function (event) {
       if (!this.remoteSource) this._createSuggestions(event);
       else this._remoteSuggestions(event);
-
-      var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
-      if (firstSuggestionElement !== null) {
-        // Update maxHeight of suggestions wrapper depending on the height of each item result
-        this._itemHeight = firstSuggestionElement.offsetHeight;
-      }
     },
 
     _remoteSuggestions: function (event) {
@@ -499,7 +496,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       if (value && value.length >= this.minLength) {
         this._fireEvent(option, 'change');
-        this._renderSuggestions(this._suggestions);
       } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
@@ -512,7 +508,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._currentIndex = -1;
         this._scrollIndex = 0;
         if (!this.disableShowClear) this.$.clear.style.display = 'block';
-        this._showSuggestionsWrapper();
       } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
@@ -523,8 +518,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this._currentIndex = -1;
       this._scrollIndex = 0;
       var value = event.target.value;
-      var minLength = this.minLength;
-      if (value && value.length >= minLength) {
+      if (value && value.length >= this.minLength) {
         value = value.toLowerCase();
 
         // Shows the clear button.
@@ -534,19 +528,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         if (this.source && this.source.length > 0) {
           // Call queryFn. User can override queryFn() to provide custom search functionality
           this._suggestions = this.queryFn(this.source, value);
-
-          this._renderSuggestions(this._suggestions);
-
-          if (this._suggestions.length > 0) {
-            this._showSuggestionsWrapper();
-          } else {
-            this._hideSuggestionsWrapper();
-          }
         }
       } else {
         this.$.clear.style.display = 'none';
         this._suggestions = [];
-        this._renderSuggestions(this._suggestions);
       }
     },
 
@@ -569,6 +554,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         suggestionsContainer.appendChild(clone.root);
       }.bind(this));
+    },
+
+    /**
+     * Listener to changes to _suggestions state
+     */
+    _onSuggestionsChanged: function () {
+      this._renderSuggestions(this._suggestions);
+
+      if (this._suggestions.length > 0) {
+        this._showSuggestionsWrapper();
+      } else {
+        this._hideSuggestionsWrapper();
+      }
+
+      var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
+      if (firstSuggestionElement !== null) {
+        // Update maxHeight of suggestions wrapper depending on the height of each item result
+        this._itemHeight = firstSuggestionElement.offsetHeight;
+      }
     },
 
     _selection: function (index) {
