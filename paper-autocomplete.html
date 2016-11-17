@@ -498,10 +498,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _getItems:function(){
-      var supportsShadow = Boolean(Element.prototype.createShadowRoot);
-      var useShadow = this.useShadowDom;
-      if(useShadow && supportsShadow) return this.shadowRoot.querySelectorAll('paper-item');
-      else return this.querySelectorAll('paper-item');
+      return this.$.suggestionsWrapper.querySelectorAll('paper-item');
     },
 
     _emptyItems:function(){
@@ -589,7 +586,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     _onKeypress:function(event){
-      var which=event.which;
+      var which=event.which || event.keyCode;
       if(which===40){
         this._keydown();
       }else if(which===38){
