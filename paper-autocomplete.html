@@ -421,6 +421,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       this.templatize(this._suggestionTemplate);
     },
 
+    detached: function () {
+      this.cancelDebouncer('_onSuggestionChanged');
+    },
+
     listeners: {
       'input.focus': '_onFocus',
       'input.blur': '_onBlur'
@@ -555,21 +559,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
      * Listener to changes to _suggestions state
      */
     _onSuggestionsChanged: function () {
-      this._renderSuggestions(this._suggestions);
+      this.debounce('_onSuggestionChanged', function () {
+        this._renderSuggestions(this._suggestions);
 
-      if (this._suggestions.length > 0) {
-        this._showSuggestionsWrapper();
-      } else {
-        this._hideSuggestionsWrapper();
-      }
+        if (this._suggestions.length > 0) {
+          this._showSuggestionsWrapper();
+        } else {
+          this._hideSuggestionsWrapper();
+        }
 
-      Polymer.dom.flush();
+        Polymer.dom.flush();
 
-      var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
-      if (firstSuggestionElement !== null) {
-        // Update maxHeight of suggestions wrapper depending on the height of each item result
-        this._itemHeight = firstSuggestionElement.offsetHeight;
-      }
+        var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
+        if (firstSuggestionElement !== null) {
+          // Update maxHeight of suggestions wrapper depending on the height of each item result
+          this._itemHeight = firstSuggestionElement.offsetHeight;
+        }
+      }, 100);
     },
 
     _selection: function (index) {
