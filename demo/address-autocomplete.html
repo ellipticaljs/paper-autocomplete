@@ -16,7 +16,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="address-autocomplete">
   <style>
+    :host {
+      display: block;
 
+      --paper-item: {
+        padding: 8px 16px;
+      }
+    }
+
+    .company-name {
+      color:#333;
+    }
+
+    .account-number {
+      margin-top: 4px;
+      color:#999;
+    }
   </style>
   <template>
     <paper-autocomplete
@@ -30,8 +45,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div on-tap="_onSelect">
           <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
             <div>
-              <div>[[item.companyName]]</div>
-              <div>[[item.accountNumber]]</div>
+              <div class="company-name">[[item.companyName]]</div>
+              <div class="account-number">[[item.accountNumber]]</div>
             </div>
             <paper-ripple></paper-ripple>
           </paper-item>
@@ -121,10 +136,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     _queryFn: function (datasource, query) {
       return datasource.filter(function (item) {
-          return (
-            item.companyName.toLowerCase().indexOf(query) > 1 || item.accountNumber.toLowerCase().indexOf(query) > 1
-          );
-        });
+        return (
+          item.companyName.toLowerCase().indexOf(query) > 1 || item.accountNumber.toLowerCase().indexOf(query) > 1
+        );
+      });
     }
   });
 </script>
