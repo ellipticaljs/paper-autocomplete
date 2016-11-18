@@ -24,6 +24,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   paper-autocomplete extends earlier efforts such as this (https://github.com/rodo1111/paper-input-autocomplete)
   to provide keyboard support, remote binding and results scrolling.
 
+  It is **important to provide both `textProperty` and `valueProperty` when working with a custom search function and
+  or custom templates.** They are needed to keep the component accessible and for the events (e.g. onSelect) to keep
+  working.
+
   ### Custom search
   This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
   all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
@@ -39,6 +43,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       value: objValue
     }
   ```
+
+  This function is only used when a local data source is used. When using a `remoteDataSource` user is responsible of
+  doing the search and specify suggestions manually.
 
   ### Custom templates
   A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
