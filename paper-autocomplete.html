@@ -41,9 +41,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   ```
 
   ### Custom templates
-  TODO: document elements should have min height issue.
-  TODO: document wrapper
-  TODO: need to use textProperty and valueProperty for A11Y
+  A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
+  the template. Please, read carefully all this section to know them.
+  In order to set your own template, you need to add a `<template>` tag with the following structure:
+
+  ```
+  <paper-autocomplete>
+    <template>
+      <div on-tap="_onSelect">
+        <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+          YOUR CUSTOM TEMPLATE
+          <paper-ripple></paper-ripple>
+        </paper-item>
+      </div>
+    </template>
+  </paper-autocomplete>
+  ```
+
+  You need to always maintain this structure. Then you can customize the content of paper-item. These are the reasons
+  why you need to maintain it:
+
+  - The wrapper with `_onSelect` it is very important because it will notify the `autocomplete` component when user
+  selects one item.
+  - `id`, `role` and `aria-selected` need to be there for accessibility reasons.
+
+  It is important to note that methods `_onSelect` and `_getSuggestionId` do not need to be implemented. They are part
+  of the logic of `paper-autocomplete`.
+
+  When providing your own custom template, you might also need to provide your own custom search function. The reason
+  for that is that the default search function only exposes text and value in the results. If each item in your data
+  source contains more information, then you won't be able to access it. See the code of `<address-autocomplete>`
+  element in the demo folder for a complete example.
+
+  Another important thing to point out is related to the height of each suggestion item in the results. The height of
+  the suggestion template changes dynamically depending on the height of a suggestion item. However, the following
+  assumptions were made:
+  - All suggestions items have the same height
+  - The height of each item is fixed and can be determined at any time. For example, if you want to use images in the
+  results, make sure they have a placeholder or a fixed height.
 
   ### Styling
 
