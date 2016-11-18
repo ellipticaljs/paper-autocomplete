@@ -145,7 +145,7 @@
         expect(suggestionItems.length).to.equal(2);
       });
 
-      it('selects the next suggestions with arrow keys', function(){
+      it('selects the next and previous suggestions with arrow keys', function(){
         enterCharacter(input, 'A');
         Polymer.dom.flush();
 
@@ -156,6 +156,9 @@
 
         MockInteractions.keyUpOn(input, 40);
         expect(activeSuggestion()).to.equal(suggestionItems[1]);
+
+        MockInteractions.keyUpOn(input, 38);
+        expect(activeSuggestion()).to.equal(suggestionItems[0]);
 
         function activeSuggestion() {
           return suggestions.querySelector('paper-item.active');
