@@ -189,12 +189,6 @@
         MockInteractions.keyUpOn(input, char.charCodeAt(char.length - 1));
     }
 
-    function clearInput(input) {
-        input.value = '';
-        MockInteractions.keyUpOn(input, 8);
-        Polymer.dom.flush();
-    }
-
 
 
     // a11ySuite('basic');

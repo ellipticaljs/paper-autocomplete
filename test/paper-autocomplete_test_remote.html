@@ -51,34 +51,38 @@
         };
         req.send();
       }
-
       done();
+
+      this.xhr = sinon.useFakeXMLHttpRequest();
+
+      this.requests = [];
+      this.xhr.onCreate = function(xhr) {
+        this.requests.push(xhr);
+      }.bind(this);
+    });
+
+    afterEach(function() {
+      this.xhr.restore();
     });
 
     describe('Test remote call', function() {
-      beforeEach(function() {
-        this.xhr = sinon.useFakeXMLHttpRequest();
-
-        this.requests = [];
-        this.xhr.onCreate = function(xhr) {
-          this.requests.push(xhr);
-        }.bind(this);
-      });
-
-      afterEach(function() {
-        this.xhr.restore();
-      });
-
       it('should parse fetched data as JSON', function(done) {
         var data = { text: 'bart', value: 'bart' };
         var dataJson = JSON.stringify(data);
+//        var stubEvent = {
+//          detail:{
+//            option: {
+//              text: "bart"
+//            }
+//          }
+//        };
+//        var inputRemote = document.querySelector('#input-remote');
+//        console.log(inputRemote);
+//        enterCharacter(inputRemote, 'A');
+//        enterCharacter(inputRemote, 'l');
+//        Polymer.dom.flush();
 
-        var inputRemote = document.querySelector('#input-remote');
-        console.log(inputRemote);
-        enterCharacter(inputRemote, 'A');
-        enterCharacter(inputRemote, 'l');
-        Polymer.dom.flush();
-
+//        onChange(stubEvent);
         onChange().open(function(err, result) {
           result.should.deep.equal(data);
           done();
