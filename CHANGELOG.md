@@ -6,7 +6,7 @@ This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.
 
 ### New Features
 - It is now possible to specify custom templates for suggestions.
-- You can now specify you own `queryFn` to filter suggestions according to your needs.
+- You can now specify your own `queryFn` to filter suggestions according to your needs.
 - Added `CHANGELOG.md`
 
 ### Breaking Change
