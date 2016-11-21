@@ -647,9 +647,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }, 300);
       },
 
-      _getItems: function () {
-        return this.$.suggestionsWrapper.querySelectorAll('paper-item');
-      },
+    _getItems: function () {
+       return this.$.suggestionsWrapper.querySelectorAll('paper-item');
+    },
 
       _emptyItems: function () {
         this._suggestions = [];
@@ -743,8 +743,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       },
 
-      _onKeypress: function (event) {
-        var which = event.which;
+    _onKeypress: function (event) {
+      var which = event.which;
 
         if (which === 40) {
           this._keydown();
