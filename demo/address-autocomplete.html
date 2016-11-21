@@ -47,7 +47,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       source="[[accounts]]"
       text-property="accountNumber"
       value-property="id">
-      <template>
+      <template autocomplete-custom-template>
         <div on-tap="_onSelect">
           <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
             <div>

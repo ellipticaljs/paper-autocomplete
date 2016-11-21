@@ -50,11 +50,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   ### Custom templates
   A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
   the template. Please, read carefully all this section to know them.
-  In order to set your own template, you need to add a `<template>` tag with the following structure:
+  In order to set your own template, you need to add a `<template>` tag with the attribute
+  `autocomplete-custom-template` ahd the following structure:
 
   ```
   <paper-autocomplete>
-    <template>
+    <template autocomplete-custom-template>
       <div on-tap="_onSelect">
         <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
           YOUR CUSTOM TEMPLATE
@@ -219,7 +220,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
 
     <!-- Custom template -->
-    <content id="templates" select="template"></content>
+    <content id="templates" select="[autocomplete-custom-template]"></content>
   </template>
 </dom-module>
 
