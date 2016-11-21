@@ -168,13 +168,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
 
   <template>
-    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper autocompleteStatus"
+    <div class="input-wrapper"
+         role="combobox"
+         aria-haspopup="true"
+         aria-owns="suggestionsWrapper"
          aria-expanded$="[[_isSuggestionsOpened]]">
 
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
-      <label for="input" class="sr-only">[[label]]</label>
+      <label for="autocompleteInput" class="sr-only">[[label]]</label>
 
-      <paper-input id="input"
+      <paper-input id="autocompleteInput"
                    label="[[label]]"
                    no-label-float="[[noLabelFloat]]"
                    on-keyup="_onKeypress"
@@ -205,7 +208,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
 
     <paper-material elevation="1">
-      <div id="suggestionsWrapper" role="listbox">
+      <div id="suggestionsWrapper">
         <!-- suggestions will be render here -->
       </div>
     </paper-material>
@@ -479,8 +482,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       listeners: {
-        'input.focus': '_onFocus',
-        'input.blur': '_onBlur'
+        'autocompleteInput.focus': '_onFocus',
+        'autocompleteInput.blur': '_onBlur'
       },
 
       // Element Behavior
@@ -520,7 +523,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Show the suggestions wrapper
        */
       _showSuggestionsWrapper: function () {
-        this.$.suggestionsWrapper.style.display = 'block';
+        var suggestionsWrapper = this.$.suggestionsWrapper;
+
+        suggestionsWrapper.style.display = 'block';
+        suggestionsWrapper.setAttribute('role', 'listbox');
         this._isSuggestionsOpened = true;
       },
 
@@ -528,7 +534,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Hide the suggestions wrapper
        */
       _hideSuggestionsWrapper: function () {
-        this.$.suggestionsWrapper.style.display = 'none';
+        var suggestionsWrapper = this.$.suggestionsWrapper;
+
+        suggestionsWrapper.style.display = 'none';
+        suggestionsWrapper.removeAttribute('role');
         this._isSuggestionsOpened = false;
         this._idElementHighlighted = '';
         this._textOfHighlightedElement = '';
@@ -840,7 +849,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       disable: function () {
         this.disabled = true;
-        this.$.input.disabled = true;
+        this.$.autocompleteInput.disabled = true;
       },
 
       /**
@@ -848,7 +857,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       enable: function () {
         this.disabled = false;
-        this.$.input.disabled = false;
+        this.$.autocompleteInput.disabled = false;
       },
 
       /**
@@ -864,7 +873,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @returns {Boolean}
        */
       validate: function () {
-        return this.$.input.validate();
+        return this.$.autocompleteInput.validate();
       },
 
       /**

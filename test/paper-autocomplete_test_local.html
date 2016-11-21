@@ -101,7 +101,7 @@
     });
 
     it('copies the required property to the input field', function () {
-      var input = element.$.input.$.input;
+      var input = element.$.autocompleteInput.$.input;
       expect(input.getAttribute('required')).to.not.equal(null);
     });
 
@@ -117,7 +117,7 @@
       var input, suggestions, suggestionItems;
 
       beforeEach(function () {
-        input = element.$.input;
+        input = element.$.autocompleteInput;
         suggestions = element.$.suggestionsWrapper;
       });
 
@@ -185,7 +185,7 @@
       element.flushDebouncer('_onSuggestionChanged');
     }
 
-    //  a11ySuite('basic');
+    a11ySuite('basic');
   });
 </script>
 
