@@ -1,6 +1,6 @@
 {
   "name": "paper-autocomplete",
-  "version": "1.5.1",
+  "version": "2.0.0",
   "authors": [
     "S. Francis",
     "Rodolfo Oviedo <rodo1111@gmail.com>",
@@ -16,6 +16,10 @@
   "main": "paper-autocomplete.html",
   "license": "MIT",
   "homepage": "https://github.com/ellipticaljs/paper-autocomplete/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ellipticaljs/paper-autocomplete.git"
+  },
   "ignore": [
     "/.*",
     "/test/"

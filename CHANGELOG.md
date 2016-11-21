@@ -2,7 +2,7 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
-## Release 2.0.0 (2016-11-XX)
+## Release 2.0.0 (2016-11-21)
 
 ### New Features
 - It is now possible to specify custom templates for suggestions.
@@ -14,4 +14,4 @@ This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.
   it from your apps. However, if you have it, nothing will break, it will just be ignored.
   
 ### Bug Fixes
-- `setOption()` method was not taking into account `textProperty` and `valueProperty`.
+- `setOption()` method was not taking into account `textProperty` and `valueProperty` options.
