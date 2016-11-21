@@ -110,7 +110,7 @@
 
     it('is closed when initialised', function(){
       expect(element.$.suggestionsWrapper.getComputedStyleValue('display')).to.equal('none');
-    })
+    });
 
     context('when input is typed', function() {
       var input, suggestions;
@@ -126,7 +126,7 @@
 
         suggestionItems = suggestions.querySelectorAll('paper-item');
         expect(suggestionItems.length).to.equal(5);
-      })
+      });
 
       it ('does not activate an item on opening', function() {
         enterCharacter(input, 'A');
@@ -163,7 +163,7 @@
         function activeSuggestion() {
           return suggestions.querySelector('paper-item.active');
         }
-      })
+      });
 
       it('copies the suggestion to the value when clicked upon a suggestion and closes the suggestions', function(){
           enterCharacter(input, 'A');
@@ -185,7 +185,7 @@
           resetTimeout();
       })
 
-    })
+    });
 
     function enterCharacter(input, char) {
         input.value += char;
@@ -194,7 +194,7 @@
 
 
 
-    // a11ySuite('basic');
+     a11ySuite('basic');
   });
 </script>
 
