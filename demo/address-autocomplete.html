@@ -48,16 +48,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-property="accountNumber"
       value-property="id">
       <template autocomplete-custom-template>
-        <div on-tap="_onSelect">
-          <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-            <div>
-              <div class="company-name">[[item.companyName]]</div>
-              <div class="account-number">[[item.accountNumber]]</div>
-              <div class="email">[[item.email]]</div>
-            </div>
-            <paper-ripple></paper-ripple>
-          </paper-item>
-        </div>
+        <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+          <div>
+            <div class="company-name">[[item.companyName]]</div>
+            <div class="account-number">[[item.accountNumber]]</div>
+            <div class="email">[[item.email]]</div>
+          </div>
+          <paper-ripple></paper-ripple>
+        </paper-item>
       </template>
     </paper-autocomplete>
   </template>
@@ -147,7 +145,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     _queryFn: function (datasource, query) {
       return datasource.filter(function (item) {
         return (
-          item.companyName.toLowerCase().indexOf(query) > 1 || item.accountNumber.toLowerCase().indexOf(query) > 1
+          item.companyName.toLowerCase().indexOf(query) != -1 || item.accountNumber.toLowerCase().indexOf(query) != -1
         );
       });
     }

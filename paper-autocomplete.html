@@ -56,12 +56,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   ```
   <paper-autocomplete>
     <template autocomplete-custom-template>
-      <div on-tap="_onSelect">
-        <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          YOUR CUSTOM TEMPLATE
-          <paper-ripple></paper-ripple>
-        </paper-item>
-      </div>
+      <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+        YOUR CUSTOM TEMPLATE
+        <paper-ripple></paper-ripple>
+      </paper-item>
     </template>
   </paper-autocomplete>
   ```
@@ -69,12 +67,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   You need to always maintain this structure. Then you can customize the content of paper-item. These are the reasons
   why you need to maintain it:
 
-  - The wrapper with `_onSelect` it is very important because it will notify the `autocomplete` component when user
-  selects one item.
-  - `id`, `role` and `aria-selected` need to be there for accessibility reasons.
+  - `_onSelect` it is very important because it will notify the `autocomplete` component when user selects one item.
+  If you don't add this option, when user clicks in one of the items, nothing will happen.
+  - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
+  will continue working but it will not be accessible for user with disabilities.
 
-  It is important to note that methods `_onSelect` and `_getSuggestionId` do not need to be implemented. They are part
-  of the logic of `paper-autocomplete`.
+  It is important to clarify that methods `_onSelect` and `_getSuggestionId` do not need to be implemented. They are
+  part of the logic of `paper-autocomplete`.
 
   When providing your own custom template, you might also need to provide your own custom search function. The reason
   for that is that the default search function only exposes text and value in the results. If each item in your data
@@ -205,18 +204,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
     </div>
 
-    <paper-material elevation="1" id="suggestionsWrapper" role="listbox">
-      <!-- suggestions will be render here -->
+    <paper-material elevation="1">
+      <div id="suggestionsWrapper" role="listbox">
+        <!-- suggestions will be render here -->
+      </div>
     </paper-material>
 
     <!-- Default suggestion template -->
     <template id="defaultTemplate">
-      <div on-tap="_onSelect">
-        <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>[[_getItemText(item)]]</div>
-          <paper-ripple></paper-ripple>
-        </paper-item>
-      </div>
+      <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false" on-tap="_onSelect">
+        <div>[[_getItemText(item)]]</div>
+        <paper-ripple></paper-ripple>
+      </paper-item>
     </template>
 
     <!-- Custom template -->
@@ -726,7 +725,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._scrollIndex = this._scrollIndex + modifier;
 
           var scrollTop = (this._scrollIndex * this._itemHeight);
-          var paperMaterial = this.querySelector('paper-material');
+          var paperMaterial = this.$.suggestionsWrapper;
           paperMaterial.scrollTop = scrollTop;
         }
       },

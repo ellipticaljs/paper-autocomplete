@@ -188,12 +188,10 @@
                           min-length="2"
                           remote-source>
         <template autocomplete-custom-template>
-          <div on-tap="_onSelect">
-            <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-              <img src$="[[item.avatar_url]]" height="50" width="50" style="margin: 8px 8px 8px 0; min-height: 50px;"/>[[item.login]]
-              <paper-ripple></paper-ripple>
-            </paper-item>
-          </div>
+          <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+            <img src$="[[item.avatar_url]]" height="50" width="50" style="margin: 8px 8px 8px 0; min-height: 50px;"/>[[item.login]]
+            <paper-ripple></paper-ripple>
+          </paper-item>
         </template>
       </paper-autocomplete>
 
