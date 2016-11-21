@@ -224,753 +224,760 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </dom-module>
 
 <script>
-  Polymer({
-    is: 'paper-autocomplete',
+  (function () {
+    var DIRECTION = {
+      UP: 'up',
+      DOWN: 'down'
+    };
 
-    behaviors: [
-      Polymer.Templatizer
-    ],
+    Polymer({
+      is: 'paper-autocomplete',
 
-    properties: {
-      /**
-       * `autoValidate` Set to true to auto-validate the input value.
-       */
-      autoValidate: {
-        type: Boolean,
-        value: false
-      },
+      behaviors: [
+        Polymer.Templatizer
+      ],
 
-      /**
-       * `errorMessage` The error message to display when the input is invalid.
-       */
-      errorMessage: {
-        type: String
-      },
+      properties: {
+        /**
+         * `autoValidate` Set to true to auto-validate the input value.
+         */
+        autoValidate: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * `label` Text to display as the input label
-       */
-      label: String,
+        /**
+         * `errorMessage` The error message to display when the input is invalid.
+         */
+        errorMessage: {
+          type: String
+        },
 
-      /**
-       * `noLabelFloat` Set to true to disable the floating label.
-       */
-      noLabelFloat: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * `label` Text to display as the input label
+         */
+        label: String,
 
-      /**
-       * `alwaysFloatLabel` Set to true to always float label
-       */
-      alwaysFloatLabel: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * `noLabelFloat` Set to true to disable the floating label.
+         */
+        noLabelFloat: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * `required` Set to true to mark the input as required.
-       */
-      required: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * `alwaysFloatLabel` Set to true to always float label
+         */
+        alwaysFloatLabel: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * `source` Array of objects with the options to execute the autocomplete feature
-       */
-      source: Array,
+        /**
+         * `required` Set to true to mark the input as required.
+         */
+        required: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * Property of local datasource to as the text property
-       */
-      textProperty: {
-        type: String,
-        value: 'text'
-      },
+        /**
+         * `source` Array of objects with the options to execute the autocomplete feature
+         */
+        source: Array,
 
-      /**
-       * Property of local datasource to as the value property
-       */
-      valueProperty: {
-        type: String,
-        value: 'value'
-      },
+        /**
+         * Property of local datasource to as the text property
+         */
+        textProperty: {
+          type: String,
+          value: 'text'
+        },
 
-      /**
-       * `value` Selected object from the suggestions
-       */
-      value: {
-        type: Object,
-        notify: true
-      },
+        /**
+         * Property of local datasource to as the value property
+         */
+        valueProperty: {
+          type: String,
+          value: 'value'
+        },
 
-      /**
-       * The current/selected text of the input
-       */
-      text: {
-        type: String,
-        notify: true,
-        value: ''
-      },
+        /**
+         * `value` Selected object from the suggestions
+         */
+        value: {
+          type: Object,
+          notify: true
+        },
 
-      /**
-       * Disable showing the clear X button
-       */
-      disableShowClear: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * The current/selected text of the input
+         */
+        text: {
+          type: String,
+          notify: true,
+          value: ''
+        },
 
-      /**
-       * Binds to a remote data source
-       */
-      remoteSource: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * Disable showing the clear X button
+         */
+        disableShowClear: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * Event type separator
-       */
-      eventNamespace: {
-        type: String,
-        value: '-'
-      },
+        /**
+         * Binds to a remote data source
+         */
+        remoteSource: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * Minimum length to trigger suggestions
-       */
-      minLength: {
-        value: 1
-      },
+        /**
+         * Event type separator
+         */
+        eventNamespace: {
+          type: String,
+          value: '-'
+        },
 
-      /**
-       * `pattern` Pattern to validate input field
-       */
-      pattern: String,
+        /**
+         * Minimum length to trigger suggestions
+         */
+        minLength: {
+          value: 1
+        },
 
-      /**
-       * allowedPattern` allowedPattern to validate input field
-       */
-      allowedPattern: String,
+        /**
+         * `pattern` Pattern to validate input field
+         */
+        pattern: String,
 
-      /**
-       * Set to `true` to show a character counter.
-       */
-      charCounter: {
-        type: Boolean,
-        value: false
-      },
+        /**
+         * allowedPattern` allowedPattern to validate input field
+         */
+        allowedPattern: String,
 
-      /**
-       * The maximum length of the input value.
-       */
-      maxlength: {
-        type: Number
-      },
+        /**
+         * Set to `true` to show a character counter.
+         */
+        charCounter: {
+          type: Boolean,
+          value: false
+        },
 
-      /**
-       * Reference to the current suggestion template
-       */
-      _suggestionTemplate: {
-        type: Object,
-        value: function () {
-          var customTemplate = this.getEffectiveChildren();
+        /**
+         * The maximum length of the input value.
+         */
+        maxlength: {
+          type: Number
+        },
 
-          return customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
+        /**
+         * Reference to the current suggestion template
+         */
+        _suggestionTemplate: {
+          type: Object,
+          value: function () {
+            var customTemplate = this.getEffectiveChildren();
+
+            return customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
+          }
+        },
+
+        /**
+         * `_suggestions` Array with the actual suggestions to display
+         */
+        _suggestions: {
+          type: Array,
+          observer: '_onSuggestionsChanged'
+        },
+
+        _currentIndex: {
+          value: -1
+        },
+
+        _scrollIndex: {
+          value: 0
+        },
+
+        /**
+         * Max number of suggestions to be displayed without scrolling
+         */
+        _maxViewableItems: {
+          value: 7
+        },
+
+        /**
+         * Height of each suggestion element in pixels
+         */
+        _itemHeight: {
+          value: 36,
+          observer: '_itemHeightChanged'
+        },
+
+        // TODO: check if we need _value and _text properties. It seems they can be removed
+        _value: {
+          value: undefined
+        },
+
+        _text: {
+          value: undefined
+        },
+
+        /**
+         * This value is used as a base to generate unique individual ids that need to be added to each suggestion for
+         * accessibility reasons.
+         */
+        _idItemSeed: {
+          type: String,
+          value: 'aria-' + new Date().getTime() + '-' + (Math.floor(Math.random() * 1000)),
+          readOnly: true
+        },
+
+        /**
+         * Id of the DOM element currently highlighted
+         */
+        _idElementHighlighted: {
+          type: String,
+          value: ''
+        },
+
+        /**
+         * Text value of the current highlighted value to be announce to the screen reader
+         */
+        _textOfHighlightedElement: {
+          type: String
+        },
+
+        /**
+         * `true` if the suggestions list is opened, `false otherwise`
+         */
+        _isSuggestionsOpened: {
+          type: Boolean,
+          value: false
         }
       },
 
-      /**
-       * `_suggestions` Array with the actual suggestions to display
-       */
-      _suggestions: {
-        type: Array,
-        observer: '_onSuggestionsChanged'
+      // Element Lifecycle
+
+      ready: function () {
+        this._value = this.value;
+
+        // This is important to be able to access component methods inside the templates used with Templatizer
+        this.dataHost = this;
+
+        // templatize must be called once before stamp is called
+        this.templatize(this._suggestionTemplate);
       },
 
-      _currentIndex: {
-        value: -1
+      detached: function () {
+        this.cancelDebouncer('_onSuggestionChanged');
       },
 
-      _scrollIndex: {
-        value: 0
+      listeners: {
+        'input.focus': '_onFocus',
+        'input.blur': '_onBlur'
       },
 
-      /**
-       * Max number of suggestions to be displayed without scrolling
-       */
-      _maxViewableItems: {
-        value: 7
-      },
-
-      /**
-       * Height of each suggestion element in pixels
-       */
-      _itemHeight: {
-        value: 36,
-        observer: '_itemHeightChanged'
-      },
-
-      // TODO: check if we need _value and _text properties. It seems they can be removed
-      _value: {
-        value: undefined
-      },
-
-      _text: {
-        value: undefined
-      },
+      // Element Behavior
 
       /**
-       * This value is used as a base to generate unique individual ids that need to be added to each suggestion for
-       * accessibility reasons.
+       * Clears the input text
        */
-      _idItemSeed: {
-        type: String,
-        value: 'aria-' + new Date().getTime() + '-' + (Math.floor(Math.random() * 1000)),
-        readOnly: true
-      },
+      _clear: function () {
+        var option = {
+          text: this.text,
+          value: this.value
+        };
 
-      /**
-       * Id of the DOM element currently highlighted
-       */
-      _idElementHighlighted: {
-        type: String,
-        value: ''
-      },
+        this.value = null;
+        this._value = null;
+        this.text = '';
+        this._text = '';
 
-      /**
-       * Text value of the current highlighted value to be announce to the screen reader
-       */
-      _textOfHighlightedElement: {
-        type: String
-      },
-
-      /**
-       * `true` if the suggestions list is opened, `false otherwise`
-       */
-      _isSuggestionsOpened: {
-        type: Boolean,
-        value: false
-      }
-    },
-
-    // Element Lifecycle
-
-    ready: function () {
-      this._value = this.value;
-
-      // This is important to be able to access component methods inside the templates used with Templatizer
-      this.dataHost = this;
-
-      // templatize must be called once before stamp is called
-      this.templatize(this._suggestionTemplate);
-    },
-
-    detached: function () {
-      this.cancelDebouncer('_onSuggestionChanged');
-    },
-
-    listeners: {
-      'input.focus': '_onFocus',
-      'input.blur': '_onBlur'
-    },
-
-    // Element Behavior
-
-    /**
-     * Clears the input text
-     */
-    _clear: function () {
-      var option = {
-        text: this.text,
-        value: this.value
-      };
-
-      this.value = null;
-      this._value = null;
-      this.text = '';
-      this._text = '';
-
-      this.$.clear.style.display = 'none';
-
-      this._hideSuggestionsWrapper();
-      this._emptyItems();
-
-      this._fireEvent(option, 'reset');
-    },
-
-    /**
-     * Get the text property from the suggestion
-     * @param {Object} suggestion The suggestion item
-     * @return {String}
-     */
-    _getItemText: function (suggestion) {
-      return suggestion[this.textProperty];
-    },
-
-    /**
-     * Show the suggestions wrapper
-     */
-    _showSuggestionsWrapper: function () {
-      this.$.suggestionsWrapper.style.display = 'block';
-      this._isSuggestionsOpened = true;
-    },
-
-    /**
-     * Hide the suggestions wrapper
-     */
-    _hideSuggestionsWrapper: function () {
-      this.$.suggestionsWrapper.style.display = 'none';
-      this._isSuggestionsOpened = false;
-      this._idElementHighlighted = '';
-      this._textOfHighlightedElement = '';
-    },
-
-    _handleSuggestions: function (event) {
-      if (!this.remoteSource) this._createSuggestions(event);
-      else this._remoteSuggestions(event);
-    },
-
-    _remoteSuggestions: function (event) {
-      var value = event.target.value;
-      var option = {
-        text: this.text,
-        value: value
-      };
-
-      if (value && value.length >= this.minLength) {
-        this._fireEvent(option, 'change');
-      } else {
         this.$.clear.style.display = 'none';
-        this._suggestions = [];
-      }
-    },
 
-    _bindSuggestions: function (arr) {
-      if (arr.length && arr.length > 0) {
-        this._suggestions = arr;
+        this._hideSuggestionsWrapper();
+        this._emptyItems();
+
+        this._fireEvent(option, 'reset');
+      },
+
+      /**
+       * Get the text property from the suggestion
+       * @param {Object} suggestion The suggestion item
+       * @return {String}
+       */
+      _getItemText: function (suggestion) {
+        return suggestion[this.textProperty];
+      },
+
+      /**
+       * Show the suggestions wrapper
+       */
+      _showSuggestionsWrapper: function () {
+        this.$.suggestionsWrapper.style.display = 'block';
+        this._isSuggestionsOpened = true;
+      },
+
+      /**
+       * Hide the suggestions wrapper
+       */
+      _hideSuggestionsWrapper: function () {
+        this.$.suggestionsWrapper.style.display = 'none';
+        this._isSuggestionsOpened = false;
+        this._idElementHighlighted = '';
+        this._textOfHighlightedElement = '';
+      },
+
+      _handleSuggestions: function (event) {
+        if (!this.remoteSource) this._createSuggestions(event);
+        else this._remoteSuggestions(event);
+      },
+
+      _remoteSuggestions: function (event) {
+        var value = event.target.value;
+        var option = {
+          text: this.text,
+          value: value
+        };
+
+        if (value && value.length >= this.minLength) {
+          this._fireEvent(option, 'change');
+        } else {
+          this.$.clear.style.display = 'none';
+          this._suggestions = [];
+        }
+      },
+
+      _bindSuggestions: function (arr) {
+        if (arr.length && arr.length > 0) {
+          this._suggestions = arr;
+          this._currentIndex = -1;
+          this._scrollIndex = 0;
+          if (!this.disableShowClear) this.$.clear.style.display = 'block';
+        } else {
+          this.$.clear.style.display = 'none';
+          this._suggestions = [];
+        }
+      },
+
+      _createSuggestions: function (event) {
         this._currentIndex = -1;
         this._scrollIndex = 0;
-        if (!this.disableShowClear) this.$.clear.style.display = 'block';
-      } else {
-        this.$.clear.style.display = 'none';
-        this._suggestions = [];
-      }
-    },
+        var value = event.target.value;
+        if (value && value.length >= this.minLength) {
+          value = value.toLowerCase();
 
-    _createSuggestions: function (event) {
-      this._currentIndex = -1;
-      this._scrollIndex = 0;
-      var value = event.target.value;
-      if (value && value.length >= this.minLength) {
-        value = value.toLowerCase();
+          // Shows the clear button.
+          if (!this.disableShowClear) this.$.clear.style.display = 'block';
 
-        // Shows the clear button.
-        if (!this.disableShowClear) this.$.clear.style.display = 'block';
-
-        // Search for the word in the source properties.
-        if (this.source && this.source.length > 0) {
-          // Call queryFn. User can override queryFn() to provide custom search functionality
-          this._suggestions = this.queryFn(this.source, value);
-        }
-      } else {
-        this.$.clear.style.display = 'none';
-        this._suggestions = [];
-      }
-    },
-
-    /**
-     * Render suggestions in the suggestionsWrapper container
-     * @param {Array} suggestions An array containing the suggestions to be rendered. This value is not optional, so
-     *    in case no suggestions need to be rendered, you should either not call this method or provide an empty array.
-     */
-    _renderSuggestions: function (suggestions) {
-      var suggestionsContainer = this.$.suggestionsWrapper;
-
-      suggestionsContainer.innerHTML = '';
-
-      suggestions.forEach(function (result, index) {
-        // clone the template and bind with the model
-        var clone = this.stamp({
-          item: result,
-          index: index
-        });
-
-        suggestionsContainer.appendChild(clone.root);
-      }.bind(this));
-    },
-
-    /**
-     * Listener to changes to _suggestions state
-     */
-    _onSuggestionsChanged: function () {
-      this.debounce('_onSuggestionChanged', function () {
-        this._renderSuggestions(this._suggestions);
-
-        if (this._suggestions.length > 0) {
-          this._showSuggestionsWrapper();
+          // Search for the word in the source properties.
+          if (this.source && this.source.length > 0) {
+            // Call queryFn. User can override queryFn() to provide custom search functionality
+            this._suggestions = this.queryFn(this.source, value);
+          }
         } else {
-          this._hideSuggestionsWrapper();
+          this.$.clear.style.display = 'none';
+          this._suggestions = [];
         }
+      },
 
-        Polymer.dom.flush();
+      /**
+       * Render suggestions in the suggestionsWrapper container
+       * @param {Array} suggestions An array containing the suggestions to be rendered. This value is not optional, so
+       *    in case no suggestions need to be rendered, you should either not call this method or provide an empty array.
+       */
+      _renderSuggestions: function (suggestions) {
+        var suggestionsContainer = this.$.suggestionsWrapper;
 
-        var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
-        if (firstSuggestionElement !== null) {
-          // Update maxHeight of suggestions wrapper depending on the height of each item result
-          this._itemHeight = firstSuggestionElement.offsetHeight;
-        }
-      }, 100);
-    },
+        suggestionsContainer.innerHTML = '';
 
-    _selection: function (index) {
-      var selectedOption = this._suggestions[index];
-      var self = this;
-      this.text = selectedOption[this.textProperty];
-      this.value = selectedOption[this.valueProperty];
-      this._value = this.value;
-      this._text = this.text;
-      this.$.clear.style.display = 'none';
-      this._emptyItems();
-      this._fireEvent(selectedOption, 'selected');
-
-      setTimeout(function () {
-        self._hideSuggestionsWrapper();
-      }, 300);
-    },
-
-    _getItems: function () {
-      return this.$.suggestionsWrapper.querySelectorAll('paper-item');
-    },
-
-    _emptyItems: function () {
-      this._suggestions = [];
-    },
-
-    _getId: function () {
-      var id = this.getAttribute('id');
-      if (!id) id = this.dataset.id;
-      return id;
-    },
-
-    _removeActive: function (items) {
-      for (var i = 0; i < items.length; i++) {
-        items[i].classList.remove('active');
-        items[i].setAttribute('aria-selected', "false");
-      }
-    },
-
-    _keydown: function () {
-      var items = this._getItems();
-      var length = items.length;
-      length--;
-      if (this._currentIndex < length) {
-        this._removeActive(items);
-        this._currentIndex++;
-        items[this._currentIndex].classList.add('active');
-        items[this._currentIndex].setAttribute('aria-selected', "true");
-        this._idElementHighlighted = items[this._currentIndex].id;
-        this._textOfHighlightedElement = this._suggestions[this._currentIndex][this.textProperty];
-        this._scroll('down');
-      }
-    },
-
-    _keyup: function () {
-      var items = this._getItems();
-      if (this._currentIndex > 0) {
-        this._removeActive(items);
-        this._currentIndex--;
-        items[this._currentIndex].classList.add('active');
-        items[this._currentIndex].setAttribute('aria-selected', "true");
-        this._idElementHighlighted = items[this._currentIndex].id;
-        this._textOfHighlightedElement = this._suggestions[this._currentIndex][this.textProperty];
-        this._scroll('up');
-      }
-    },
-
-    _keyenter: function () {
-      if (this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1) {
-        var index = this._currentIndex;
-        this._selection(index);
-      }
-    },
-
-    /**
-     * Move scroll (if needed) to display the active element in the suggestions list.
-     * @param {string} direction Direction to scroll. Possible values are `'up'` and `'down'`.
-     */
-    _scroll: function (direction) {
-      var modifier, isSelectedOutOfView;
-
-      var viewIndex = this._currentIndex - this._scrollIndex;
-
-      if (direction === 'up') {
-        modifier = -1;
-        isSelectedOutOfView = viewIndex < 0;
-      } else {
-        modifier = +1;
-        isSelectedOutOfView = viewIndex >= this._maxViewableItems
-      }
-
-      // Only when the current active element is out of view, we need to move the position of the scroll
-      if (isSelectedOutOfView) {
-        this._scrollIndex = this._scrollIndex + modifier;
-
-        var scrollTop = (this._scrollIndex * this._itemHeight);
-        var paperMaterial = this.querySelector('paper-material');
-        paperMaterial.scrollTop = scrollTop;
-      }
-    },
-
-    _fireEvent: function (option, evt) {
-      var id = this._getId();
-      var event = 'autocomplete' + this.eventNamespace + evt;
-
-      this.fire(event, {
-        id: id,
-        value: option[this.valueProperty] || option.value,
-        text: option[this.textProperty] || option.text,
-        target: this,
-        option: option
-      });
-    },
-
-    _onKeypress: function (event) {
-      var which = event.which;
-
-      if (which === 40) {
-        this._keydown();
-      } else if (which === 38) {
-        this._keyup(event);
-      } else if (which === 13) {
-        this._keyenter();
-      } else {
-        this._handleSuggestions(event);
-      }
-    },
-
-    _onSelect: function (event) {
-      var index = event.model.index;
-      this._selection(index);
-    },
-
-    _onBlur: function () {
-      var self = this;
-      var option = {
-        text: this.text,
-        value: this.value
-      };
-
-      this._fireEvent(option, 'blur');
-
-      setTimeout(function () {
-        self.$.clear.style.display = 'none';
-        self._hideSuggestionsWrapper();
-      }, 300);
-    },
-
-    _onFocus: function () {
-      var option = {
-        text: this.text,
-        value: this.value
-      };
-
-      this._fireEvent(option, 'focus');
-    },
-
-    /**
-     * Generate a suggestion id for a certain index
-     * @param {number} index Position of the element in the suggestions list
-     * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
-     * @private
-     */
-    _getSuggestionId: function (index) {
-      return this._idItemSeed + '-' + index;
-    },
-
-    /**
-     * When item height is changed, the maxHeight of the suggestionWrapper need to be updated
-     */
-    _itemHeightChanged: function () {
-      this.$.suggestionsWrapper.style.maxHeight = this._itemHeight * this._maxViewableItems + 'px';
-    },
-
-    /****************************
-     * PUBLIC
-     ****************************/
-
-    /**
-     * Gets the current value of the input
-     * @returns {String}
-     */
-    getValue: function () {
-      return this.value;
-    },
-
-    /**
-     * Gets the current text/value option of the input
-     * @returns {Object}
-     */
-    getOption: function () {
-      return {
-        text: this.text,
-        value: this.value
-      };
-    },
-
-    /**
-     * Sets the current text/value option of the input
-     * @param {Object} option
-     */
-    setOption: function (option) {
-      this.text = option[this.textProperty || 'text'];
-      this.value = option[this.valueProperty || 'value'];
-    },
-
-    /**
-     * Disables the input
-     */
-    disable: function () {
-      this.disabled = true;
-      this.$.input.disabled = true;
-    },
-
-    /**
-     * Enables the input
-     */
-    enable: function () {
-      this.disabled = false;
-      this.$.input.disabled = false;
-    },
-
-    /**
-     * Sets the component's current suggestions
-     * @param {Array} arr
-     */
-    suggestions: function (arr) {
-      this._bindSuggestions(arr);
-    },
-
-    /**
-     * Validates the input
-     * @returns {Boolean}
-     */
-    validate: function () {
-      return this.$.input.validate();
-    },
-
-    /**
-     * Clears the current input
-     */
-    clear: function () {
-      this._value = '';
-      this._text = '';
-      this._clear();
-    },
-
-    /**
-     * Resets the current input
-     */
-    reset: function () {
-      this._clear();
-    },
-
-    /**
-     * Hides the suggestions popup
-     */
-    hideSuggestions: function () {
-      var self = this;
-
-      setTimeout(function () {
-        self.$.clear.style.display = 'none';
-        self._hideSuggestionsWrapper();
-      }, 300);
-    },
-
-    /**
-     * Query function is called on each keystroke to query the data source and returns the suggestions that matches
-     * with the filtering logic included.
-     * @param {Array} datasource An array containing all items before filtering
-     * @param {string} query Current value in the input field
-     * @returns {Array} an array containing only those items in the data source that matches the filtering logic.
-     */
-    queryFn: function (datasource, query) {
-      var queryResult = [];
-
-      datasource.forEach(function (item) {
-        var objText, objValue;
-
-        if (typeof item === 'object') {
-          objText = item[this.textProperty];
-          objValue = item[this.valueProperty]
-        } else {
-          objText = item.toString();
-          objValue = objText;
-        }
-
-        if (objText.toLowerCase().indexOf(query) === 0) {
-          // NOTE: the structure of the result object matches with the current template. For custom templates, you
-          // might need to return more data
-          queryResult.push({
-            text: objText,
-            value: objValue
+        suggestions.forEach(function (result, index) {
+          // clone the template and bind with the model
+          var clone = this.stamp({
+            item: result,
+            index: index
           });
+
+          suggestionsContainer.appendChild(clone.root);
+        }.bind(this));
+      },
+
+      /**
+       * Listener to changes to _suggestions state
+       */
+      _onSuggestionsChanged: function () {
+        this.debounce('_onSuggestionChanged', function () {
+          this._renderSuggestions(this._suggestions);
+
+          if (this._suggestions.length > 0) {
+            this._showSuggestionsWrapper();
+          } else {
+            this._hideSuggestionsWrapper();
+          }
+
+          Polymer.dom.flush();
+
+          var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
+          if (firstSuggestionElement !== null) {
+            // Update maxHeight of suggestions wrapper depending on the height of each item result
+            this._itemHeight = firstSuggestionElement.offsetHeight;
+          }
+        }, 100);
+      },
+
+      _selection: function (index) {
+        var selectedOption = this._suggestions[index];
+        var self = this;
+        this.text = selectedOption[this.textProperty];
+        this.value = selectedOption[this.valueProperty];
+        this._value = this.value;
+        this._text = this.text;
+        this.$.clear.style.display = 'none';
+        this._emptyItems();
+        this._fireEvent(selectedOption, 'selected');
+
+        setTimeout(function () {
+          self._hideSuggestionsWrapper();
+        }, 300);
+      },
+
+      _getItems: function () {
+        return this.$.suggestionsWrapper.querySelectorAll('paper-item');
+      },
+
+      _emptyItems: function () {
+        this._suggestions = [];
+      },
+
+      _getId: function () {
+        var id = this.getAttribute('id');
+        if (!id) id = this.dataset.id;
+        return id;
+      },
+
+      _removeActive: function (items) {
+        for (var i = 0; i < items.length; i++) {
+          items[i].classList.remove('active');
+          items[i].setAttribute('aria-selected', "false");
         }
-      }.bind(this));
+      },
 
-      return queryResult;
-    }
+      _keydown: function () {
+        var items = this._getItems();
+        var length = items.length;
+        length--;
+        if (this._currentIndex < length) {
+          this._removeActive(items);
+          this._currentIndex++;
+          items[this._currentIndex].classList.add('active');
+          items[this._currentIndex].setAttribute('aria-selected', "true");
+          this._idElementHighlighted = items[this._currentIndex].id;
+          this._textOfHighlightedElement = this._suggestions[this._currentIndex][this.textProperty];
+          this._scroll(DIRECTION.DOWN);
+        }
+      },
 
-    /**
-     * Fired when a selection is made
-     *
-     * @event autocomplete-selected
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
+      _keyup: function () {
+        var items = this._getItems();
+        if (this._currentIndex > 0) {
+          this._removeActive(items);
+          this._currentIndex--;
+          items[this._currentIndex].classList.add('active');
+          items[this._currentIndex].setAttribute('aria-selected', "true");
+          this._idElementHighlighted = items[this._currentIndex].id;
+          this._textOfHighlightedElement = this._suggestions[this._currentIndex][this.textProperty];
+          this._scroll(DIRECTION.UP);
+        }
+      },
 
-    /**
-     * Fired on input change
-     *
-     * @event autocomplete-change
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
+      _keyenter: function () {
+        if (this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1) {
+          var index = this._currentIndex;
+          this._selection(index);
+        }
+      },
 
-    /**
-     * Fired on input focus
-     *
-     * @event autocomplete-focus
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
+      /**
+       * Move scroll (if needed) to display the active element in the suggestions list.
+       * @param {string} direction Direction to scroll. Possible values are `DIRECTION.UP` and `DIRECTION.DOWN`.
+       */
+      _scroll: function (direction) {
+        var modifier, isSelectedOutOfView;
 
-    /**
-     * Fired on input blur
-     *
-     * @event autocomplete-blur
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
+        var viewIndex = this._currentIndex - this._scrollIndex;
 
-    /**
-     * Fired on input reset/clear
-     *
-     * @event autocomplete-reset-blur
-     * @param {String} id
-     * @param {String} text
-     * @param {Element} target
-     * @param {Object} option
-     */
-  });
+        if (direction === DIRECTION.UP) {
+          modifier = -1;
+          isSelectedOutOfView = viewIndex < 0;
+        } else {
+          modifier = +1;
+          isSelectedOutOfView = viewIndex >= this._maxViewableItems
+        }
+
+        // Only when the current active element is out of view, we need to move the position of the scroll
+        if (isSelectedOutOfView) {
+          this._scrollIndex = this._scrollIndex + modifier;
+
+          var scrollTop = (this._scrollIndex * this._itemHeight);
+          var paperMaterial = this.querySelector('paper-material');
+          paperMaterial.scrollTop = scrollTop;
+        }
+      },
+
+      _fireEvent: function (option, evt) {
+        var id = this._getId();
+        var event = 'autocomplete' + this.eventNamespace + evt;
+
+        this.fire(event, {
+          id: id,
+          value: option[this.valueProperty] || option.value,
+          text: option[this.textProperty] || option.text,
+          target: this,
+          option: option
+        });
+      },
+
+      _onKeypress: function (event) {
+        var which = event.which;
+
+        if (which === 40) {
+          this._keydown();
+        } else if (which === 38) {
+          this._keyup(event);
+        } else if (which === 13) {
+          this._keyenter();
+        } else {
+          this._handleSuggestions(event);
+        }
+      },
+
+      _onSelect: function (event) {
+        var index = event.model.index;
+        this._selection(index);
+      },
+
+      _onBlur: function () {
+        var self = this;
+        var option = {
+          text: this.text,
+          value: this.value
+        };
+
+        this._fireEvent(option, 'blur');
+
+        setTimeout(function () {
+          self.$.clear.style.display = 'none';
+          self._hideSuggestionsWrapper();
+        }, 300);
+      },
+
+      _onFocus: function () {
+        var option = {
+          text: this.text,
+          value: this.value
+        };
+
+        this._fireEvent(option, 'focus');
+      },
+
+      /**
+       * Generate a suggestion id for a certain index
+       * @param {number} index Position of the element in the suggestions list
+       * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
+       * @private
+       */
+      _getSuggestionId: function (index) {
+        return this._idItemSeed + '-' + index;
+      },
+
+      /**
+       * When item height is changed, the maxHeight of the suggestionWrapper need to be updated
+       */
+      _itemHeightChanged: function () {
+        this.$.suggestionsWrapper.style.maxHeight = this._itemHeight * this._maxViewableItems + 'px';
+      },
+
+      /****************************
+       * PUBLIC
+       ****************************/
+
+      /**
+       * Gets the current value of the input
+       * @returns {String}
+       */
+      getValue: function () {
+        return this.value;
+      },
+
+      /**
+       * Gets the current text/value option of the input
+       * @returns {Object}
+       */
+      getOption: function () {
+        return {
+          text: this.text,
+          value: this.value
+        };
+      },
+
+      /**
+       * Sets the current text/value option of the input
+       * @param {Object} option
+       */
+      setOption: function (option) {
+        this.text = option[this.textProperty || 'text'];
+        this.value = option[this.valueProperty || 'value'];
+      },
+
+      /**
+       * Disables the input
+       */
+      disable: function () {
+        this.disabled = true;
+        this.$.input.disabled = true;
+      },
+
+      /**
+       * Enables the input
+       */
+      enable: function () {
+        this.disabled = false;
+        this.$.input.disabled = false;
+      },
+
+      /**
+       * Sets the component's current suggestions
+       * @param {Array} arr
+       */
+      suggestions: function (arr) {
+        this._bindSuggestions(arr);
+      },
+
+      /**
+       * Validates the input
+       * @returns {Boolean}
+       */
+      validate: function () {
+        return this.$.input.validate();
+      },
+
+      /**
+       * Clears the current input
+       */
+      clear: function () {
+        this._value = '';
+        this._text = '';
+        this._clear();
+      },
+
+      /**
+       * Resets the current input
+       */
+      reset: function () {
+        this._clear();
+      },
+
+      /**
+       * Hides the suggestions popup
+       */
+      hideSuggestions: function () {
+        var self = this;
+
+        setTimeout(function () {
+          self.$.clear.style.display = 'none';
+          self._hideSuggestionsWrapper();
+        }, 300);
+      },
+
+      /**
+       * Query function is called on each keystroke to query the data source and returns the suggestions that matches
+       * with the filtering logic included.
+       * @param {Array} datasource An array containing all items before filtering
+       * @param {string} query Current value in the input field
+       * @returns {Array} an array containing only those items in the data source that matches the filtering logic.
+       */
+      queryFn: function (datasource, query) {
+        var queryResult = [];
+
+        datasource.forEach(function (item) {
+          var objText, objValue;
+
+          if (typeof item === 'object') {
+            objText = item[this.textProperty];
+            objValue = item[this.valueProperty]
+          } else {
+            objText = item.toString();
+            objValue = objText;
+          }
+
+          if (objText.toLowerCase().indexOf(query) === 0) {
+            // NOTE: the structure of the result object matches with the current template. For custom templates, you
+            // might need to return more data
+            queryResult.push({
+              text: objText,
+              value: objValue
+            });
+          }
+        }.bind(this));
+
+        return queryResult;
+      }
+
+      /**
+       * Fired when a selection is made
+       *
+       * @event autocomplete-selected
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+
+      /**
+       * Fired on input change
+       *
+       * @event autocomplete-change
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+
+      /**
+       * Fired on input focus
+       *
+       * @event autocomplete-focus
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+
+      /**
+       * Fired on input blur
+       *
+       * @event autocomplete-blur
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+
+      /**
+       * Fired on input reset/clear
+       *
+       * @event autocomplete-reset-blur
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
+    });
+  }());
 </script>
