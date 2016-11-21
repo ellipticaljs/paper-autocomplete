@@ -831,8 +831,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Object} option
        */
       setOption: function (option) {
-        this.text = option[this.textProperty || 'text'];
-        this.value = option[this.valueProperty || 'value'];
+        this.text = option[this.textProperty] || option.text;
+        this.value = option[this.valueProperty] || option.value;
       },
 
       /**
