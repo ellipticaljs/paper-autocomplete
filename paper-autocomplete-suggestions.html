@@ -82,6 +82,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       DOWN: 'down'
     };
 
+    var KEY_CODES = {
+      LEFT_ARROW: 37,
+      RIGHT_ARROW: 39,
+      UP_ARROW: 38,
+      DOWN_ARROW: 40,
+      ENTER: 13,
+      ESCAPE: 27
+    };
+
     Polymer({
       is: 'paper-autocomplete-suggestions',
 
@@ -454,6 +463,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /**
+       * Key press event handler
+       */
+      _onKeypress: function (event) {
+        var keyCode = event.which || event.keyCode;
+
+        switch (keyCode) {
+          case KEY_CODES.DOWN_ARROW:
+            this._keydown();
+            break;
+          case KEY_CODES.UP_ARROW:
+            this._keyup();
+            break;
+          case KEY_CODES.ENTER:
+            this._keyenter();
+            break;
+          case KEY_CODES.ESCAPE:
+            this._hideSuggestionsWrapper();
+            break;
+          // For left and right arrow, component should do nothing
+          case KEY_CODES.LEFT_ARROW:
+          // fall through
+          case KEY_CODES.RIGHT_ARROW:
+            break;
+          default:
+            this._handleSuggestions(event);
+        }
+      },
+
+      /**
        * Event handler for the key ARROW DOWN press event
        */
       _keydown: function () {
@@ -535,20 +573,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           target: this,
           option: option
         });
-      },
-
-      _onKeypress: function (event) {
-        var which = event.which || event.keyCode;
-
-        if (which === 40) {
-          this._keydown();
-        } else if (which === 38) {
-          this._keyup(event);
-        } else if (which === 13) {
-          this._keyenter();
-        } else {
-          this._handleSuggestions(event);
-        }
       },
 
       _onSelect: function (event) {
