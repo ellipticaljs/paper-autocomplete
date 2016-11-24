@@ -124,6 +124,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         /**
+         * Max number of suggestions to be displayed without scrolling
+         */
+        maxViewableItems: {
+          value: 7
+        },
+
+        /**
          * Property of local datasource to as the text property
          */
         textProperty: {
@@ -208,13 +215,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         _scrollIndex: {
           value: 0
-        },
-
-        /**
-         * Max number of suggestions to be displayed without scrolling
-         */
-        _maxViewableItems: {
-          value: 7
         },
 
         /**
@@ -558,7 +558,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           isSelectedOutOfView = viewIndex < 0;
         } else {
           modifier = +1;
-          isSelectedOutOfView = viewIndex >= this._maxViewableItems
+          isSelectedOutOfView = viewIndex >= this.maxViewableItems
         }
 
         // Only when the current active element is out of view, we need to move the position of the scroll
@@ -645,7 +645,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * When item height is changed, the maxHeight of the suggestionWrapper need to be updated
        */
       _itemHeightChanged: function () {
-        this.$.suggestionsWrapper.style.maxHeight = this._itemHeight * this._maxViewableItems + 'px';
+        this.$.suggestionsWrapper.style.maxHeight = this._itemHeight * this.maxViewableItems + 'px';
       },
 
       /****************************
