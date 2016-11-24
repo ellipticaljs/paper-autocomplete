@@ -335,6 +335,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Number
         },
 
+        /*************
+         * PRIVATE
+         *************/
         // TODO: check if we need _value and _text properties. It seems they can be removed
         _value: {
           value: undefined
@@ -347,12 +350,24 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         _selectedOption: {
           type: Object,
           observer: '_onSelectedOptionChanged'
+        },
+
+        /**
+         * Indicates whether the clear button is visible or not
+         */
+        _isClearButtonVisible: {
+          type: Object,
+          value: false
         }
       },
 
       observers: [
         '_onQueryFnChanged(queryFn)'
       ],
+
+      listeners: {
+        'autocompleteInput.input': '_onInput'
+      },
 
       // Element Lifecycle
       ready: function () {
@@ -373,9 +388,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.text = '';
         this._text = '';
 
-        this.$.clear.style.display = 'none';
-
         this._fireEvent(option, 'reset');
+
+        this._hideClearButton();
+        this.$.autocompleteInput.focus();
       },
 
       _fireEvent: function (option, evt) {
@@ -402,6 +418,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _onQueryFnChanged: function () {
         this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
+      },
+
+      _onInput: function () {
+        if (this.$.autocompleteInput.value) {
+          this._showClearButton();
+        } else {
+          this._hideClearButton();
+        }
+      },
+
+      /**
+       * Show the clear button (X)
+       */
+      _showClearButton: function () {
+        if (this._isClearButtonVisible) {
+          return;
+        }
+
+        this.$.clear.style.display = 'block';
+        this._isClearButtonVisible = true;
+      },
+
+      /**
+       * Hide the clear button (X)
+       */
+      _hideClearButton: function () {
+        if (!this._isClearButtonVisible) {
+          return;
+        }
+
+        this.$.clear.style.display = 'none';
+        this._isClearButtonVisible = false;
+      },
+
+      _getId: function () {
+        var id = this.getAttribute('id');
+        if (!id) id = this.dataset.id;
+        return id;
       },
 
       /****************************
@@ -434,6 +488,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       setOption: function (option) {
         this.text = option[this.textProperty] || option.text;
         this.value = option[this.valueProperty] || option.value;
+
+        this._showClearButton();
       },
 
       /**
@@ -478,7 +534,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /**
-       * Resets the current input
+       * Resets the current input (DEPRECATED: please use clear)
        */
       reset: function () {
         this._clear();
@@ -488,12 +544,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Hides the suggestions popup
        */
       hideSuggestions: function () {
-        var self = this;
-
         setTimeout(function () {
-          self.$.clear.style.display = 'none';
-          self._hideSuggestionsWrapper();
-        }, 300);
+          this._hideClearButton();
+          this.$.paperpaperAutocompleteSuggestions._hideSuggestions();
+        }.bind(this), 300);
       }
 
       /**

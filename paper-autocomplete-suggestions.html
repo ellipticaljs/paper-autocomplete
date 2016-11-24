@@ -303,6 +303,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         suggestionsWrapper.style.display = 'block';
         suggestionsWrapper.setAttribute('role', 'listbox');
+
         this._isSuggestionsOpened = true;
       },
 
@@ -314,6 +315,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         suggestionsWrapper.style.display = 'none';
         suggestionsWrapper.removeAttribute('role');
+
         this._isSuggestionsOpened = false;
         this._idElementHighlighted = '';
         this._textOfHighlightedElement = '';
@@ -422,6 +424,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._value = this.value;
         this._text = this.text;
         this._emptyItems();
+
         this._fireEvent(selectedOption, 'selected');
 
         setTimeout(function () {
@@ -450,6 +453,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+      /**
+       * Event handler for the key ARROW DOWN press event
+       */
       _keydown: function () {
         var items = this._getItems();
         var length = items.length;
@@ -465,6 +471,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+      /**
+       * Event handler for the key ARROW UP press event
+       */
       _keyup: function () {
         var items = this._getItems();
         if (this._currentIndex > 0) {
@@ -478,6 +487,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
+      /**
+       * Event handler for the key ENTER press event
+       */
       _keyenter: function () {
         if (this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1) {
           var index = this._currentIndex;
@@ -544,6 +556,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this._selection(index);
       },
 
+      /**
+       * Event handler for the onBlur event
+       */
       _onBlur: function () {
         var option = {
           text: this.text,
@@ -557,6 +572,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }.bind(this), 300);
       },
 
+      /**
+       * Event handler for the onFocus event
+       */
       _onFocus: function () {
         var option = {
           text: this.text,
