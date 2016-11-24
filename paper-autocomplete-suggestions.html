@@ -77,6 +77,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <script>
   (function () {
+
     var DIRECTION = {
       UP: 'up',
       DOWN: 'down'
@@ -441,10 +442,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }.bind(this), 300);
       },
 
+      /**
+       * Get all suggestion elements
+       * @return {Array} a list of all suggestion elements
+       */
       _getItems: function () {
         return this.$.suggestionsWrapper.querySelectorAll('paper-item');
       },
 
+      /**
+       * Empty the list of current suggestions being displayed
+       */
       _emptyItems: function () {
         this._suggestions = [];
       },
@@ -455,11 +463,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return id;
       },
 
+      /**
+       * Remove the the active state from all suggestion items
+       */
       _removeActive: function (items) {
-        for (var i = 0; i < items.length; i++) {
-          items[i].classList.remove('active');
-          items[i].setAttribute('aria-selected', "false");
-        }
+        [].slice.call(items).forEach(function (item) {
+          item.classList.remove('active');
+          item.setAttribute('aria-selected', "false");
+        });
       },
 
       /**

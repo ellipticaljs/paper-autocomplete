@@ -408,6 +408,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       },
 
+      /**
+       * Callback called when source property changes
+       */
       _onSourceChanged: function () {
         this.$.paperAutocompleteSuggestions.source = this.source;
       },
@@ -420,6 +423,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
       },
 
+      /**
+       * On input event handler
+       */
       _onInput: function () {
         if (this.$.autocompleteInput.value) {
           this._showClearButton();
