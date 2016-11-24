@@ -80,6 +80,8 @@
                           min-length="2"></paper-autocomplete>
 
       <script>
+        var data = createMockData();
+
         document.querySelector('#input-remote').addEventListener('autocomplete-selected', onSelect);
         document.querySelector('#input-remote').addEventListener('autocomplete-change', onChange);
 
@@ -90,22 +92,42 @@
           paperToast.show();
         }
 
+        function createMockString() {
+            var textString = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            var length = Math.random() * (10 - 4) + 4;
+            var mockString = '';
+
+            for (var i = 0; i < length; i += 1) {
+                var stringIndex = Math.random() * (textString.length - 0);
+                mockString += textString.substring(stringIndex, stringIndex + 1);
+            }
+
+            return mockString;
+        }
+
+        function createMockData() {
+            var data = [];
+
+            for (var i = 0; i < 200; i += 1) {
+                data.push({
+                    text: createMockString(),
+                    value: createMockString()
+                });
+            }
+
+            return data;
+        }
+
         function onChange(event) {
           var input = document.querySelector('#input-remote');
           var search = event.detail.option.text;
-          var url = 'https://api.github.com/search/users?q=' + search + '+in:login';
-          var req = new XMLHttpRequest();
-          req.open('GET', encodeURI(url));
-          req.onload = function () {
-            if (req.status === 200) {
-              var data = JSON.parse(req.response);
-              var arr = data.items.map(function (obj) {
-                return {text: obj.login, value: obj.login};
-              });
-              input.suggestions(arr);
-            }
-          };
-          req.send();
+          var delay = Math.random() * (500 - 100) + 100;
+
+          setTimeout(function () {
+              input.suggestions(data.filter(function (obj) {
+                  return obj.text.indexOf(search) !== -1;
+              }));
+          }.bind(this), delay);
         }
       </script>
     </template>
