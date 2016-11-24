@@ -20,7 +20,8 @@
   },
   "scripts": {
     "serve": "polymer serve -o",
-    "postinstall": "bower i"
+    "postinstall": "bower i",
+    "test": "polymer test"
   },
   "devDependencies": {
     "bower-art-resolver": "^2.0.6",
@@ -37,6 +38,6 @@
      "sinon": "^1.17.6"
   },
   "dependencies": {
-   
+
   }
 }
