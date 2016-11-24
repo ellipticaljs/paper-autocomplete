@@ -108,26 +108,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         /**
-         * Id of the DOM element currently highlighted
+         * `true` if the suggestions list is open, `false otherwise`
          */
-        idElementHighlighted: {
-          type: String,
-          value: ''
-        },
-
-        /**
-         * Text value of the current highlighted value to be announce to the screen reader
-         */
-        textOfHighlightedElement: {
-          type: String
-        },
-
-        /**
-         * `true` if the suggestions list is opened, `false otherwise`
-         */
-        isSuggestionsOpened: {
+        isOpen: {
           type: Boolean,
-          value: false
+          value: false,
+          notify: true
         },
 
         /**
@@ -179,6 +165,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         eventNamespace: {
           type: String,
           value: '-'
+        },
+
+        /**
+         * Current highlighted suggestion. The structure of the object is:
+         * ```
+         * {
+         *    elementId: ID // id of the highlighted DOM element
+         *    option: // highlighted option data
+         * }
+         * ```
+         */
+        highlightedSuggestion: {
+          type: Object,
+          value: {},
+          notify: true
         },
 
         /**
@@ -314,7 +315,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suggestionsWrapper.style.display = 'block';
         suggestionsWrapper.setAttribute('role', 'listbox');
 
-        this._isSuggestionsOpened = true;
+        this.isOpen = true;
       },
 
       /**
@@ -326,9 +327,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         suggestionsWrapper.style.display = 'none';
         suggestionsWrapper.removeAttribute('role');
 
-        this._isSuggestionsOpened = false;
-        this._idElementHighlighted = '';
-        this._textOfHighlightedElement = '';
+        this.isOpen = false;
+        this.highlightedSuggestion = {};
       },
 
       _handleSuggestions: function (event) {
@@ -481,10 +481,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         switch (keyCode) {
           case KEY_CODES.DOWN_ARROW:
-            this._keydown();
+            this._moveHighlighted(DIRECTION.DOWN);
             break;
           case KEY_CODES.UP_ARROW:
-            this._keyup();
+            this._moveHighlighted(DIRECTION.UP);
             break;
           case KEY_CODES.ENTER:
             this._keyenter();
@@ -503,40 +503,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /**
-       * Event handler for the key ARROW DOWN press event
-       */
-      _keydown: function () {
-        var items = this._getItems();
-        var length = items.length;
-        length--;
-        if (this._currentIndex < length) {
-          this._removeActive(items);
-          this._currentIndex++;
-          items[this._currentIndex].classList.add('active');
-          items[this._currentIndex].setAttribute('aria-selected', "true");
-          this._idElementHighlighted = items[this._currentIndex].id;
-          this._textOfHighlightedElement = this._suggestions[this._currentIndex][this.textProperty];
-          this._scroll(DIRECTION.DOWN);
-        }
-      },
-
-      /**
-       * Event handler for the key ARROW UP press event
-       */
-      _keyup: function () {
-        var items = this._getItems();
-        if (this._currentIndex > 0) {
-          this._removeActive(items);
-          this._currentIndex--;
-          items[this._currentIndex].classList.add('active');
-          items[this._currentIndex].setAttribute('aria-selected', "true");
-          this._idElementHighlighted = items[this._currentIndex].id;
-          this._textOfHighlightedElement = this._suggestions[this._currentIndex][this.textProperty];
-          this._scroll(DIRECTION.UP);
-        }
-      },
-
-      /**
        * Event handler for the key ENTER press event
        */
       _keyenter: function () {
@@ -544,6 +510,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var index = this._currentIndex;
           this._selection(index);
         }
+      },
+
+      /**
+       *  Move the current highlighted suggestion up or down
+       *  @param {string} direction Possible values are DIRECTION.UP or DIRECTION.DOWN
+       */
+      _moveHighlighted: function (direction) {
+        var items = this._getItems();
+        var numberOfItems = items.length - 1;
+
+        var isFirstItem = this._currentIndex === 0;
+        var isLastItem = this._currentIndex === numberOfItems;
+
+        if ((direction === DIRECTION.UP && isFirstItem) || (direction === DIRECTION.DOWN && isLastItem)) {
+          return;
+        }
+
+        var modifier = direction === DIRECTION.DOWN ? 1 : -1;
+
+        this._currentIndex = this._currentIndex + modifier;
+
+        var highlightedOption = this._suggestions[this._currentIndex];
+        var highlightedItem = items[this._currentIndex];
+
+        this._removeActive(items);
+
+        highlightedItem.classList.add('active');
+        highlightedItem.setAttribute('aria-selected', 'true');
+
+        this._setHighlightedSuggestion(highlightedOption, highlightedItem.id);
+
+        this._scroll(direction);
       },
 
       /**
@@ -571,6 +569,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           var paperMaterial = this.$.suggestionsWrapper;
           paperMaterial.scrollTop = scrollTop;
         }
+      },
+
+      /**
+       * Set the current highlighted suggestion
+       * @param {Object} option Data of the highlighted option
+       * @param {string} elementId id of the highlighted dom element.
+       */
+      _setHighlightedSuggestion: function (option, elementId) {
+        this.highlightedSuggestion = {
+          option: option,
+          elementId: elementId,
+          textValue: option[this.textProperty],
+          value: option[this.valueProperty]
+        };
       },
 
       _fireEvent: function (option, evt) {

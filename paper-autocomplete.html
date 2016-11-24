@@ -164,14 +164,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                    role="textbox"
                    aria-autocomplete="list"
                    aria-multiline="false"
-                   aria-activedescendant$="[[_idElementHighlighted]]"
+                   aria-activedescendant$="[[_highlightedSuggestion.elementId]]"
                    aria-disabled$="[[disabled]]"
                    aria-controls="autocompleteStatus suggestionsWrapper"></paper-input>
 
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
 
       <!-- to announce current selection to screen reader -->
-      <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
+      <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
     </div>
 
     <paper-autocomplete-suggestions for="autocompleteInput"
@@ -181,7 +181,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                                     value-property="[[valueProperty]]"
                                     selected-option="{{_selectedOption}}"
                                     remote-source="[[remoteSource]]"
-                                    event-namespace="[[eventNamespace]]">
+                                    event-namespace="[[eventNamespace]]"
+                                    highlighted-suggestion="{{_highlightedSuggestion}}"
+                                    is-open="{{_isSuggestionsOpened}}">
 
       <content id="templates" select="[autocomplete-custom-template]"></content>
     </paper-autocomplete-suggestions>
