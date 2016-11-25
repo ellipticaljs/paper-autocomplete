@@ -51,8 +51,8 @@
 
   <template>
     <div>
-      <paper-material elevation="1">
-        <div id="suggestionsWrapper">
+      <paper-material elevation="1" id="suggestionsWrapper">
+        <div id="suggestionsWrapperContent">
           <!-- suggestions will be render here -->
         </div>
       </paper-material>
@@ -391,7 +391,7 @@
        *    in case no suggestions need to be rendered, you should either not call this method or provide an empty array.
        */
       _renderSuggestions: function (suggestions) {
-        var suggestionsContainer = this.$.suggestionsWrapper;
+        var suggestionsContainer = this.$.suggestionsWrapperContent;
 
         suggestionsContainer.innerHTML = '';
 
@@ -448,9 +448,7 @@
 
         this._fireEvent(selectedOption, 'selected');
 
-        setTimeout(function () {
-          this._hideSuggestionsWrapper();
-        }.bind(this), 300);
+        this.hideSuggestions();
       },
 
       /**
@@ -644,9 +642,7 @@
 
         this._fireEvent(option, 'blur');
 
-        setTimeout(function () {
-          this._hideSuggestionsWrapper();
-        }.bind(this), 300);
+        this.hideSuggestions();
       },
 
       /**

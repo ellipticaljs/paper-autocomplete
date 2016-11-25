@@ -175,7 +175,6 @@
                                     event-namespace="[[eventNamespace]]"
                                     highlighted-suggestion="{{_highlightedSuggestion}}"
                                     is-open="{{_isSuggestionsOpened}}">
-
       <content id="templates" select="[autocomplete-custom-template]"></content>
     </paper-autocomplete-suggestions>
   </template>
@@ -383,8 +382,10 @@
 
         this._fireEvent(option, 'reset');
 
+
+        console.log('clear');
         this._hideClearButton();
-        this.$.autocompleteInput.focus();
+        // this.$.autocompleteInput.focus();
       },
 
       _fireEvent: function (option, evt) {
@@ -405,6 +406,7 @@
        * Callback called when source property changes
        */
       _onSourceChanged: function () {
+        console.log('source changed');
         this.$.paperAutocompleteSuggestions.source = this.source;
       },
 
@@ -413,6 +415,7 @@
       },
 
       _onQueryFnChanged: function () {
+        console.log('fn changed');
         this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
       },
 
@@ -543,10 +546,8 @@
        * Hides the suggestions popup
        */
       hideSuggestions: function () {
-        setTimeout(function () {
-          this._hideClearButton();
-          this.$.paperpaperAutocompleteSuggestions._hideSuggestions();
-        }.bind(this), 300);
+        this._hideClearButton();
+        this.$.paperpaperAutocompleteSuggestions.hideSuggestions();
       }
 
       /**
