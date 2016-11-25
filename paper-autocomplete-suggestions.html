@@ -520,7 +520,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var items = this._getItems();
         var numberOfItems = items.length - 1;
 
-        var isFirstItem = this._currentIndex === 0;
+        var isFirstItem = this._currentIndex === 0 || this._currentIndex === -1;
         var isLastItem = this._currentIndex === numberOfItems;
 
         if ((direction === DIRECTION.UP && isFirstItem) || (direction === DIRECTION.DOWN && isLastItem)) {
