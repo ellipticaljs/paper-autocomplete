@@ -110,7 +110,7 @@
     });
 
     it('is closed when initialised', function () {
-      expect(element.$.suggestionsWrapper.style.display).to.not.equal('block');
+      expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.not.equal('block');
     });
 
     describe('when input is typed', function () {
@@ -118,13 +118,13 @@
 
       beforeEach(function () {
         input = element.$.autocompleteInput;
-        suggestions = element.$.suggestionsWrapper;
+        suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapperContent;
       });
 
       it('opens', function () {
         enterCharacter(input, 'A');
-
         suggestionItems = suggestions.querySelectorAll('paper-item');
+
         expect(suggestionItems.length).to.equal(5);
       });
 
@@ -172,7 +172,7 @@
         Polymer.dom.flush();
 
         setTimeout(function () {
-          expect(element.$.suggestionsWrapper.style.display).to.equal('none');
+          expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('none');
           done();
         }, 300);
       });
@@ -182,7 +182,7 @@
       input.value += char;
       MockInteractions.keyUpOn(input, char.charCodeAt(char.length - 1));
 
-      element.flushDebouncer('_onSuggestionChanged');
+      element.$.paperAutocompleteSuggestions.flushDebouncer('_onSuggestionChanged');
     }
 
     a11ySuite('basic');

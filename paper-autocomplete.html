@@ -175,7 +175,6 @@
                                     event-namespace="[[eventNamespace]]"
                                     highlighted-suggestion="{{_highlightedSuggestion}}"
                                     is-open="{{_isSuggestionsOpened}}">
-
       <content id="templates" select="[autocomplete-custom-template]"></content>
     </paper-autocomplete-suggestions>
   </template>
@@ -340,11 +339,6 @@
           value: undefined
         },
 
-        _selectedOption: {
-          type: Object,
-          observer: '_onSelectedOptionChanged'
-        },
-
         /**
          * Indicates whether the clear button is visible or not
          */
@@ -406,10 +400,6 @@
        */
       _onSourceChanged: function () {
         this.$.paperAutocompleteSuggestions.source = this.source;
-      },
-
-      _onSelectedOptionChanged: function () {
-        console.log('this.value', this._selectedOption);
       },
 
       _onQueryFnChanged: function () {
@@ -543,10 +533,8 @@
        * Hides the suggestions popup
        */
       hideSuggestions: function () {
-        setTimeout(function () {
-          this._hideClearButton();
-          this.$.paperpaperAutocompleteSuggestions._hideSuggestions();
-        }.bind(this), 300);
+        this._hideClearButton();
+        this.$.paperpaperAutocompleteSuggestions.hideSuggestions();
       }
 
       /**
