@@ -254,6 +254,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _onFocus: null,
             _onBlur: null
           }
+        },
+
+        /**
+         * Indicates if the the height of each suggestion item has been already calculated.
+         * The assumption is that item height is fixed and it will not change.
+         */
+        _hasItemHighBeenCalculated: {
+          type: Boolean,
+          value: false
         }
       },
 
@@ -416,11 +425,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           Polymer.dom.flush();
 
-          // TODO: only do it once
-          var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
-          if (firstSuggestionElement !== null) {
-            // Update maxHeight of suggestions wrapper depending on the height of each item result
-            this._itemHeight = firstSuggestionElement.offsetHeight;
+          this._resetScroll();
+
+          if (!this._hasItemHighBeenCalculated) {
+            var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
+
+            if (firstSuggestionElement !== null) {
+              // Update maxHeight of suggestions wrapper depending on the height of each item result
+              this._itemHeight = firstSuggestionElement.offsetHeight;
+
+              this._hasItemHighBeenCalculated = true;
+            }
           }
         }, 100);
       },
@@ -520,7 +535,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var items = this._getItems();
         var numberOfItems = items.length - 1;
 
-        var isFirstItem = this._currentIndex === 0 || this._currentIndex === -1;
+        var isFirstItem = this._currentIndex === 0;
         var isLastItem = this._currentIndex === numberOfItems;
         var isNoItemHighlighted = this._currentIndex === -1;
 
@@ -551,26 +566,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {string} direction Direction to scroll. Possible values are `DIRECTION.UP` and `DIRECTION.DOWN`.
        */
       _scroll: function (direction) {
-        var modifier, isSelectedOutOfView;
+        var newScrollValue, isSelectedOutOfView;
 
         var viewIndex = this._currentIndex - this._scrollIndex;
 
-        if (direction === DIRECTION.UP) {
-          modifier = -1;
+        // This happens only when user switch from last item to first one
+        var isFirstItemAndOutOfView = this._currentIndex === 0 && viewIndex < 0;
+
+        // This happens only when user switch from first or no item to last one
+        var isLastItemAndOutOfView =
+          this._currentIndex === this._suggestions.length - 1 && viewIndex >= this.maxViewableItems;
+
+        if (isFirstItemAndOutOfView && direction === DIRECTION.DOWN) {
+          newScrollValue = 0;
+          isSelectedOutOfView = true;
+        } else if (isLastItemAndOutOfView && direction === DIRECTION.UP) {
+          newScrollValue = this._suggestions.length - this.maxViewableItems;
+          isSelectedOutOfView = true;
+        } else if (direction === DIRECTION.UP) {
+          newScrollValue = this._scrollIndex - 1;
           isSelectedOutOfView = viewIndex < 0;
         } else {
-          modifier = +1;
-          isSelectedOutOfView = viewIndex >= this.maxViewableItems
+          newScrollValue = this._scrollIndex + 1;
+          isSelectedOutOfView = viewIndex >= this.maxViewableItems;
         }
 
         // Only when the current active element is out of view, we need to move the position of the scroll
         if (isSelectedOutOfView) {
-          this._scrollIndex = this._scrollIndex + modifier;
-
-          var scrollTop = (this._scrollIndex * this._itemHeight);
-          var paperMaterial = this.$.suggestionsWrapper;
-          paperMaterial.scrollTop = scrollTop;
+          this._scrollIndex = newScrollValue;
+          this.$.suggestionsWrapper.scrollTop = this._scrollIndex * this._itemHeight;
         }
+      },
+
+      /**
+       * Reset scroll back to zero
+       */
+      _resetScroll: function () {
+        this.$.suggestionsWrapper.scrollTop = 0;
       },
 
       /**
