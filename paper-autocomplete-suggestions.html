@@ -522,14 +522,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         var isFirstItem = this._currentIndex === 0 || this._currentIndex === -1;
         var isLastItem = this._currentIndex === numberOfItems;
+        var isNoItemHighlighted = this._currentIndex === -1;
 
-        if ((direction === DIRECTION.UP && isFirstItem) || (direction === DIRECTION.DOWN && isLastItem)) {
-          return;
+        if ((isNoItemHighlighted || isFirstItem) && direction === DIRECTION.UP) {
+          this._currentIndex = numberOfItems;
+        } else if (isLastItem && direction === DIRECTION.DOWN) {
+          this._currentIndex = 0;
+        } else {
+          var modifier = direction === DIRECTION.DOWN ? 1 : -1;
+          this._currentIndex = this._currentIndex + modifier;
         }
-
-        var modifier = direction === DIRECTION.DOWN ? 1 : -1;
-
-        this._currentIndex = this._currentIndex + modifier;
 
         var highlightedOption = this._suggestions[this._currentIndex];
         var highlightedItem = items[this._currentIndex];
