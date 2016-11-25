@@ -12,19 +12,15 @@
 <dom-module id="paper-autocomplete-suggestions">
   <style>
     paper-material {
-      position: absolute;
-      z-index: 1000;
-      width: 100%;
-      background-color: white;
-
-      @apply(--suggestions-wrapper);
-    }
-
-    #suggestionsWrapper {
-      position: relative;
       display: none;
+      position: absolute;
+      width: 100%;
+      z-index: 1000;
+      background-color: white;
       max-height: 252px;
       overflow-y: auto;
+
+      @apply(--suggestions-wrapper);
     }
 
     paper-item,
