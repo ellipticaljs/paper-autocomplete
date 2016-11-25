@@ -339,11 +339,6 @@
           value: undefined
         },
 
-        _selectedOption: {
-          type: Object,
-          observer: '_onSelectedOptionChanged'
-        },
-
         /**
          * Indicates whether the clear button is visible or not
          */
@@ -382,10 +377,8 @@
 
         this._fireEvent(option, 'reset');
 
-
-        console.log('clear');
         this._hideClearButton();
-        // this.$.autocompleteInput.focus();
+        this.$.autocompleteInput.focus();
       },
 
       _fireEvent: function (option, evt) {
@@ -406,16 +399,10 @@
        * Callback called when source property changes
        */
       _onSourceChanged: function () {
-        console.log('source changed');
         this.$.paperAutocompleteSuggestions.source = this.source;
       },
 
-      _onSelectedOptionChanged: function () {
-        console.log('this.value', this._selectedOption);
-      },
-
       _onQueryFnChanged: function () {
-        console.log('fn changed');
         this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
       },
 

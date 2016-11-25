@@ -52,9 +52,6 @@
   <template>
     <div>
       <paper-material elevation="1" id="suggestionsWrapper">
-        <div id="suggestionsWrapperContent">
-          <!-- suggestions will be render here -->
-        </div>
       </paper-material>
 
       <!-- Default suggestion template -->
@@ -391,7 +388,7 @@
        *    in case no suggestions need to be rendered, you should either not call this method or provide an empty array.
        */
       _renderSuggestions: function (suggestions) {
-        var suggestionsContainer = this.$.suggestionsWrapperContent;
+        var suggestionsContainer = this.$.suggestionsWrapper;
 
         suggestionsContainer.innerHTML = '';
 
@@ -404,6 +401,8 @@
 
           suggestionsContainer.appendChild(clone.root);
         }.bind(this));
+
+        suggestionsContainer.distributeContent(true);
       },
 
       /**
