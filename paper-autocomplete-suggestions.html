@@ -95,7 +95,7 @@
 
   Custom property | Description | Default
   ----------------|-------------|----------
-  `--paper-item-min-height` | paper item min height | `{}`
+  `--paper-item-min-height` | paper item min height | `36px`
   `--suggestions-container` | mixin to apply to the suggestions container | `{}`
 
   ### Accessibility
@@ -117,6 +117,10 @@
       overflow-y: auto;
 
       @apply(--suggestions-wrapper);
+    }
+
+    paper-item {
+      min-height: var(--paper-item-min-height, 36px);
     }
 
     paper-item,
