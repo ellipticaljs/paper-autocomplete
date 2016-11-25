@@ -5,7 +5,102 @@
 
 <!--
   `paper-autocomplete-suggestions`
-  TODO: add documentation and examples
+  Allows to add autocomplete capabilities to any input field. This is desirable when you have an input field with custom
+  logic and you just want to add the feature to help users with the selection. If you want to use it in combination with
+  a regular `<paper-input>`, you can use `<paper-autocomplete>`.
+
+  Example:
+  ```
+  <div class="autocomplete-wrapper">
+    <paper-input id="myInput" label="Select State"></paper-input>
+
+    <paper-autocomplete-suggestions
+      for="myInput"
+      source="[[accounts]]"></paper-autocomplete-suggestions>
+  </div>
+  ```
+
+  It is **important to provide both `textProperty` and `valueProperty` when working with a custom search function and
+  or custom templates.** They are needed to keep the component accessible and for the events (e.g. onSelect) to keep
+  working.
+
+  ### Custom search
+  This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
+  all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
+  component search for items that start with the recent query (case insensitive).
+  You can override this behavior providing your own query function, as long as these two requirements are fulfill:
+  - The query function is synchronous.
+  - The API is respected and the method always return an Array.
+  The template use to render each suggestion depends on the structure of each object that this method returns. For the
+  default template, each suggestion should follow this object structure:
+  ```
+    {
+      text: objText,
+      value: objValue
+    }
+  ```
+
+  This function is only used when a local data source is used. When using a `remoteDataSource` user is responsible of
+  doing the search and specify suggestions manually.
+
+  ### Custom templates
+  A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
+  the template. Please, read carefully all this section to know them.
+  In order to set your own template, you need to add a `<template>` tag with the attribute
+  `autocomplete-custom-template` ahd the following structure:
+
+  ```
+  <paper-autocomplete-suggestions
+      for="myInput"
+      source="[[accounts]]"
+      text-property="accountNumber"
+      value-property="id">
+
+      <template autocomplete-custom-template>
+        <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+          YOUR CUSTOM TEMPLATE
+          <paper-ripple></paper-ripple>
+        </paper-item>
+      </template>
+  </paper-autocomplete-suggestions>
+  ```
+
+  You need to always maintain this structure. Then you can customize the content of paper-item. These are the reasons
+  why you need to maintain it:
+
+  - `_onSelect` it is very important because it will notify the `autocomplete` component when user selects one item.
+  If you don't add this option, when user clicks in one of the items, nothing will happen.
+  - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
+  will continue working but it will not be accessible for user with disabilities.
+
+  It is important to clarify that methods `_onSelect` and `_getSuggestionId` do not need to be implemented. They are
+  part of the logic of `paper-autocomplete-suggestions`.
+
+  When providing your own custom template, you might also need to provide your own custom search function. The reason
+  for that is that the default search function only exposes text and value in the results. If each item in your data
+  source contains more information, then you won't be able to access it. See the code of `<address-autocomplete>`
+  element in the demo folder for a complete example.
+
+  Another important thing to point out is related to the height of each suggestion item in the results. The height of
+  the suggestion template changes dynamically depending on the height of a suggestion item. However, the following
+  assumptions were made:
+  - All suggestions items have the same height
+  - The height of each item is fixed and can be determined at any time. For example, if you want to use images in the
+  results, make sure they have a placeholder or a fixed height.
+
+  ### Styling
+
+  `<paper-autocomplete-suggestions>` provides the following custom properties and mixins
+  for styling:
+
+  Custom property | Description | Default
+  ----------------|-------------|----------
+  `--paper-item-min-height` | paper item min height | `{}`
+  `--suggestions-container` | mixin to apply to the suggestions container | `{}`
+
+  ### Accessibility
+
+  TODO
 
   @demo demo/paper-autocomplete-suggestions-demo.html
 -->
