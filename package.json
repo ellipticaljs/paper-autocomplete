@@ -26,8 +26,8 @@
   "devDependencies": {
     "bower-art-resolver": "^2.0.6",
     "bower-ing-resolver": "^1.0.0",
-    "web-component-tester": "^3.4.1",
-    "web-component-tester-istanbul": "^0.10.0",
+    "eslint": "^3.11.0",
+    "eslint-plugin-html": "^1.7.0",
     "fs-extra": "^0.8.1",
     "gulp": "^3.8.7",
     "gulp-concat": "^2.2.0",
@@ -35,9 +35,62 @@
     "gulp-uglify": "^0.2.1",
     "gulp-util": "^2.2.14",
     "polymer-cli": "^0.16.0",
-     "sinon": "^1.17.6"
+    "sinon": "^1.17.6",
+    "web-component-tester": "^3.4.1",
+    "web-component-tester-istanbul": "^0.10.0"
   },
-  "dependencies": {
-
+  "dependencies": {},
+  "eslintConfig": {
+    "env": {
+      "browser": true
+    },
+    "plugins": ["eslint-plugin-html"],
+    "globals": {
+      "Polymer": false
+    },
+    "rules": {
+      "comma-spacing": 2,
+      "eol-last": 2,
+      "eqeqeq": 2,
+      "new-parens": 2,
+      "no-debugger": 2,
+      "no-dupe-args": 2,
+      "no-dupe-keys": 2,
+      "no-duplicate-case": 2,
+      "no-ex-assign": 2,
+      "no-fallthrough": 2,
+      "no-invalid-this": 2,
+      "no-multiple-empty-lines": [
+        2, {
+          "max": 1
+        }
+      ],
+      "no-trailing-spaces": 2,
+      "no-undef": 2,
+      "no-unreachable": 2,
+      "no-unused-vars": [
+        2, {
+          "vars": "all",
+          "args": "after-used"
+        }
+      ],
+      "prefer-const": 2,
+      "quotes": [
+        2, "single", "avoid-escape"
+      ],
+      "semi": 2,
+      "keyword-spacing": 2,
+      "space-before-blocks": [
+        2, "always"
+      ],
+      "space-before-function-paren": ["error", {
+        "anonymous": "always",
+        "named": "ignore",
+        "asyncArrow": "ignore"
+      }],
+      "space-infix-ops": 2,
+      "strict": 0,
+      "valid-typeof": 2
+    }
   }
 }

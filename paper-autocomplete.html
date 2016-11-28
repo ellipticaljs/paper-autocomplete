@@ -3,8 +3,10 @@
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
-
 <link rel="import" href="./paper-autocomplete-suggestions.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-ripple/paper-ripple.html">
+<link rel="import" href="../paper-material/paper-material.html">
 
 <!--
   `paper-autocomplete`
@@ -95,14 +97,12 @@
 
   @demo demo/index.html
 -->
-
 <dom-module id="paper-autocomplete">
   <style>
-    :host {
+     :host {
       display: block;
       box-sizing: border-box;
       position: relative;
-
       --paper-input-container-focus-color: #2196f3;
     }
 
@@ -124,14 +124,8 @@
       clip: rect(1px, 1px, 1px, 1px);
     }
   </style>
-
   <template>
-    <div class="input-wrapper"
-         role="combobox"
-         aria-haspopup="true"
-         aria-owns="suggestionsWrapper"
-         aria-expanded$="[[_isSuggestionsOpened]]">
-
+    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded$="[[_isSuggestionsOpened]]">
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
       <label for="autocompleteInput" class="sr-only">[[label]]</label>
 
@@ -159,7 +153,6 @@
                    aria-controls="autocompleteStatus suggestionsWrapper"></paper-input>
 
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
-
       <!-- to announce current selection to screen reader -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
     </div>
@@ -178,7 +171,6 @@
     </paper-autocomplete-suggestions>
   </template>
 </dom-module>
-
 <script>
   (function () {
     Polymer({
