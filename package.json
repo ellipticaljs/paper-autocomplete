@@ -24,8 +24,6 @@
     "test": "polymer test"
   },
   "devDependencies": {
-    "bower-art-resolver": "^2.0.6",
-    "bower-ing-resolver": "^1.0.0",
     "eslint": "^3.11.0",
     "eslint-plugin-html": "^1.7.0",
     "fs-extra": "^0.8.1",
