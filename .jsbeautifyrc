@@ -4,7 +4,7 @@
   "indent_level": 0,
   "indent_with_tabs": false,
   "preserve_newlines": true,
-  "max_preserve_newlines": 4,
+  "max_preserve_newlines": 2,
   "jslint_happy": true,
   "space_after_anon_function": true,
   "brace_style": "collapse",
