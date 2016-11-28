@@ -89,7 +89,6 @@
   results, make sure they have a placeholder or a fixed height.
 
   ### Styling
-
   `<paper-autocomplete-suggestions>` provides the following custom properties and mixins
   for styling:
 
@@ -99,8 +98,19 @@
   `--suggestions-container` | mixin to apply to the suggestions container | `{}`
 
   ### Accessibility
+  This component exposes certain necessary values in order to make your component accessible. When checking the ARIA
+  specs, it is said that you need to inform users of the following changes:
+  - Whether the popup with suggestions is open or not.
+  - Id of the currently highlighted element
 
-  TODO
+ You can access these values using the following properties: `isOpen` and `highlightedSuggestion`. The id of each
+ element in highlightedSuggestion a random and unique id.
+
+ In addition, as long as developers follow the general structure of each suggestion template, the following A11Y
+ features are set in each suggestion:
+ - `role="option"`
+ - `aria-selected="true|false"`. This value will be false for all suggestion except in the one which is currently
+ highlighted.
 
   @demo demo/paper-autocomplete-suggestions-demo.html
 -->
@@ -240,6 +250,10 @@
           type: Array
         },
 
+        /**
+         *  Object containing information about the current selected option. The structure of the object depends on the
+         *  structure of each element in the data source.
+         */
         selectedOption: {
           type: Object,
           notify: true
@@ -296,10 +310,18 @@
           observer: '_onSuggestionsChanged'
         },
 
+        /**
+         * Indicates the position in the suggestions popup of the currently highlighted element, being `0` the first one,
+         * and `this._suggestions.length - 1` the position of the last one.
+         */
         _currentIndex: {
           value: -1
         },
 
+        /**
+         * Indicates the current position of the scroll. Then the `scrollTop` position is calculated multiplying the
+         * `_itemHeight` with the current index.
+         */
         _scrollIndex: {
           value: 0
         },
