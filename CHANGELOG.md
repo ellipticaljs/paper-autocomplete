@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.1.1 (2016-11-29)
+
+### Bug Fixes
+- Bumping version to avoid a possible version conflict with Beta and RC versions.
+
 ## Release 2.1.0 (2016-11-29)
 
 ### New Features
