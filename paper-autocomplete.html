@@ -1,17 +1,9 @@
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="./paper-autocomplete-suggestions.html">
 <link rel="import" href="../paper-item/paper-item.html">
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-material/paper-material.html">
@@ -31,11 +23,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   ### Custom search
   This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
   all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
-  component search for items that start with the recent query (case insensitive).
-  You can override this behavior providing your own query function, as long as these two requirements are fulfill:
+  component searches for items that start with the recent query (case insensitive).
+  You can override this behavior providing your own query function, as long as these two requirements are fulfilled:
   - The query function is synchronous.
-  - The API is respected and the method always return an Array.
-  The template use to render each suggestion depends on the structure of each object that this method returns. For the
+  - The API is respected and the method always returns an Array.
+  The template used to render each suggestion depends on the structure of each object that this method returns. For the
   default template, each suggestion should follow this object structure:
   ```
     {
@@ -44,14 +36,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   ```
 
-  This function is only used when a local data source is used. When using a `remoteDataSource` user is responsible of
+  This function is only used when a local data source is used. When using a `remoteDataSource` user is responsible for
   doing the search and specify suggestions manually.
 
   ### Custom templates
   A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
-  the template. Please, read carefully all this section to know them.
+  the template. Please, read this section carefully to know them.
   In order to set your own template, you need to add a `<template>` tag with the attribute
-  `autocomplete-custom-template` ahd the following structure:
+  `autocomplete-custom-template` and the following structure:
 
   ```
   <paper-autocomplete>
@@ -70,14 +62,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   - `_onSelect` it is very important because it will notify the `autocomplete` component when user selects one item.
   If you don't add this option, when user clicks in one of the items, nothing will happen.
   - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
-  will continue working but it will not be accessible for user with disabilities.
+  will continue working but it will not be accessible for users with disabilities.
 
   It is important to clarify that methods `_onSelect` and `_getSuggestionId` do not need to be implemented. They are
   part of the logic of `paper-autocomplete`.
 
   When providing your own custom template, you might also need to provide your own custom search function. The reason
   for that is that the default search function only exposes text and value in the results. If each item in your data
-  source contains more information, then you won't be able to access it. See the code of `<address-autocomplete>`
+  source contains more information, then you won't be able to access it. See the code of the `<address-autocomplete>`
   element in the demo folder for a complete example.
 
   Another important thing to point out is related to the height of each suggestion item in the results. The height of
@@ -95,7 +87,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   Custom property | Description | Default
   ----------------|-------------|----------
   `--paper-input-container-focus-color` | sets the components input container focus color | #2196f3
-  `--paper-item-min-height` | paper item min height | `{}`
+  `--paper-item-min-height` | paper item min height | `36px`
+  `--suggestions-container` | mixin to apply to the suggestions container | `{}`
 
   ### Accessibility
 
@@ -104,16 +97,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   @demo demo/index.html
 -->
-
 <dom-module id="paper-autocomplete">
   <style>
-    :host {
+     :host {
       display: block;
       box-sizing: border-box;
       position: relative;
-
       --paper-input-container-focus-color: #2196f3;
-      --paper-item-min-height: 36px;
     }
 
     .input-wrapper {
@@ -122,38 +112,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     .input-wrapper paper-input {
       @apply(--layout-flex);
-    }
-
-    #suggestionsWrapper {
-      display: none;
-      background-color: white;
-      max-height: 252px;
-      overflow-y: scroll;
-      width: 100%;
-      position: absolute;
-      z-index: 1000;
-    }
-
-    :host[suggestions-in-overlay="true"] #suggestionsWrapper {
-    }
-
-    paper-item,
-    :host ::content paper-item {
-      position: relative;
-      line-height: 18px;
-    }
-
-    paper-item:hover,
-    :host ::content paper-item:hover {
-      background: #eee;
-      color: #333;
-      cursor: pointer;
-    }
-
-    paper-item.active,
-    :host ::content paper-item.active {
-      background: #eee;
-      color: #333;
     }
 
     #clear {
@@ -166,18 +124,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       clip: rect(1px, 1px, 1px, 1px);
     }
   </style>
-
   <template>
-    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper autocompleteStatus"
-         aria-expanded$="[[_isSuggestionsOpened]]">
-
+    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded$="[[_isSuggestionsOpened]]">
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
-      <label for="input" class="sr-only">[[label]]</label>
+      <label for="autocompleteInput" class="sr-only">[[label]]</label>
 
-      <paper-input id="input"
+      <paper-input id="autocompleteInput"
                    label="[[label]]"
                    no-label-float="[[noLabelFloat]]"
-                   on-keyup="_onKeypress"
                    disabled="{{disabled}}"
                    auto-validate$="[[autoValidate]]"
                    error-message$="[[errorMessage]]"
@@ -194,48 +148,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                    role="textbox"
                    aria-autocomplete="list"
                    aria-multiline="false"
-                   aria-activedescendant$="[[_idElementHighlighted]]"
+                   aria-activedescendant$="[[_highlightedSuggestion.elementId]]"
                    aria-disabled$="[[disabled]]"
                    aria-controls="autocompleteStatus suggestionsWrapper"></paper-input>
 
       <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
-
       <!-- to announce current selection to screen reader -->
-      <span id="autocompleteStatus" role="status" class="sr-only">[[_textOfHighlightedElement]]</span>
+      <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
     </div>
 
-    <paper-material elevation="1">
-      <div id="suggestionsWrapper" role="listbox">
-        <!-- suggestions will be render here -->
-      </div>
-    </paper-material>
-
-    <!-- Default suggestion template -->
-    <template id="defaultTemplate">
-      <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false" on-tap="_onSelect">
-        <div>[[_getItemText(item)]]</div>
-        <paper-ripple></paper-ripple>
-      </paper-item>
-    </template>
-
-    <!-- Custom template -->
-    <content id="templates" select="[autocomplete-custom-template]"></content>
+    <paper-autocomplete-suggestions for="autocompleteInput"
+                                    id="paperAutocompleteSuggestions"
+                                    min-length="[[minLength]]"
+                                    text-property="[[textProperty]]"
+                                    value-property="[[valueProperty]]"
+                                    selected-option="{{_selectedOption}}"
+                                    remote-source="[[remoteSource]]"
+                                    event-namespace="[[eventNamespace]]"
+                                    highlighted-suggestion="{{_highlightedSuggestion}}"
+                                    is-open="{{_isSuggestionsOpened}}">
+      <content id="templates" select="[autocomplete-custom-template]"></content>
+    </paper-autocomplete-suggestions>
   </template>
 </dom-module>
-
 <script>
   (function () {
-    var DIRECTION = {
-      UP: 'up',
-      DOWN: 'down'
-    };
-
     Polymer({
       is: 'paper-autocomplete',
-
-      behaviors: [
-        Polymer.Templatizer
-      ],
 
       properties: {
         /**
@@ -285,7 +224,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         /**
          * `source` Array of objects with the options to execute the autocomplete feature
          */
-        source: Array,
+        source: {
+          type: Array,
+          observer: '_onSourceChanged'
+        },
 
         /**
          * Property of local datasource to as the text property
@@ -348,6 +290,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
          * Minimum length to trigger suggestions
          */
         minLength: {
+          type: Number,
           value: 1
         },
 
@@ -376,49 +319,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Number
         },
 
-        /**
-         * Reference to the current suggestion template
-         */
-        _suggestionTemplate: {
-          type: Object,
-          value: function () {
-            var customTemplate = this.getEffectiveChildren();
-
-            return customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
-          }
-        },
-
-        /**
-         * `_suggestions` Array with the actual suggestions to display
-         */
-        _suggestions: {
-          type: Array,
-          observer: '_onSuggestionsChanged'
-        },
-
-        _currentIndex: {
-          value: -1
-        },
-
-        _scrollIndex: {
-          value: 0
-        },
-
-        /**
-         * Max number of suggestions to be displayed without scrolling
-         */
-        _maxViewableItems: {
-          value: 7
-        },
-
-        /**
-         * Height of each suggestion element in pixels
-         */
-        _itemHeight: {
-          value: 36,
-          observer: '_itemHeightChanged'
-        },
-
+        /*************
+         * PRIVATE
+         *************/
         // TODO: check if we need _value and _text properties. It seems they can be removed
         _value: {
           value: undefined
@@ -429,61 +332,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         },
 
         /**
-         * This value is used as a base to generate unique individual ids that need to be added to each suggestion for
-         * accessibility reasons.
+         * Indicates whether the clear button is visible or not
          */
-        _idItemSeed: {
-          type: String,
-          value: 'aria-' + new Date().getTime() + '-' + (Math.floor(Math.random() * 1000)),
-          readOnly: true
-        },
-
-        /**
-         * Id of the DOM element currently highlighted
-         */
-        _idElementHighlighted: {
-          type: String,
-          value: ''
-        },
-
-        /**
-         * Text value of the current highlighted value to be announce to the screen reader
-         */
-        _textOfHighlightedElement: {
-          type: String
-        },
-
-        /**
-         * `true` if the suggestions list is opened, `false otherwise`
-         */
-        _isSuggestionsOpened: {
+        _isClearButtonVisible: {
           type: Boolean,
           value: false
         }
       },
 
-      // Element Lifecycle
-
-      ready: function () {
-        this._value = this.value;
-
-        // This is important to be able to access component methods inside the templates used with Templatizer
-        this.dataHost = this;
-
-        // templatize must be called once before stamp is called
-        this.templatize(this._suggestionTemplate);
-      },
-
-      detached: function () {
-        this.cancelDebouncer('_onSuggestionChanged');
-      },
+      observers: [
+        '_onQueryFnChanged(queryFn)'
+      ],
 
       listeners: {
-        'input.focus': '_onFocus',
-        'input.blur': '_onBlur'
+        'autocompleteInput.input': '_onInput'
       },
 
-      // Element Behavior
+      // Element Lifecycle
+      ready: function () {
+        this._value = this.value;
+      },
 
       /**
        * Clears the input text
@@ -499,241 +367,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.text = '';
         this._text = '';
 
-        this.$.clear.style.display = 'none';
-
-        this._hideSuggestionsWrapper();
-        this._emptyItems();
-
         this._fireEvent(option, 'reset');
-      },
 
-      /**
-       * Get the text property from the suggestion
-       * @param {Object} suggestion The suggestion item
-       * @return {String}
-       */
-      _getItemText: function (suggestion) {
-        return suggestion[this.textProperty];
-      },
-
-      /**
-       * Show the suggestions wrapper
-       */
-      _showSuggestionsWrapper: function () {
-        this.$.suggestionsWrapper.style.display = 'block';
-        this._isSuggestionsOpened = true;
-      },
-
-      /**
-       * Hide the suggestions wrapper
-       */
-      _hideSuggestionsWrapper: function () {
-        this.$.suggestionsWrapper.style.display = 'none';
-        this._isSuggestionsOpened = false;
-        this._idElementHighlighted = '';
-        this._textOfHighlightedElement = '';
-      },
-
-      _handleSuggestions: function (event) {
-        if (!this.remoteSource) this._createSuggestions(event);
-        else this._remoteSuggestions(event);
-      },
-
-      _remoteSuggestions: function (event) {
-        var value = event.target.value;
-        var option = {
-          text: this.text,
-          value: value
-        };
-
-        if (value && value.length >= this.minLength) {
-          this._fireEvent(option, 'change');
-        } else {
-          this.$.clear.style.display = 'none';
-          this._suggestions = [];
-        }
-      },
-
-      _bindSuggestions: function (arr) {
-        if (arr.length && arr.length > 0) {
-          this._suggestions = arr;
-          this._currentIndex = -1;
-          this._scrollIndex = 0;
-          if (!this.disableShowClear) this.$.clear.style.display = 'block';
-        } else {
-          this.$.clear.style.display = 'none';
-          this._suggestions = [];
-        }
-      },
-
-      _createSuggestions: function (event) {
-        this._currentIndex = -1;
-        this._scrollIndex = 0;
-        var value = event.target.value;
-        if (value && value.length >= this.minLength) {
-          value = value.toLowerCase();
-
-          // Shows the clear button.
-          if (!this.disableShowClear) this.$.clear.style.display = 'block';
-
-          // Search for the word in the source properties.
-          if (this.source && this.source.length > 0) {
-            // Call queryFn. User can override queryFn() to provide custom search functionality
-            this._suggestions = this.queryFn(this.source, value);
-          }
-        } else {
-          this.$.clear.style.display = 'none';
-          this._suggestions = [];
-        }
-      },
-
-      /**
-       * Render suggestions in the suggestionsWrapper container
-       * @param {Array} suggestions An array containing the suggestions to be rendered. This value is not optional, so
-       *    in case no suggestions need to be rendered, you should either not call this method or provide an empty array.
-       */
-      _renderSuggestions: function (suggestions) {
-        var suggestionsContainer = this.$.suggestionsWrapper;
-
-        suggestionsContainer.innerHTML = '';
-
-        suggestions.forEach(function (result, index) {
-          // clone the template and bind with the model
-          var clone = this.stamp({
-            item: result,
-            index: index
-          });
-
-          suggestionsContainer.appendChild(clone.root);
-        }.bind(this));
-      },
-
-      /**
-       * Listener to changes to _suggestions state
-       */
-      _onSuggestionsChanged: function () {
-        this.debounce('_onSuggestionChanged', function () {
-          this._renderSuggestions(this._suggestions);
-
-          if (this._suggestions.length > 0) {
-            this._showSuggestionsWrapper();
-          } else {
-            this._hideSuggestionsWrapper();
-          }
-
-          Polymer.dom.flush();
-
-          var firstSuggestionElement = this.$.suggestionsWrapper.querySelector('paper-item');
-          if (firstSuggestionElement !== null) {
-            // Update maxHeight of suggestions wrapper depending on the height of each item result
-            this._itemHeight = firstSuggestionElement.offsetHeight;
-          }
-        }, 100);
-      },
-
-      _selection: function (index) {
-        var selectedOption = this._suggestions[index];
-        var self = this;
-        this.text = selectedOption[this.textProperty];
-        this.value = selectedOption[this.valueProperty];
-        this._value = this.value;
-        this._text = this.text;
-        this.$.clear.style.display = 'none';
-        this._emptyItems();
-        this._fireEvent(selectedOption, 'selected');
-
-        setTimeout(function () {
-          self._hideSuggestionsWrapper();
-        }, 300);
-      },
-
-      _getItems: function () {
-        return this.$.suggestionsWrapper.querySelectorAll('paper-item');
-      },
-
-      _emptyItems: function () {
-        this._suggestions = [];
-      },
-
-      _getId: function () {
-        var id = this.getAttribute('id');
-        if (!id) id = this.dataset.id;
-        return id;
-      },
-
-      _removeActive: function (items) {
-        for (var i = 0; i < items.length; i++) {
-          items[i].classList.remove('active');
-          items[i].setAttribute('aria-selected', "false");
-        }
-      },
-
-      _keydown: function () {
-        var items = this._getItems();
-        var length = items.length;
-        length--;
-        if (this._currentIndex < length) {
-          this._removeActive(items);
-          this._currentIndex++;
-          items[this._currentIndex].classList.add('active');
-          items[this._currentIndex].setAttribute('aria-selected', "true");
-          this._idElementHighlighted = items[this._currentIndex].id;
-          this._textOfHighlightedElement = this._suggestions[this._currentIndex][this.textProperty];
-          this._scroll(DIRECTION.DOWN);
-        }
-      },
-
-      _keyup: function () {
-        var items = this._getItems();
-        if (this._currentIndex > 0) {
-          this._removeActive(items);
-          this._currentIndex--;
-          items[this._currentIndex].classList.add('active');
-          items[this._currentIndex].setAttribute('aria-selected', "true");
-          this._idElementHighlighted = items[this._currentIndex].id;
-          this._textOfHighlightedElement = this._suggestions[this._currentIndex][this.textProperty];
-          this._scroll(DIRECTION.UP);
-        }
-      },
-
-      _keyenter: function () {
-        if (this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1) {
-          var index = this._currentIndex;
-          this._selection(index);
-        }
-      },
-
-      /**
-       * Move scroll (if needed) to display the active element in the suggestions list.
-       * @param {string} direction Direction to scroll. Possible values are `DIRECTION.UP` and `DIRECTION.DOWN`.
-       */
-      _scroll: function (direction) {
-        var modifier, isSelectedOutOfView;
-
-        var viewIndex = this._currentIndex - this._scrollIndex;
-
-        if (direction === DIRECTION.UP) {
-          modifier = -1;
-          isSelectedOutOfView = viewIndex < 0;
-        } else {
-          modifier = +1;
-          isSelectedOutOfView = viewIndex >= this._maxViewableItems
-        }
-
-        // Only when the current active element is out of view, we need to move the position of the scroll
-        if (isSelectedOutOfView) {
-          this._scrollIndex = this._scrollIndex + modifier;
-
-          var scrollTop = (this._scrollIndex * this._itemHeight);
-          var paperMaterial = this.$.suggestionsWrapper;
-          paperMaterial.scrollTop = scrollTop;
-        }
+        this._hideClearButton();
+        this.$.autocompleteInput.focus();
       },
 
       _fireEvent: function (option, evt) {
         var id = this._getId();
         var event = 'autocomplete' + this.eventNamespace + evt;
 
+        // TODO: this might not be needed
         this.fire(event, {
           id: id,
           value: option[this.valueProperty] || option.value,
@@ -743,64 +387,56 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         });
       },
 
-      _onKeypress: function (event) {
-        var which = event.which;
+      /**
+       * Callback called when source property changes
+       */
+      _onSourceChanged: function () {
+        this.$.paperAutocompleteSuggestions.source = this.source;
+      },
 
-        if (which === 40) {
-          this._keydown();
-        } else if (which === 38) {
-          this._keyup(event);
-        } else if (which === 13) {
-          this._keyenter();
+      _onQueryFnChanged: function () {
+        this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
+      },
+
+      /**
+       * On input event handler
+       */
+      _onInput: function () {
+        if (this.$.autocompleteInput.value) {
+          this._showClearButton();
         } else {
-          this._handleSuggestions(event);
+          this._hideClearButton();
         }
       },
 
-      _onSelect: function (event) {
-        var index = event.model.index;
-        this._selection(index);
-      },
+      /**
+       * Show the clear button (X)
+       */
+      _showClearButton: function () {
+        if (this._isClearButtonVisible) {
+          return;
+        }
 
-      _onBlur: function () {
-        var self = this;
-        var option = {
-          text: this.text,
-          value: this.value
-        };
-
-        this._fireEvent(option, 'blur');
-
-        setTimeout(function () {
-          self.$.clear.style.display = 'none';
-          self._hideSuggestionsWrapper();
-        }, 300);
-      },
-
-      _onFocus: function () {
-        var option = {
-          text: this.text,
-          value: this.value
-        };
-
-        this._fireEvent(option, 'focus');
+        this.$.clear.style.display = 'block';
+        this._isClearButtonVisible = true;
       },
 
       /**
-       * Generate a suggestion id for a certain index
-       * @param {number} index Position of the element in the suggestions list
-       * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
-       * @private
+       * Hide the clear button (X)
        */
-      _getSuggestionId: function (index) {
-        return this._idItemSeed + '-' + index;
+      _hideClearButton: function () {
+        if (!this._isClearButtonVisible) {
+          return;
+        }
+
+        this.$.clear.style.display = 'none';
+        this._isClearButtonVisible = false;
       },
 
-      /**
-       * When item height is changed, the maxHeight of the suggestionWrapper need to be updated
-       */
-      _itemHeightChanged: function () {
-        this.$.suggestionsWrapper.style.maxHeight = this._itemHeight * this._maxViewableItems + 'px';
+      _getId: function () {
+        var id = this.getAttribute('id');
+        if (!id) id = this.dataset.id;
+        return id;
       },
 
       /****************************
@@ -833,6 +469,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       setOption: function (option) {
         this.text = option[this.textProperty] || option.text;
         this.value = option[this.valueProperty] || option.value;
+
+        this._showClearButton();
       },
 
       /**
@@ -840,7 +478,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       disable: function () {
         this.disabled = true;
-        this.$.input.disabled = true;
+        this.$.autocompleteInput.disabled = true;
       },
 
       /**
@@ -848,7 +486,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        */
       enable: function () {
         this.disabled = false;
-        this.$.input.disabled = false;
+        this.$.autocompleteInput.disabled = false;
       },
 
       /**
@@ -856,7 +494,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @param {Array} arr
        */
       suggestions: function (arr) {
-        this._bindSuggestions(arr);
+        this.$.paperAutocompleteSuggestions.suggestions(arr);
       },
 
       /**
@@ -864,7 +502,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @returns {Boolean}
        */
       validate: function () {
-        return this.$.input.validate();
+        return this.$.autocompleteInput.validate();
       },
 
       /**
@@ -877,7 +515,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       },
 
       /**
-       * Resets the current input
+       * Resets the current input (DEPRECATED: please use clear)
        */
       reset: function () {
         this._clear();
@@ -887,46 +525,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * Hides the suggestions popup
        */
       hideSuggestions: function () {
-        var self = this;
-
-        setTimeout(function () {
-          self.$.clear.style.display = 'none';
-          self._hideSuggestionsWrapper();
-        }, 300);
-      },
-
-      /**
-       * Query function is called on each keystroke to query the data source and returns the suggestions that matches
-       * with the filtering logic included.
-       * @param {Array} datasource An array containing all items before filtering
-       * @param {string} query Current value in the input field
-       * @returns {Array} an array containing only those items in the data source that matches the filtering logic.
-       */
-      queryFn: function (datasource, query) {
-        var queryResult = [];
-
-        datasource.forEach(function (item) {
-          var objText, objValue;
-
-          if (typeof item === 'object') {
-            objText = item[this.textProperty];
-            objValue = item[this.valueProperty]
-          } else {
-            objText = item.toString();
-            objValue = objText;
-          }
-
-          if (objText.toLowerCase().indexOf(query) === 0) {
-            // NOTE: the structure of the result object matches with the current template. For custom templates, you
-            // might need to return more data
-            queryResult.push({
-              text: objText,
-              value: objValue
-            });
-          }
-        }.bind(this));
-
-        return queryResult;
+        this._hideClearButton();
+        this.$.paperpaperAutocompleteSuggestions.hideSuggestions();
       }
 
       /**

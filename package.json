@@ -1,7 +1,7 @@
 {
   "name": "paper-autocomplete",
   "description": "Material Design autocomplete component.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "author": "S. Francis <sfrancis@misinteractive.com>",
   "contributors": [
     "Rodolfo Oviedo <rodo1111@gmail.com>",
@@ -20,15 +20,22 @@
   },
   "scripts": {
     "serve": "polymer serve -o",
-    "postinstall": "bower i"
+    "postinstall": "bower i",
+    "test": "polymer test"
   },
   "devDependencies": {
+    "eslint": "^3.11.0",
+    "eslint-plugin-html": "^1.7.0",
     "fs-extra": "^0.8.1",
     "gulp": "^3.8.7",
     "gulp-concat": "^2.2.0",
     "gulp-tap": "^0.1.1",
     "gulp-uglify": "^0.2.1",
     "gulp-util": "^2.2.14",
-    "polymer-cli": "^0.16.0"
-  }
+    "polymer-cli": "^0.16.0",
+    "sinon": "^1.17.6",
+    "web-component-tester": "^3.4.1",
+    "web-component-tester-istanbul": "^0.10.0"
+  },
+  "dependencies": {}
 }
