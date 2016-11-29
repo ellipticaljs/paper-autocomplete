@@ -1,24 +1,23 @@
-<!--
-@license
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-<link rel="import" href="../../polymer/polymer.html">
-<link rel="import" href="../paper-autocomplete.html">
+<!doctype html>
+<html lang="en">
 
-<!--
-  This example shows how to implement your own autocomplete with custom template and search function.
--->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <title>paper-autocomplete IE/Edge</title>
+  <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
 
-<dom-module id="address-autocomplete">
-  <style>
-    :host {
-      display: block;
+  <link rel="import" href="../../paper-toast/paper-toast.html">
+  <link rel="import" href="../paper-autocomplete.html">
 
+  <link rel="stylesheet" href="demo.css">
+
+  <style is="custom-style">
+    .vertical-section-container {
+      max-width: 800px;
+    }
+
+    paper-autocomplete {
       --paper-item: {
         padding: 8px 16px;
       }
@@ -37,29 +36,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       font-size: small;
     }
   </style>
-  <template>
-    <!-- When using custom template and or custom query function, it is important to also set the `textProperty`
-     and `valueProperty properties`. -->
-    <paper-autocomplete
-      label="Select Account"
-      id="input-local"
-      no-label-float="true"
-      source="[[accounts]]"
-      text-property="accountNumber"
-      value-property="id">
-      <template autocomplete-custom-template>
-        <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>
-            <div class="company-name">[[item.companyName]]</div>
-            <div class="account-number">[[item.accountNumber]]</div>
-            <div class="email">[[item.email]]</div>
-          </div>
-          <paper-ripple></paper-ripple>
-        </paper-item>
-      </template>
-    </paper-autocomplete>
+
+</head>
+
+<body unresolved>
+
+<paper-autocomplete
+  label="Select Account"
+  id="input-local"
+  no-label-float="true"
+  text-property="accountNumber"
+  value-property="id">
+  <template autocomplete-custom-template>
+    <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+      <div>
+        <div class="company-name">[[item.companyName]]</div>
+        <div class="account-number">[[item.accountNumber]]</div>
+        <div class="email">[[item.email]]</div>
+      </div>
+      <paper-ripple></paper-ripple>
+    </paper-item>
   </template>
-</dom-module>
+</paper-autocomplete>
+
+<p>
+  The reason why this demo works in IE/Edge is because the content of the code is not wrapped in a
+  &lt;demo-snippet&gt; polymer element. The &lt;paper-autocomplete&gt; has been tested in Edge/IE and mobile browsers.
+</p>
 
 <script>
   var accounts = [
@@ -115,39 +118,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     {"companyName":"Toy-Mann","accountNumber":"ES77 2884 7115 0472 3496 6063","id":"79f91d5b-51d4-4516-a6b6-6257e12a200c","email":"awillis1d@bloomberg.com"}
   ];
 
-  Polymer({
-    is: "address-autocomplete",
+  var autocomplete = document.querySelector('#input-local');
 
-    properties: {
-      accounts: {
-        type: Array,
-        value: accounts
-      }
-    },
+  autocomplete.source = accounts;
 
-    ready: function () {
-      var autocomplete = this.$$('paper-autocomplete');
-      autocomplete.addEventListener('autocomplete-selected', this.onSelect);
+  autocomplete.queryFn = function (datasource, query) {
+    return datasource.filter(function (item) {
+      return (
+        item.companyName.toLowerCase().indexOf(query) != -1 || item.accountNumber.toLowerCase().indexOf(query) != -1
+      );
+    });
+  };
 
-      // Override default queryFn with our custom. This is a needed requirement to implement the custom template
-      autocomplete.queryFn = this._queryFn;
-    },
-
-    onSelect: function () {
-      var paperToast = document.querySelector('paper-toast');
-      var selected = event.detail.text;
-      paperToast.text = 'Selected: ' + selected;
-      paperToast.show();
-    },
-
-    // This custom queryFn will filter results searching in both companyName and accountNumber, then it will return the
-    // whole data object so it can be accessed in the custom template
-    _queryFn: function (datasource, query) {
-      return datasource.filter(function (item) {
-        return (
-          item.companyName.toLowerCase().indexOf(query) != -1 || item.accountNumber.toLowerCase().indexOf(query) != -1
-        );
-      });
-    }
+  autocomplete.addEventListener('autocomplete-selected', function () {
+    var paperToast = document.querySelector('paper-toast');
+    var selected = event.detail.text;
+    paperToast.text = 'Selected: ' + selected;
+    paperToast.show();
   });
+
 </script>
+
+<paper-toast></paper-toast>
+</body>
+
+</html>

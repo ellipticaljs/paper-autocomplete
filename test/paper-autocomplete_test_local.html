@@ -1,0 +1,320 @@
+<!doctype html>
+
+<html>
+
+<head>
+  <title>Paper-autocomplete test</title>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes'>
+  <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
+  <script src='../../web-component-tester/browser.js'></script>
+  <script src='../../iron-test-helpers/mock-interactions.js'></script>
+  <link rel='import' href='../paper-autocomplete.html'>
+</head>
+
+<body>
+  <test-fixture id='basic'>
+    <template>
+    <paper-autocomplete label='Select State' id='input-local' no-label-float='true'
+                        required='true'></paper-autocomplete>
+  </template>
+  </test-fixture>
+  <script>
+    /*global describe
+                    beforeEach
+                    fixture
+                    expect
+                    a11ySuite
+                    MockInteractions
+                    it */
+
+    describe('paper-autocomplete', function () {
+      var element, states;
+
+      beforeEach(function (done) {
+        element = fixture('basic');
+        states = [{
+          'text': 'Alabama',
+          'value': 'AL'
+        }, {
+          'text': 'Alaska',
+          'value': 'AK'
+        }, {
+          'text': 'American Samoa',
+          'value': 'AS'
+        }, {
+          'text': 'Arizona',
+          'value': 'AZ'
+        }, {
+          'text': 'Arkansas',
+          'value': 'AR'
+        }, {
+          'text': 'California',
+          'value': 'CA'
+        }, {
+          'text': 'Colorado',
+          'value': 'CO'
+        }, {
+          'text': 'Connecticut',
+          'value': 'CT'
+        }, {
+          'text': 'Delaware',
+          'value': 'DE'
+        }, {
+          'text': 'District Of Columbia',
+          'value': 'DC'
+        }, {
+          'text': 'Federated States Of Micronesia',
+          'value': 'FM'
+        }, {
+          'text': 'Florida',
+          'value': 'FL'
+        }, {
+          'text': 'Georgia',
+          'value': 'GA'
+        }, {
+          'text': 'Guam',
+          'value': 'GU'
+        }, {
+          'text': 'Hawaii',
+          'value': 'HI'
+        }, {
+          'text': 'Idaho',
+          'value': 'ID'
+        }, {
+          'text': 'Illinois',
+          'value': 'IL'
+        }, {
+          'text': 'Indiana',
+          'value': 'IN'
+        }, {
+          'text': 'Iowa',
+          'value': 'IA'
+        }, {
+          'text': 'Kansas',
+          'value': 'KS'
+        }, {
+          'text': 'Kentucky',
+          'value': 'KY'
+        }, {
+          'text': 'Louisiana',
+          'value': 'LA'
+        }, {
+          'text': 'Maine',
+          'value': 'ME'
+        }, {
+          'text': 'Marshall Islands',
+          'value': 'MH'
+        }, {
+          'text': 'Maryland',
+          'value': 'MD'
+        }, {
+          'text': 'Massachusetts',
+          'value': 'MA'
+        }, {
+          'text': 'Michigan',
+          'value': 'MI'
+        }, {
+          'text': 'Minnesota',
+          'value': 'MN'
+        }, {
+          'text': 'Mississippi',
+          'value': 'MS'
+        }, {
+          'text': 'Missouri',
+          'value': 'MO'
+        }, {
+          'text': 'Montana',
+          'value': 'MT'
+        }, {
+          'text': 'Nebraska',
+          'value': 'NE'
+        }, {
+          'text': 'Nevada',
+          'value': 'NV'
+        }, {
+          'text': 'New Hampshire',
+          'value': 'NH'
+        }, {
+          'text': 'New Jersey',
+          'value': 'NJ'
+        }, {
+          'text': 'New Mexico',
+          'value': 'NM'
+        }, {
+          'text': 'New York',
+          'value': 'NY'
+        }, {
+          'text': 'North Carolina',
+          'value': 'NC'
+        }, {
+          'text': 'North Dakota',
+          'value': 'ND'
+        }, {
+          'text': 'Northern Mariana Islands',
+          'value': 'MP'
+        }, {
+          'text': 'Ohio',
+          'value': 'OH'
+        }, {
+          'text': 'Oklahoma',
+          'value': 'OK'
+        }, {
+          'text': 'Oregon',
+          'value': 'OR'
+        }, {
+          'text': 'Palau',
+          'value': 'PW'
+        }, {
+          'text': 'Pennsylvania',
+          'value': 'PA'
+        }, {
+          'text': 'Puerto Rico',
+          'value': 'PR'
+        }, {
+          'text': 'Rhode Island',
+          'value': 'RI'
+        }, {
+          'text': 'South Carolina',
+          'value': 'SC'
+        }, {
+          'text': 'South Dakota',
+          'value': 'SD'
+        }, {
+          'text': 'Tennessee',
+          'value': 'TN'
+        }, {
+          'text': 'Texas',
+          'value': 'TX'
+        }, {
+          'text': 'Utah',
+          'value': 'UT'
+        }, {
+          'text': 'Vermont',
+          'value': 'VT'
+        }, {
+          'text': 'Virgin Islands',
+          'value': 'VI'
+        }, {
+          'text': 'Virginia',
+          'value': 'VA'
+        }, {
+          'text': 'Washington',
+          'value': 'WA'
+        }, {
+          'text': 'West Virginia',
+          'value': 'WV'
+        }, {
+          'text': 'Wisconsin',
+          'value': 'WI'
+        }, {
+          'text': 'Wyoming',
+          'value': 'WY'
+        }];
+
+        element.source = states;
+
+        done();
+      });
+
+      it('instantiates a paper-autocomplete element', function () {
+        expect(element.is).to.equal('paper-autocomplete');
+      });
+
+      it('has a label Select State', function () {
+        var label = element.$$('label');
+        expect(label.textContent).to.equal('Select State');
+      });
+
+      it('copies the required property to the input field', function () {
+        var input = element.$.autocompleteInput.$.input;
+        expect(input.getAttribute('required')).to.not.equal(null);
+      });
+
+      it('loads the list of sources', function () {
+        expect(element.source).to.equal(states);
+      });
+
+      it('is closed when initialised', function () {
+        expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.not.equal('block');
+      });
+
+      describe('when input is typed', function () {
+        var input, suggestions, suggestionItems;
+
+        beforeEach(function () {
+          input = element.$.autocompleteInput;
+          suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapper;
+        });
+
+        it('opens', function () {
+          enterCharacter(input, 'A');
+          suggestionItems = suggestions.querySelectorAll('paper-item');
+
+          expect(suggestionItems.length).to.equal(5);
+        });
+
+        it('does not activate an item on opening', function () {
+          enterCharacter(input, 'A');
+
+          var activeSuggestion = suggestions.querySelector('paper-item.active');
+          expect(activeSuggestion).to.equal(null);
+        });
+
+        it('refines the suggestions with every added key', function () {
+          enterCharacter(input, 'A');
+          enterCharacter(input, 'l');
+
+          suggestionItems = suggestions.querySelectorAll('paper-item');
+          expect(suggestionItems.length).to.equal(2);
+        });
+
+        it('selects the next and previous suggestions with arrow keys', function () {
+          enterCharacter(input, 'A');
+
+          var suggestionItems = suggestions.querySelectorAll('paper-item');
+
+          MockInteractions.keyUpOn(input, 40);
+          expect(activeSuggestion()).to.equal(suggestionItems[0]);
+
+          MockInteractions.keyUpOn(input, 40);
+          expect(activeSuggestion()).to.equal(suggestionItems[1]);
+
+          MockInteractions.keyUpOn(input, 38);
+          expect(activeSuggestion()).to.equal(suggestionItems[0]);
+
+          function activeSuggestion() {
+            return suggestions.querySelector('paper-item.active');
+          }
+        });
+
+        it('copies the suggestion to the value when clicked upon a suggestion and closes the suggestions', function (done) {
+          enterCharacter(input, 'A');
+          var suggestionItems = suggestions.querySelectorAll('paper-item');
+
+          suggestionItems[0].click();
+          expect(input.value).to.equal('Alabama');
+
+          Polymer.dom.flush();
+
+          setTimeout(function () {
+            expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('none');
+            done();
+          }, 300);
+        });
+      });
+
+      function enterCharacter(input, char) {
+        input.value += char;
+        MockInteractions.keyUpOn(input, char.charCodeAt(char.length - 1));
+
+        element.$.paperAutocompleteSuggestions.flushDebouncer('_onSuggestionChanged');
+      }
+
+      a11ySuite('basic');
+    });
+  </script>
+
+</body>
+
+</html>

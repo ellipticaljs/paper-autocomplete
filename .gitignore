@@ -43,9 +43,6 @@ obj/
 bin/
 *.suo
 
-#Test
-test/
-
 umd.js
 
 project-assets/
