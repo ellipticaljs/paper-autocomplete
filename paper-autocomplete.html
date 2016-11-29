@@ -23,11 +23,11 @@
   ### Custom search
   This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
   all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
-  component search for items that start with the recent query (case insensitive).
-  You can override this behavior providing your own query function, as long as these two requirements are fulfill:
+  component searches for items that start with the recent query (case insensitive).
+  You can override this behavior providing your own query function, as long as these two requirements are fulfilled:
   - The query function is synchronous.
-  - The API is respected and the method always return an Array.
-  The template use to render each suggestion depends on the structure of each object that this method returns. For the
+  - The API is respected and the method always returns an Array.
+  The template used to render each suggestion depends on the structure of each object that this method returns. For the
   default template, each suggestion should follow this object structure:
   ```
     {
@@ -36,14 +36,14 @@
     }
   ```
 
-  This function is only used when a local data source is used. When using a `remoteDataSource` user is responsible of
+  This function is only used when a local data source is used. When using a `remoteDataSource` user is responsible for
   doing the search and specify suggestions manually.
 
   ### Custom templates
   A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
-  the template. Please, read carefully all this section to know them.
+  the template. Please, read this section carefully to know them.
   In order to set your own template, you need to add a `<template>` tag with the attribute
-  `autocomplete-custom-template` ahd the following structure:
+  `autocomplete-custom-template` and the following structure:
 
   ```
   <paper-autocomplete>
@@ -62,14 +62,14 @@
   - `_onSelect` it is very important because it will notify the `autocomplete` component when user selects one item.
   If you don't add this option, when user clicks in one of the items, nothing will happen.
   - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
-  will continue working but it will not be accessible for user with disabilities.
+  will continue working but it will not be accessible for users with disabilities.
 
   It is important to clarify that methods `_onSelect` and `_getSuggestionId` do not need to be implemented. They are
   part of the logic of `paper-autocomplete`.
 
   When providing your own custom template, you might also need to provide your own custom search function. The reason
   for that is that the default search function only exposes text and value in the results. If each item in your data
-  source contains more information, then you won't be able to access it. See the code of `<address-autocomplete>`
+  source contains more information, then you won't be able to access it. See the code of the `<address-autocomplete>`
   element in the demo folder for a complete example.
 
   Another important thing to point out is related to the height of each suggestion item in the results. The height of
