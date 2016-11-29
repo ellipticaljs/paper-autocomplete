@@ -2,14 +2,15 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
-## Release 2.1.0 (2016-XX-XX)
+## Release 2.1.0 (2016-11-29)
 
 ### New Features
-- `paper-autocomplete` has been splitted in two components: `paper-autocomplete` and `paper-autocomplete-suggestions`.
+- `paper-autocomplete` has been split in two components: `paper-autocomplete` and `paper-autocomplete-suggestions`.
 The second one is a new component containing all the logic related to the popup with suggestions: search, selection,
 etc. This allows using the autocomplete functionality with any input field.
 - Selection with the keyboard has been changed: now you can go from the first/last to the last/first pressing up/down keys.
-- Added test to the component.
+- Added test to the component (at this moment, two A11Y tests are failing when the component is test with ShadowDom,
+this issue is being investigated).
 
 ### Bug Fixes
 - When user pressed `left` or `right` key when a component was highlighted, the state was reset. Now the popup is 
