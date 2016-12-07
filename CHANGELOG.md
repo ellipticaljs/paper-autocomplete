@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.1.2 (2016-12-07)
+
+### Bug Fixes
+- `text` and `value` were not set when a selection was made. This is now fixed. 
+
 ## Release 2.1.1 (2016-11-29)
 
 ### Bug Fixes

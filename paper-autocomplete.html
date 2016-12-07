@@ -351,6 +351,11 @@
       // Element Lifecycle
       ready: function () {
         this._value = this.value;
+
+        this.addEventListener(
+          'autocomplete' + this.eventNamespace + 'selected',
+          this._onAutocompleteSelected.bind(this)
+        );
       },
 
       /**
@@ -407,6 +412,16 @@
         } else {
           this._hideClearButton();
         }
+      },
+
+      /**
+       * On autocomplete selection
+       */
+      _onAutocompleteSelected: function (event) {
+        var selection = event.detail;
+
+        this.value = selection.value;
+        this.text = selection.text;
       },
 
       /**

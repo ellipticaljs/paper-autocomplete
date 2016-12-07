@@ -302,6 +302,16 @@
             done();
           }, 300);
         });
+
+        it('sets value and text in autocomplete when a selection is made', function () {
+          enterCharacter(input, 'A');
+          var suggestionItems = suggestions.querySelectorAll('paper-item');
+
+          suggestionItems[0].click();
+
+          expect(element.text).to.equal('Alabama');
+          expect(element.value).to.equal('AL');
+        });
       });
 
       function enterCharacter(input, char) {
