@@ -129,6 +129,9 @@
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
       <label for="autocompleteInput" class="sr-only">[[label]]</label>
 
+      <!-- Adding a hidden input to integrate with iron-form, if required -->
+      <input type="hidden" name$="[[name]]" value$="[[value]]" >
+
       <paper-input id="autocompleteInput"
                    label="[[label]]"
                    no-label-float="[[noLabelFloat]]"
@@ -318,6 +321,11 @@
         maxlength: {
           type: Number
         },
+
+        /**
+         * Name to be used by the autocomplete input. This is necessary if wanted be integrated with iron-form.
+         */
+        name: String,
 
         /*************
          * PRIVATE
