@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.1.4 (2016-12-08)
+
+### Bug Fixes
+- Fixed when user pressed UP or DOWN with no results, a JavaScript error was thrown.
+
 ## Release 2.1.3 (2016-12-08)
 
 ### Bug Fixes
