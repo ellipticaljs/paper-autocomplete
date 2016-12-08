@@ -163,7 +163,9 @@
 
   <template>
     <div>
-      <paper-material elevation="1" id="suggestionsWrapper"></paper-material>
+      <!-- unselectable is needed to fix an issue related to the focus being taken away when clicking in the
+       results scrollbar -->
+      <paper-material elevation="1" id="suggestionsWrapper" unselectable="on"></paper-material>
 
       <!-- Default suggestion template -->
       <template id="defaultTemplate">
@@ -397,6 +399,12 @@
 
         // templatize must be called once before stamp is called
         this.templatize(this._suggestionTemplate);
+
+        // Need to capture mousedown to prevent the focus to switch from input field when user clicks in the scrollbar
+        // and the autosuggest is a child of an element with tabindex.
+        this.$.suggestionsWrapper.addEventListener('mousedown', function (event) {
+          event.preventDefault();
+        });
       },
 
       attached: function () {
@@ -459,6 +467,8 @@
 
         this.isOpen = false;
         this.highlightedSuggestion = {};
+
+        this._clearSuggestions();
       },
 
       _handleSuggestions: function (event) {
@@ -518,9 +528,7 @@
       _renderSuggestions: function (suggestions) {
         var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
 
-        suggestionsContainer.children.forEach(function (child) {
-            suggestionsContainer.removeChild(child);
-        });
+        this._clearSuggestions();
 
         suggestions.forEach(function (result, index) {
           // clone the template and bind with the model
@@ -531,6 +539,14 @@
 
           suggestionsContainer.appendChild(clone.root)
         }.bind(this));
+      },
+
+      _clearSuggestions: function () {
+        var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
+
+        suggestionsContainer.children.forEach(function (child) {
+          suggestionsContainer.removeChild(child);
+        });
       },
 
       /**
@@ -654,6 +670,11 @@
        */
       _moveHighlighted: function (direction) {
         var items = this._getItems();
+
+        if (items.length === 0) {
+            return;
+        }
+
         var numberOfItems = items.length - 1;
 
         var isFirstItem = this._currentIndex === 0;

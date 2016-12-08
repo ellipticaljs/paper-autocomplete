@@ -2,6 +2,17 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.1.4 (2016-12-08)
+
+### Bug Fixes
+- Fixed when user pressed UP or DOWN with no results, a JavaScript error was thrown.
+
+## Release 2.1.3 (2016-12-08)
+
+### Bug Fixes
+- Preventing the focus to switch from input field when autocomplete-suggestions is a child of an element with tabindex
+and user clicks in the scrollbar to scroll over results.
+
 ## Release 2.1.2 (2016-12-07)
 
 ### Bug Fixes

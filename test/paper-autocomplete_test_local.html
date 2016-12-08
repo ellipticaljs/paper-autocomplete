@@ -312,6 +312,22 @@
           expect(element.text).to.equal('Alabama');
           expect(element.value).to.equal('AL');
         });
+
+        describe('and after showing results', function () {
+          describe('when the autosuggest is closed', function () {
+            it('should clear previous results from the dom', function (done) {
+              enterCharacter(input, 'A');
+              var suggestionItems = suggestions.querySelectorAll('paper-item');
+
+              suggestionItems[0].click();
+
+              setTimeout(function () {
+                expect(suggestions.querySelectorAll('paper-item')).to.be.empty;
+                done();
+              }, 300);
+            });
+          });
+        });
       });
 
       function enterCharacter(input, char) {
