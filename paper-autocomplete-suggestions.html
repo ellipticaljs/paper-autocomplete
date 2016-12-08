@@ -163,6 +163,8 @@
 
   <template>
     <div>
+      <!-- unselectable is needed to fix an issue related to the focus being taken away when clicking in the
+       results scrollbar -->
       <paper-material elevation="1" id="suggestionsWrapper" unselectable="on"></paper-material>
 
       <!-- Default suggestion template -->
@@ -399,7 +401,7 @@
         this.templatize(this._suggestionTemplate);
 
         // Need to capture mousedown to prevent the focus to switch from input field when user clicks in the scrollbar
-        // and the autosuggest is child of an element with tabindex.
+        // and the autosuggest is a child of an element with tabindex.
         this.$.suggestionsWrapper.addEventListener('mousedown', function (event) {
           event.preventDefault();
         });
