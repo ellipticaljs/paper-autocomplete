@@ -428,6 +428,10 @@
        * Show the clear button (X)
        */
       _showClearButton: function () {
+        if(this.disableShowClear) {
+          return;
+        }
+
         if (this._isClearButtonVisible) {
           return;
         }
