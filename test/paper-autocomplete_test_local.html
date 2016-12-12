@@ -329,16 +329,16 @@
           });
         });
 
-        describe('the "disableShowClear" option should disable showing the clear X button', function(){
+        describe('the "disableShowClear" option should disable showing the clear X button', function () {
 
           var input,
               displayStyle;
 
-          var getDisplayStyle = function(){
+          var getDisplayStyle = function () {
             return window.getComputedStyle(element.$.clear).getPropertyValue('display');
           };
 
-          var doInput = function(input, inputText){
+          var doInput = function (input, inputText) {
             enterCharacter(input, inputText);
             element._onInput(); // trigger an onInput event which in turn evaluates whether to display the button
           };
@@ -347,7 +347,7 @@
             input = element.$.autocompleteInput;
           });
 
-          it('should disable the display of the clear button when the attribute is on the element', function(){
+          it('should disable the display of the clear button when the attribute is on the element', function () {
             element.setAttribute('disable-show-clear', '');
 
             doInput(input, 'Ne');
@@ -356,7 +356,7 @@
 
           });
 
-          it('should display of the clear button when the option is set to false (default)', function(){
+          it('should display of the clear button when the option is set to false (default)', function () {
 
             doInput(input, 'New');
             displayStyle = getDisplayStyle();
