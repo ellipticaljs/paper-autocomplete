@@ -2,10 +2,10 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
-## Release 2.1.5 (t.b.d.)
+## Release 2.1.5 (2016-12-14)
 
 ### Bug Fixes
-- Fixed option disableShowClear, option was not being behaving as documented, added tests for same.
+- Fixed option disableShowClear, option was not being behaving as documented, added tests for same. Thanks to @vidhill.
 
 ## Release 2.1.4 (2016-12-08)
 
