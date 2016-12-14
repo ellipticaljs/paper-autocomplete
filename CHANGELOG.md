@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.2.0 (2017-01-12)
+
+### New Features
+- Added new option `name` for integrating the autocomplete with an `iron-form`.
+
 ## Release 2.1.5 (2016-12-14)
 
 ### Bug Fixes

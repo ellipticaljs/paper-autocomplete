@@ -20,6 +20,9 @@
   or custom templates.** They are needed to keep the component accessible and for the events (e.g. onSelect) to keep
   working.
 
+  To integrate with `iron-input`, you must set the `name` option. The selected `value` will be exposed, **not** the
+  `text` value,
+
   ### Custom search
   This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
   all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
@@ -128,6 +131,9 @@
     <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded$="[[_isSuggestionsOpened]]">
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
       <label for="autocompleteInput" class="sr-only">[[label]]</label>
+
+      <!-- Adding a hidden input to integrate with iron-form, if required -->
+      <input type="hidden" name$="[[name]]" value$="[[value]]" >
 
       <paper-input id="autocompleteInput"
                    label="[[label]]"
@@ -318,6 +324,11 @@
         maxlength: {
           type: Number
         },
+
+        /**
+         * Name to be used by the autocomplete input. This is necessary if wanted to be integrated with iron-form.
+         */
+        name: String,
 
         /*************
          * PRIVATE
