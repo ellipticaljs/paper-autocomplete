@@ -20,6 +20,9 @@
   or custom templates.** They are needed to keep the component accessible and for the events (e.g. onSelect) to keep
   working.
 
+  To integrate with `iron-input`, you must set the `name` option. The selected `value` will be exposed, **not** the
+  `text` value,
+
   ### Custom search
   This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
   all items in the `source` and returns only those items that matches certain filtering criteria. By default, this
