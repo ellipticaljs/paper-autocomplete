@@ -16,7 +16,7 @@
   <test-fixture id='basic'>
     <template>
     <paper-autocomplete label='Select State' id='input-local' no-label-float='true'
-                        required='true'></paper-autocomplete>
+                        required='true' name='state'></paper-autocomplete>
   </template>
   </test-fixture>
   <script>
@@ -239,6 +239,10 @@
         expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.not.equal('block');
       });
 
+      it('should set the name attribute in the hidden input', function () {
+          expect(element.$$('input[type="hidden"]').getAttribute('name')).to.equal('state');
+      });
+
       describe('when input is typed', function () {
         var input, suggestions, suggestionItems;
 
@@ -311,6 +315,9 @@
 
           expect(element.text).to.equal('Alabama');
           expect(element.value).to.equal('AL');
+
+          // On selection, the hidden input field should have set the value, not the text
+          expect(element.$$('input[type="hidden"]').value).to.equal('AL');
         });
 
         describe('and after showing results', function () {
@@ -353,19 +360,15 @@
             doInput(input, 'Ne');
             displayStyle = getDisplayStyle();
             expect(displayStyle).to.equal('none');
-
           });
 
           it('should display of the clear button when the option is set to false (default)', function () {
-
             doInput(input, 'New');
             displayStyle = getDisplayStyle();
             expect(displayStyle).to.equal('block');
 
           });
-
         });
-
       });
 
       function enterCharacter(input, char) {
