@@ -150,6 +150,7 @@
                    always-float-label="[[alwaysFloatLabel]]"
                    char-counter$="[[charCounter]]"
                    maxlength$="[[maxlength]]"
+                   placeholder="[[placeholder]]"
 
                    role="textbox"
                    aria-autocomplete="list"
@@ -218,6 +219,11 @@
           type: Boolean,
           value: false
         },
+
+        /**
+         * The placeholder text
+         */
+        placeholder: String,
 
         /**
          * `required` Set to true to mark the input as required.

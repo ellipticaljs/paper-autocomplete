@@ -156,6 +156,15 @@
     </template>
     </demo-snippet>
 
+    <demo-snippet>
+      <template is="dom-bind">
+      <autocomplete-example>
+        <!-- autocomplete-example is used just to do paper-autocomplete.source = states; -->
+        <paper-autocomplete placeholder="Select a State" label="State" id="input-local-placeholder" always-float-lable="true"></paper-autocomplete>
+      </autocomplete-example>
+    </template>
+    </demo-snippet>
+
     <h3>Remote Data-Source Binding</h3>
     <p>
       Remote bind to the github user API. Remote data binding delegates the responsibility of filtering the data source to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the suggestions back to the
