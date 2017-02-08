@@ -1,7 +1,7 @@
 {
   "name": "paper-autocomplete",
   "description": "Material Design autocomplete component.",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": "S. Francis <sfrancis@misinteractive.com>",
   "contributors": [
     "Rodolfo Oviedo <rodo1111@gmail.com>",
@@ -19,7 +19,7 @@
     "url": "https://github.com/ellipticaljs/paper-autocomplete.git"
   },
   "scripts": {
-    "serve": "polymer serve -o",
+    "start": "polymer serve -o",
     "postinstall": "bower i",
     "test": "polymer test"
   },

@@ -33,184 +33,68 @@
 
       beforeEach(function (done) {
         element = fixture('basic');
-        states = [{
-          'text': 'Alabama',
-          'value': 'AL'
-        }, {
-          'text': 'Alaska',
-          'value': 'AK'
-        }, {
-          'text': 'American Samoa',
-          'value': 'AS'
-        }, {
-          'text': 'Arizona',
-          'value': 'AZ'
-        }, {
-          'text': 'Arkansas',
-          'value': 'AR'
-        }, {
-          'text': 'California',
-          'value': 'CA'
-        }, {
-          'text': 'Colorado',
-          'value': 'CO'
-        }, {
-          'text': 'Connecticut',
-          'value': 'CT'
-        }, {
-          'text': 'Delaware',
-          'value': 'DE'
-        }, {
-          'text': 'District Of Columbia',
-          'value': 'DC'
-        }, {
-          'text': 'Federated States Of Micronesia',
-          'value': 'FM'
-        }, {
-          'text': 'Florida',
-          'value': 'FL'
-        }, {
-          'text': 'Georgia',
-          'value': 'GA'
-        }, {
-          'text': 'Guam',
-          'value': 'GU'
-        }, {
-          'text': 'Hawaii',
-          'value': 'HI'
-        }, {
-          'text': 'Idaho',
-          'value': 'ID'
-        }, {
-          'text': 'Illinois',
-          'value': 'IL'
-        }, {
-          'text': 'Indiana',
-          'value': 'IN'
-        }, {
-          'text': 'Iowa',
-          'value': 'IA'
-        }, {
-          'text': 'Kansas',
-          'value': 'KS'
-        }, {
-          'text': 'Kentucky',
-          'value': 'KY'
-        }, {
-          'text': 'Louisiana',
-          'value': 'LA'
-        }, {
-          'text': 'Maine',
-          'value': 'ME'
-        }, {
-          'text': 'Marshall Islands',
-          'value': 'MH'
-        }, {
-          'text': 'Maryland',
-          'value': 'MD'
-        }, {
-          'text': 'Massachusetts',
-          'value': 'MA'
-        }, {
-          'text': 'Michigan',
-          'value': 'MI'
-        }, {
-          'text': 'Minnesota',
-          'value': 'MN'
-        }, {
-          'text': 'Mississippi',
-          'value': 'MS'
-        }, {
-          'text': 'Missouri',
-          'value': 'MO'
-        }, {
-          'text': 'Montana',
-          'value': 'MT'
-        }, {
-          'text': 'Nebraska',
-          'value': 'NE'
-        }, {
-          'text': 'Nevada',
-          'value': 'NV'
-        }, {
-          'text': 'New Hampshire',
-          'value': 'NH'
-        }, {
-          'text': 'New Jersey',
-          'value': 'NJ'
-        }, {
-          'text': 'New Mexico',
-          'value': 'NM'
-        }, {
-          'text': 'New York',
-          'value': 'NY'
-        }, {
-          'text': 'North Carolina',
-          'value': 'NC'
-        }, {
-          'text': 'North Dakota',
-          'value': 'ND'
-        }, {
-          'text': 'Northern Mariana Islands',
-          'value': 'MP'
-        }, {
-          'text': 'Ohio',
-          'value': 'OH'
-        }, {
-          'text': 'Oklahoma',
-          'value': 'OK'
-        }, {
-          'text': 'Oregon',
-          'value': 'OR'
-        }, {
-          'text': 'Palau',
-          'value': 'PW'
-        }, {
-          'text': 'Pennsylvania',
-          'value': 'PA'
-        }, {
-          'text': 'Puerto Rico',
-          'value': 'PR'
-        }, {
-          'text': 'Rhode Island',
-          'value': 'RI'
-        }, {
-          'text': 'South Carolina',
-          'value': 'SC'
-        }, {
-          'text': 'South Dakota',
-          'value': 'SD'
-        }, {
-          'text': 'Tennessee',
-          'value': 'TN'
-        }, {
-          'text': 'Texas',
-          'value': 'TX'
-        }, {
-          'text': 'Utah',
-          'value': 'UT'
-        }, {
-          'text': 'Vermont',
-          'value': 'VT'
-        }, {
-          'text': 'Virgin Islands',
-          'value': 'VI'
-        }, {
-          'text': 'Virginia',
-          'value': 'VA'
-        }, {
-          'text': 'Washington',
-          'value': 'WA'
-        }, {
-          'text': 'West Virginia',
-          'value': 'WV'
-        }, {
-          'text': 'Wisconsin',
-          'value': 'WI'
-        }, {
-          'text': 'Wyoming',
-          'value': 'WY'
-        }];
+
+        states = [
+          {'text': 'Alabama', 'value': 'AL'},
+          {'text': 'Alaska', 'value': 'AK'},
+          {'text': 'American Samoa', 'value': 'AS'},
+          {'text': 'Arizona', 'value': 'AZ'},
+          {'text': 'Arkansas', 'value': 'AR'},
+          {'text': 'California', 'value': 'CA'},
+          {'text': 'Colorado', 'value': 'CO'},
+          {'text': 'Connecticut', 'value': 'CT'},
+          {'text': 'Delaware', 'value': 'DE'},
+          {'text': 'District Of Columbia', 'value': 'DC'},
+          {'text': 'Federated States Of Micronesia', 'value': 'FM'},
+          {'text': 'Florida', 'value': 'FL'},
+          {'text': 'Georgia', 'value': 'GA'},
+          {'text': 'Guam', 'value': 'GU'},
+          {'text': 'Hawaii', 'value': 'HI'},
+          {'text': 'Idaho', 'value': 'ID'},
+          {'text': 'Illinois', 'value': 'IL'},
+          {'text': 'Indiana', 'value': 'IN'},
+          {'text': 'Iowa', 'value': 'IA'},
+          {'text': 'Kansas', 'value': 'KS'},
+          {'text': 'Kentucky', 'value': 'KY'},
+          {'text': 'Louisiana', 'value': 'LA'},
+          {'text': 'Maine', 'value': 'ME'},
+          {'text': 'Marshall Islands', 'value': 'MH'},
+          {'text': 'Maryland', 'value': 'MD'},
+          {'text': 'Massachusetts', 'value': 'MA'},
+          {'text': 'Michigan', 'value': 'MI'},
+          {'text': 'Minnesota', 'value': 'MN'},
+          {'text': 'Mississippi', 'value': 'MS'},
+          {'text': 'Missouri', 'value': 'MO'},
+          {'text': 'Montana', 'value': 'MT'},
+          {'text': 'Nebraska', 'value': 'NE'},
+          {'text': 'Nevada', 'value': 'NV'},
+          {'text': 'New Hampshire', 'value': 'NH'},
+          {'text': 'New Jersey', 'value': 'NJ'},
+          {'text': 'New Mexico', 'value': 'NM'},
+          {'text': 'New York', 'value': 'NY'},
+          {'text': 'North Carolina', 'value': 'NC'},
+          {'text': 'North Dakota', 'value': 'ND'},
+          {'text': 'Northern Mariana Islands', 'value': 'MP'},
+          {'text': 'Ohio', 'value': 'OH'},
+          {'text': 'Oklahoma', 'value': 'OK'},
+          {'text': 'Oregon', 'value': 'OR'},
+          {'text': 'Palau', 'value': 'PW'},
+          {'text': 'Pennsylvania', 'value': 'PA'},
+          {'text': 'Puerto Rico', 'value': 'PR'},
+          {'text': 'Rhode Island', 'value': 'RI'},
+          {'text': 'South Carolina', 'value': 'SC'},
+          {'text': 'South Dakota', 'value': 'SD'},
+          {'text': 'Tennessee', 'value': 'TN'},
+          {'text': 'Texas', 'value': 'TX'},
+          {'text': 'Utah', 'value': 'UT'},
+          {'text': 'Vermont', 'value': 'VT'},
+          {'text': 'Virgin Islands', 'value': 'VI'},
+          {'text': 'Virginia', 'value': 'VA'},
+          {'text': 'Washington', 'value': 'WA'},
+          {'text': 'West Virginia', 'value': 'WV'},
+          {'text': 'Wisconsin', 'value': 'WI'},
+          {'text': 'Wyoming', 'value': 'WY'}
+        ];
 
         element.source = states;
 
@@ -341,10 +225,6 @@
           var input,
               displayStyle;
 
-          var getDisplayStyle = function () {
-            return window.getComputedStyle(element.$.clear).getPropertyValue('display');
-          };
-
           var doInput = function (input, inputText) {
             enterCharacter(input, inputText);
             element._onInput(); // trigger an onInput event which in turn evaluates whether to display the button
@@ -358,18 +238,53 @@
             element.setAttribute('disable-show-clear', '');
 
             doInput(input, 'Ne');
-            displayStyle = getDisplayStyle();
+            displayStyle = getClearButtonDisplayStyle();
             expect(displayStyle).to.equal('none');
           });
 
           it('should display of the clear button when the option is set to false (default)', function () {
             doInput(input, 'New');
-            displayStyle = getDisplayStyle();
+            displayStyle = getClearButtonDisplayStyle();
             expect(displayStyle).to.equal('block');
 
           });
         });
       });
+
+      describe('hideSuggestions()', function () {
+        var input;
+
+        beforeEach(function () {
+          input = element.$.autocompleteInput;
+        });
+
+        var doInput = function (input, inputText) {
+          enterCharacter(input, inputText);
+          element._onInput(); // trigger an onInput event which in turn evaluates whether to display the button
+        };
+
+        it('should hide the suggestion wrapper and clear button', function () {
+          doInput(input, 'A');
+
+          expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('block');
+          expect(getClearButtonDisplayStyle()).to.equal('block');
+
+          element.hideSuggestions();
+
+          Polymer.dom.flush();
+
+          setTimeout(function () {
+            expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('none');
+            expect(getClearButtonDisplayStyle()).to.equal('none');
+
+            done();
+          }, 300);
+        });
+      });
+
+      a11ySuite('basic');
+
+      // HELPERS
 
       function enterCharacter(input, char) {
         input.value += char;
@@ -378,7 +293,9 @@
         element.$.paperAutocompleteSuggestions.flushDebouncer('_onSuggestionChanged');
       }
 
-      a11ySuite('basic');
+      function getClearButtonDisplayStyle() {
+        return window.getComputedStyle(element.$.clear).getPropertyValue('display');
+      }
     });
   </script>
 

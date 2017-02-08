@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.2.1 (2017-02-08)
+
+### Bug Fixes
+- Fixed a typo in the code that was causing an error when calling `hideSuggestions()` method.
+
 ## Release 2.2.0 (2017-01-12)
 
 ### New Features
