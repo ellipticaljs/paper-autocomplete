@@ -53,6 +53,7 @@ npm run test
 ```
 
 or you can run:
+
 ```
 npm run start
 ```
@@ -66,3 +67,8 @@ ARIA state and property values must be valid
 Attributes which refer to other elements by ID should refer to elements which exist in the DOM
 ```
 
+## How to *lint* the project
+
+```
+npm run lint
+```

@@ -13,6 +13,7 @@ When making a pull request, please make sure you take a look to the following li
 1. Write (or modify) a test for the change. If there was a bug that was not covered by one of the existing unit test, 
 make sure the test fails before introducing your change.
 1. Make sure that all test are green (apart from the two mentioned in the `README.md` file).
+1. Run `npm run lint` and make sure there are no errors.
 1. Update `CHANGELOG.md` file describing the change you just made. There is no need to fill the version or the date.
 
 For example:

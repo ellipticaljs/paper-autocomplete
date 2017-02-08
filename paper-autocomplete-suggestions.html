@@ -537,7 +537,7 @@
             index: index
           });
 
-          suggestionsContainer.appendChild(clone.root)
+          suggestionsContainer.appendChild(clone.root);
         }.bind(this));
       },
 
@@ -658,7 +658,7 @@
        * Event handler for the key ENTER press event
        */
       _keyenter: function () {
-        if (this.$.suggestionsWrapper.style.display == 'block' && this._currentIndex > -1) {
+        if (this.$.suggestionsWrapper.style.display === 'block' && this._currentIndex > -1) {
           var index = this._currentIndex;
           this._selection(index);
         }
@@ -858,7 +858,7 @@
 
           if (typeof item === 'object') {
             objText = item[this.textProperty];
-            objValue = item[this.valueProperty]
+            objValue = item[this.valueProperty];
           } else {
             objText = item.toString();
             objValue = objText;

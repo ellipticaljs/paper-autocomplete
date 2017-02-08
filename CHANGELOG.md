@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.3.0 (2017-02-08)
+
+### New Features
+- `paper-autocomplete` now has a new option: `placeholder`.
+
 ## Release 2.2.1 (2017-02-08)
 
 ### Bug Fixes

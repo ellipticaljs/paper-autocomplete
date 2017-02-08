@@ -1,7 +1,7 @@
 {
   "name": "paper-autocomplete",
   "description": "Material Design autocomplete component.",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "author": "S. Francis <sfrancis@misinteractive.com>",
   "contributors": [
     "Rodolfo Oviedo <rodo1111@gmail.com>",
@@ -21,7 +21,8 @@
   "scripts": {
     "start": "polymer serve -o",
     "postinstall": "bower i",
-    "test": "polymer test"
+    "test": "polymer test",
+    "lint": "eslint paper-autocomplete*.html"
   },
   "devDependencies": {
     "eslint": "^3.11.0",
