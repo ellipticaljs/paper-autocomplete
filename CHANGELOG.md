@@ -2,6 +2,12 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.3.1 (2017-02-13)
+
+### Bug Fixes
+- The `--paper-input-container-focus-color` default value is no longer hardcoded to a specific color (`#2196f3`). 
+Now it is set by default to `var(--primary-color)`.
+
 ## Release 2.3.0 (2017-02-08)
 
 ### New Features
