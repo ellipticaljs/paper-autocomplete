@@ -22,7 +22,8 @@
     "start": "polymer serve -o",
     "postinstall": "bower i",
     "test": "polymer test",
-    "lint": "eslint paper-autocomplete*.html"
+    "lint": "eslint paper-autocomplete*.html",
+    "publish-docs": "./publish-docs.sh"
   },
   "devDependencies": {
     "eslint": "^3.11.0",
