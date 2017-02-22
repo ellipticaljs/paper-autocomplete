@@ -164,6 +164,23 @@
     </template>
     </demo-snippet>
 
+    <demo-snippet>
+    <template is="dom-bind">
+      <style is="custom-style">
+        paper-autocomplete {
+          --paper-input-container-focus-color: var(--accent-color);
+          --paper-autocomplete-suggestions-item-min-height: 60px;
+          --paper-autocomplete-suggestions-wrapper: {
+            background-color: var(--paper-amber-50);
+          };
+        }
+      </style>
+      <autocomplete-example>
+        <paper-autocomplete label="State (custom styled)" id="input-local-styled"></paper-autocomplete>
+      </autocomplete-example>
+    </template>
+    </demo-snippet>
+
     <h3>Remote Data-Source Binding</h3>
     <p>
       Remote bind to the github user API. Remote data binding delegates the responsibility of filtering the data source to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the suggestions back to the
