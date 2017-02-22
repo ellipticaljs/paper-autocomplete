@@ -89,9 +89,9 @@
 
   Custom property | Description | Default
   ----------------|-------------|----------
-  `--paper-input-container-focus-color` | sets the components input container focus color | var(--primary-color)
-  `--paper-item-min-height` | paper item min height | `36px`
-  `--suggestions-container` | mixin to apply to the suggestions container | `{}`
+  `--paper-input-container-focus-color` | sets the components input container focus color | `var(--primary-color)`
+  `--paper-autocomplete-suggestions-item-min-height` | min height of each suggestion item | `36px`
+  `--paper-autocomplete-suggestions-wrapper` | mixin to apply to the suggestions container | `{}`
 
   ### Accessibility
 
@@ -126,6 +126,14 @@
       position: absolute;
       clip: rect(1px, 1px, 1px, 1px);
     }
+
+   paper-autocomplete-suggestions {
+     --suggestions-wrapper: {
+       @apply(--paper-autocomplete-suggestions-wrapper);
+     };
+
+     --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
+   }
   </style>
   <template>
     <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded$="[[_isSuggestionsOpened]]">
