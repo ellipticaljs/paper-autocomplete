@@ -2,6 +2,15 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.4.0 (2017-02-22)
+
+### New Features
+- `paper-autocomplete` now exposes a new CSS mixin that can be used to style the suggestions popup:
+`--paper-autocomplete-suggestions-wrapper`.
+- Updated wrong CSS mixin value in the `paper-autocomplete-suggestions` element.
+
+Thanks to @jimivdw.
+
 ## Release 2.3.1 (2017-02-13)
 
 ### Bug Fixes
