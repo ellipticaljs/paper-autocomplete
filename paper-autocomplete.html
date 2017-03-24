@@ -117,9 +117,20 @@
       @apply(--layout-flex);
     }
 
+    paper-input ::content input::-ms-clear {
+      display: none;
+    }
+
     #clear {
       display: none;
       margin-top: auto;
+      line-height: 8px;
+
+      --paper-icon-button: {
+        height: 24px;
+        width: 24px;
+        padding: 2px;
+      };
     }
 
     .sr-only {
@@ -127,13 +138,13 @@
       clip: rect(1px, 1px, 1px, 1px);
     }
 
-   paper-autocomplete-suggestions {
-     --suggestions-wrapper: {
-       @apply(--paper-autocomplete-suggestions-wrapper);
-     };
+    paper-autocomplete-suggestions {
+      --suggestions-wrapper: {
+        @apply(--paper-autocomplete-suggestions-wrapper);
+      };
 
-     --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
-   }
+      --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
+    }
   </style>
   <template>
     <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded$="[[_isSuggestionsOpened]]">
@@ -165,9 +176,10 @@
                    aria-multiline="false"
                    aria-activedescendant$="[[_highlightedSuggestion.elementId]]"
                    aria-disabled$="[[disabled]]"
-                   aria-controls="autocompleteStatus suggestionsWrapper"></paper-input>
+                   aria-controls="autocompleteStatus suggestionsWrapper">
 
-      <paper-icon-button id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+                  <paper-icon-button suffix id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+        </paper-input>
       <!-- to announce current selection to screen reader -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
     </div>
@@ -344,6 +356,14 @@
          */
         name: String,
 
+        /**
+         * Function used to filter available items. This function is actually used by paper-autocomplete-suggestions,
+         * it is also exposed here so it is possible to provide a custom queryFn.
+         */
+        queryFn: {
+          type: Function
+        },
+
         /*************
          * PRIVATE
          *************/
@@ -362,6 +382,21 @@
         _isClearButtonVisible: {
           type: Boolean,
           value: false
+        },
+
+        /**
+         * Indicates whether the suggestion popup is visible or not.
+         */
+        _isSuggestionsOpened: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Object containing the information of the currently selected option
+         */
+        _selectedOption: {
+          type: Object
         }
       },
 

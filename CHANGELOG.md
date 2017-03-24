@@ -2,6 +2,14 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.5.0 (2017-03-24)
+
+### New Features
+- X button to clear is now a paper-input suffix.
+
+### Bug Fixes
+- Hiding native clear X button in the input in IE/Edge. Fixes #24 
+
 ## Release 2.4.0 (2017-02-22)
 
 ### New Features
