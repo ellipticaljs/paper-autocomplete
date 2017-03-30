@@ -1,6 +1,6 @@
 {
   "name": "paper-autocomplete",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "authors": [
     "S. Francis",
     "Rodolfo Oviedo <rodo1111@gmail.com>",
@@ -36,10 +36,7 @@
     "iron-iconset-svg": "polymerelements/iron-iconset-svg#^1.0.0",
     "paper-item": "polymerelements/paper-item#^1.0.0",
     "paper-ripple": "polymerelements/paper-ripple#^1.0.0",
-    "paper-material": "polymerelements/paper-material#^1.0.0",
-    "mocha": "^3.1.2",
-    "chai": "^3.5.0",
-    "sinon": "^1.17.6"
+    "paper-material": "polymerelements/paper-material#^1.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

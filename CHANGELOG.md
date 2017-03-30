@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.5.1 (2017-03-30)
+
+### Bug Fixes
+- Removed `mocha`, `chai` and `sinon` from the list of bower dependencies.
+
 ## Release 2.5.0 (2017-03-24)
 
 ### New Features
