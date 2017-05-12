@@ -3,6 +3,8 @@
 <link rel="import" href="../paper-ripple/paper-ripple.html">
 <link rel="import" href="../paper-material/paper-material.html">
 
+<link rel="import" href="../polymer/lib/utils/flattened-nodes-observer.html">
+
 <!--
   `paper-autocomplete-suggestions`
   Allows to add autocomplete capabilities to any input field. This is desirable when you have an input field with custom
@@ -303,12 +305,7 @@
           * Reference to the current suggestion template
           */
           _suggestionTemplate: {
-            type: Object,
-            value: function () {
-              var customTemplate = this.getEffectiveChildren();
-
-              return customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
-            }
+            type: Object
           },
 
           /**
@@ -395,14 +392,27 @@
           // This is important to be able to access component methods inside the templates used with Templatizer
           this.dataHost = this;
 
-          // templatize must be called once before stamp is called
-          this.templatize(this._suggestionTemplate);
+          this._suggestionTemplate = this.$.defaultTemplate;
+          var observer; //TODO: borrar
+
+          if (Polymer.Element !== undefined) {
+            observer = new Polymer.FlattenedNodesObserver(this.$.templates, this._nodeObserver);
+
+          } else {
+            observer = Polymer.dom(this).observeNodes(this._nodeObserver)
+          }
 
           // Need to capture mousedown to prevent the focus to switch from input field when user clicks in the scrollbar
           // and the autosuggest is a child of an element with tabindex.
           this.$.suggestionsWrapper.addEventListener('mousedown', function (event) {
             event.preventDefault();
           });
+        },
+
+        _nodeObserver: function (info) {
+          debugger;
+          // templatize must be called once before stamp is called
+          this.templatize(this._suggestionTemplate);
         },
 
         attached: function () {
