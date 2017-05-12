@@ -1,0 +1,11 @@
+{
+  "env": {
+    "mocha": true
+  },
+  "globals": {
+    "fixture": false,
+    "expect": false,
+    "a11ySuite": false,
+    "MockInteractions": false,
+  }
+}

@@ -2,6 +2,15 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.5.2 (2017-05-12)
+
+### Bug Fixes
+- Moved `<style>` tags inside the `<template>` tag, to avoid leaking styles and to be inline with latest Polymer
+recommendations (thanks to @alejost848).
+- Demo pages has been fixed so now all demos work in IE/Edge.
+- Event name when clicking in the clear button was wrong. Now event name matches the one in the documentation:
+`autocomplete-reset-blur` (thanks to @orenagiv).
+
 ## Release 2.5.1 (2017-03-30)
 
 ### Bug Fixes

@@ -101,52 +101,53 @@
   @demo demo/index.html
 -->
 <dom-module id="paper-autocomplete">
-  <style>
-     :host {
-      display: block;
-      box-sizing: border-box;
-      position: relative;
-      --paper-input-container-focus-color: var(--primary-color);
-    }
-
-    .input-wrapper {
-      @apply(--layout-horizontal);
-    }
-
-    .input-wrapper paper-input {
-      @apply(--layout-flex);
-    }
-
-    paper-input ::content input::-ms-clear {
-      display: none;
-    }
-
-    #clear {
-      display: none;
-      margin-top: auto;
-      line-height: 8px;
-
-      --paper-icon-button: {
-        height: 24px;
-        width: 24px;
-        padding: 2px;
-      };
-    }
-
-    .sr-only {
-      position: absolute;
-      clip: rect(1px, 1px, 1px, 1px);
-    }
-
-    paper-autocomplete-suggestions {
-      --suggestions-wrapper: {
-        @apply(--paper-autocomplete-suggestions-wrapper);
-      };
-
-      --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
-    }
-  </style>
   <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        position: relative;
+        --paper-input-container-focus-color: var(--primary-color);
+      }
+
+      .input-wrapper {
+        @apply(--layout-horizontal);
+      }
+
+      .input-wrapper paper-input {
+        @apply(--layout-flex);
+      }
+
+      paper-input ::content input::-ms-clear {
+        display: none;
+      }
+
+      #clear {
+        display: none;
+        margin-top: auto;
+        line-height: 8px;
+
+        --paper-icon-button: {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+        };
+      }
+
+      .sr-only {
+        position: absolute;
+        clip: rect(1px, 1px, 1px, 1px);
+      }
+
+      paper-autocomplete-suggestions {
+        --suggestions-wrapper: {
+          @apply(--paper-autocomplete-suggestions-wrapper);
+        };
+
+        --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
+      }
+    </style>
+
     <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded$="[[_isSuggestionsOpened]]">
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
       <label for="autocompleteInput" class="sr-only">[[label]]</label>
@@ -432,7 +433,7 @@
         this.text = '';
         this._text = '';
 
-        this._fireEvent(option, 'reset');
+        this._fireEvent(option, 'reset-blur');
 
         this._hideClearButton();
         this.$.autocompleteInput.focus();

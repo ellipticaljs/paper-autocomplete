@@ -123,45 +123,45 @@
 -->
 
 <dom-module id="paper-autocomplete-suggestions">
-  <style>
-    paper-material {
-      display: none;
-      position: absolute;
-      width: 100%;
-      z-index: 1000;
-      background-color: white;
-      max-height: 252px;
-      overflow-y: auto;
-
-      @apply(--suggestions-wrapper);
-    }
-
-    paper-item {
-      min-height: var(--paper-item-min-height, 36px);
-    }
-
-    paper-item,
-    :host ::content paper-item {
-      position: relative;
-      line-height: 18px;
-    }
-
-    paper-item:hover,
-    :host ::content paper-item:hover {
-      background: #eee;
-      color: #333;
-      cursor: pointer;
-    }
-
-    paper-item.active,
-    :host ::content paper-item.active {
-      background: #eee;
-      color: #333;
-    }
-
-  </style>
-
   <template>
+    <style>
+      paper-material {
+        display: none;
+        position: absolute;
+        width: 100%;
+        z-index: 1000;
+        background-color: white;
+        max-height: 252px;
+        overflow-y: auto;
+
+        @apply(--suggestions-wrapper);
+      }
+
+      paper-item {
+        min-height: var(--paper-item-min-height, 36px);
+      }
+
+      paper-item,
+      :host ::content paper-item {
+        position: relative;
+        line-height: 18px;
+      }
+
+      paper-item:hover,
+      :host ::content paper-item:hover {
+        background: #eee;
+        color: #333;
+        cursor: pointer;
+      }
+
+      paper-item.active,
+      :host ::content paper-item.active {
+        background: #eee;
+        color: #333;
+      }
+
+    </style>
+
     <div>
       <!-- unselectable is needed to fix an issue related to the focus being taken away when clicking in the
        results scrollbar -->

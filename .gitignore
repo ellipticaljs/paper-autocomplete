@@ -49,3 +49,4 @@ project-assets/
 demo_components
 
 build/
+.eslintcache

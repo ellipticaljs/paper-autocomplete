@@ -14,7 +14,6 @@
   <link rel="import" href="../../elliptical-sass/elliptical-sass.html">
   <link rel="import" href="../../css-docs/css-docs.html">
   <link rel="import" href="../paper-autocomplete.html">
-  <link rel="import" href="./autocomplete-example.html">
   <link rel="import" href="./address-autocomplete.html">
 
   <link rel="stylesheet" href="demo.css">
@@ -121,170 +120,202 @@
 <body unresolved>
 
   <div class="vertical-section-container centered">
-    <blockquote class="warning">
-      <span class="bold">COMPATIBILITY OF DEMOS WITH IE11/Edge</span><br>
-      <div>
-        Some of this demos are currently not working in Internet Explorer 11 and Microsoft Edge. The
-        `&lt;paper-autocomplete&gt;` component works fine. Please open this demo page with any other browser.
-        <a href="./ie-edge.html">Here</a> there is a simple demo page to see an example of this component in a simple
-        page that will work with IE/Edge.
-      </div>
-    </blockquote>
-
     <h3>Local Data-Source Binding</h3>
     <p>
-      Directly bind a local array to paper-autocomplete. The component internally will filter suggestions based on the component attribute settings.
+      Directly bind a local array to paper-autocomplete. The component internally will filter suggestions based on the
+      component attribute settings.
     </p>
 
     <blockquote class="info">
       <span class="bold">LOCAL DATA BINDING</span><br>
       <div>
-        The component internally remaps the passed array to the template binding array (which will be an array of objects with a `text` and `value` properties). The passed array can be a simple array of strings.
+        The component internally remaps the passed array to the template binding array (which will be an array of
+        objects with a `text` and `value` properties). The passed array can be a simple array of strings.
       </div>
       <br>
       <div>
-        Public properties, `textProperty` and `valueProperty`, can be declaratively set in the element attributes, allowing to bind an arbitrary object array to the component's <span class="bold">source</span> property.
+        Public properties, `textProperty` and `valueProperty`, can be declaratively set in the element attributes,
+        allowing to bind an arbitrary object array to the component's <span class="bold">source</span> property.
       </div>
     </blockquote>
 
     <demo-snippet>
       <template is="dom-bind">
-      <autocomplete-example>
-        <!-- autocomplete-example is used just to do paper-autocomplete.source = states; -->
-        <paper-autocomplete label="Select State" id="input-local" no-label-float="true"></paper-autocomplete>
-      </autocomplete-example>
-    </template>
+        <paper-autocomplete class="autocomplete-states"
+                            label="Select State"
+                            id="input-local"
+                            no-label-float="true"></paper-autocomplete>
+
+        <script>
+          // This will initialize all paper-autocomplete with class autocomplete-states in this demo page.
+          window.addEventListener('WebComponentsReady', function () {
+            // Async call needed here for IE11/Edge compatibility.
+            Polymer.Base.async(function () {
+              var allAutoCompleteStates = document.querySelectorAll('paper-autocomplete.autocomplete-states');
+
+              [].slice.call(allAutoCompleteStates).forEach(function (element) {
+                element.source = states;
+
+                element.addEventListener('autocomplete-selected', function () {
+                  var paperToast = document.querySelector('paper-toast');
+                  var selected = event.detail.text;
+                  paperToast.text = 'Selected: ' + selected;
+                  paperToast.show();
+                });
+              });
+            });
+          });
+        </script>
+      </template>
     </demo-snippet>
 
     <demo-snippet>
       <template is="dom-bind">
-      <autocomplete-example>
-        <paper-autocomplete placeholder="With a placeholder" label="State" id="input-local-placeholder" always-float-lable="true"></paper-autocomplete>
-      </autocomplete-example>
-    </template>
+        <paper-autocomplete class="autocomplete-states"
+                            placeholder="With a placeholder"
+                            label="State"
+                            id="input-local-placeholder"
+                            always-float-lable="true"></paper-autocomplete>
+      </template>
     </demo-snippet>
 
     <demo-snippet>
-    <template is="dom-bind">
-      <style is="custom-style">
-        paper-autocomplete#styled {
-          --paper-input-container-focus-color: var(--accent-color);
-          --paper-autocomplete-suggestions-item-min-height: 60px;
-          --paper-autocomplete-suggestions-wrapper: {
-            background-color: var(--paper-amber-50);
-          };
-        }
-      </style>
-      <autocomplete-example>
-        <paper-autocomplete id="styled" label="State (custom styled)" id="input-local-styled"></paper-autocomplete>
-      </autocomplete-example>
-    </template>
+      <template is="dom-bind">
+        <style is="custom-style">
+          paper-autocomplete#styled {
+            --paper-input-container-focus-color: var(--accent-color);
+            --paper-autocomplete-suggestions-item-min-height: 60px;
+            --paper-autocomplete-suggestions-wrapper: {
+              background-color: var(--paper-amber-50);
+            };
+          }
+        </style>
+        <autocomplete-example>
+          <paper-autocomplete id="styled"
+                              class="autocomplete-states"
+                              label="State (custom styled)"
+                              id="input-local-styled"></paper-autocomplete>
+        </autocomplete-example>
+      </template>
     </demo-snippet>
 
     <h3>Remote Data-Source Binding</h3>
     <p>
-      Remote bind to the github user API. Remote data binding delegates the responsibility of filtering the data source to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the suggestions back to the
+      Remote bind to the github user API. Remote data binding delegates the responsibility of filtering the data source
+      to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the
+      suggestions back to the
       component. The change event is fired based on the <span class="bold">min-length</span> attribute setting.
     </p>
 
     <blockquote class="warning">
       <span class="bold">REMOTE DATA BINDING</span><br>
       <div>
-        The filtered suggestions is expected to be mapped to an array of text/value pairs before being passed to the component.
+        The filtered suggestions is expected to be mapped to an array of text/value pairs before being passed to the
+        component.
       </div>
     </blockquote>
 
     <demo-snippet>
       <template is="dom-bind">
 
-      <paper-autocomplete label="Select User"
-                          id="input-remote"
-                          remote-source="true"
-                          min-length="2"></paper-autocomplete>
+        <paper-autocomplete label="Select User"
+                            id="input-remote"
+                            remote-source="true"
+                            min-length="2"></paper-autocomplete>
 
-      <script>
-        var data = createMockData('text', 'value');
+        <script>
+          window.addEventListener('WebComponentsReady', function () {
+            Polymer.Base.async(function () {
+              var data = createMockData('text', 'value');
 
-        document.querySelector('#input-remote').addEventListener('autocomplete-selected', onSelect);
-        document.querySelector('#input-remote').addEventListener('autocomplete-change', onChange);
+              document.querySelector('#input-remote').addEventListener('autocomplete-selected', onSelect);
+              document.querySelector('#input-remote').addEventListener('autocomplete-change', onChange);
 
-        function onSelect(event) {
-          var paperToast = document.querySelector('paper-toast');
-          var selected = event.detail.text;
-          paperToast.text = 'Selected: ' + selected;
-          paperToast.show();
-        }
+              function onSelect(event) {
+                var paperToast = document.querySelector('paper-toast');
+                var selected = event.detail.text;
+                paperToast.text = 'Selected: ' + selected;
+                paperToast.show();
+              }
 
-        function onChange(event) {
-          var input = document.querySelector('#input-remote');
-          var search = event.detail.option.text;
-          var delay = Math.random() * (500 - 100) + 100;
+              function onChange(event) {
+                var input = document.querySelector('#input-remote');
+                var search = event.detail.option.text;
+                var delay = Math.random() * (500 - 100) + 100;
 
-          setTimeout(function () {
-              input.suggestions(data.filter(function (obj) {
-                  return obj.text.toLowerCase().indexOf(search) !== -1;
-              }));
-          }.bind(this), delay);
-        }
-      </script>
-    </template>
+                setTimeout(function () {
+                  input.suggestions(data.filter(function (obj) {
+                    return obj.text.toLowerCase().indexOf(search) !== -1;
+                  }));
+                }.bind(this), delay);
+              }
+            });
+          });
+        </script>
+      </template>
     </demo-snippet>
 
     <h3>Remote Data-Source Binding with Custom Text & Value properties</h3>
     <p>
-      Remote bind to the github user API. Remote data binding delegates the responsibility of filtering the data source to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the suggestions back to the
+      Remote bind to the github user API. Remote data binding delegates the responsibility of filtering the data source
+      to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the
+      suggestions back to the
       component. The change event is fired based on the <span class="bold">min-length</span> attribute setting.
     </p>
 
     <demo-snippet>
       <template is="dom-bind">
 
-      <paper-autocomplete label="Select User"
-                          id="input-remote-custom-properties"
-                          text-property="login"
-                          value-property="id"
-                          min-length="2"
-                          remote-source>
-      </paper-autocomplete>
+        <paper-autocomplete label="Select User"
+                            id="input-remote-custom-properties"
+                            text-property="login"
+                            value-property="id"
+                            min-length="2"
+                            remote-source>
+        </paper-autocomplete>
 
-      <script>
-        var dataCustom = createMockData('login', 'id');
-        var autocomplete = document.querySelector('#input-remote-custom-properties');
-        autocomplete.addEventListener('autocomplete-selected', onCustomSelect);
-        autocomplete.addEventListener('autocomplete-change', onCustomChange);
+        <script>
+          window.addEventListener('WebComponentsReady', function () {
+            Polymer.Base.async(function () {
+              var dataCustom = createMockData('login', 'id');
+              var autocomplete = document.querySelector('#input-remote-custom-properties');
+              autocomplete.addEventListener('autocomplete-selected', onCustomSelect);
+              autocomplete.addEventListener('autocomplete-change', onCustomChange);
 
-        function onCustomChange(event) {
-          var input = document.querySelector('#input-remote-custom-properties');
-          var search = event.detail.option.text;
-          var delay = Math.random() * (500 - 100) + 100;
+              function onCustomChange(event) {
+                var input = document.querySelector('#input-remote-custom-properties');
+                var search = event.detail.option.text;
+                var delay = Math.random() * (500 - 100) + 100;
 
-          setTimeout(function () {
-              input.suggestions(dataCustom.filter(function (obj) {
-                  return obj[autocomplete.textProperty].toLowerCase().indexOf(search) !== -1;
-              }));
-          }.bind(this), delay);
-        }
+                setTimeout(function () {
+                  input.suggestions(dataCustom.filter(function (obj) {
+                    return obj[autocomplete.textProperty].toLowerCase().indexOf(search) !== -1;
+                  }));
+                }.bind(this), delay);
+              }
 
-        function onCustomSelect(event) {
-          var paperToast = document.querySelector('paper-toast');
-          var selected = event.detail.text;
-          paperToast.text = 'Selected: ' + selected + ' with a value ' + event.detail.value;
-          paperToast.show();
-        }
-
-      </script>
-    </template>
+              function onCustomSelect(event) {
+                var paperToast = document.querySelector('paper-toast');
+                var selected = event.detail.text;
+                paperToast.text = 'Selected: ' + selected + ' with a value ' + event.detail.value;
+                paperToast.show();
+              }
+            });
+          });
+        </script>
+      </template>
     </demo-snippet>
 
     <h3>Custom template</h3>
     <p>
-      This is an example using custom template. Open the file `demo/address-autocomplete.html` in this repository to see how it works internally. You can use that one as an example when you need to implement your own.
+      This is an example using custom template. Open the file `demo/address-autocomplete.html` in this repository to see
+      how it works internally. You can use that one as an example when you need to implement your own.
     </p>
 
     <demo-snippet>
       <template is="dom-bind">
-      <address-autocomplete></address-autocomplete>
-    </template>
+        <address-autocomplete></address-autocomplete>
+      </template>
     </demo-snippet>
 
     <h3>Remote Data-Source Binding with custom template</h3>
@@ -296,59 +327,54 @@
     <demo-snippet>
       <template is="dom-bind">
 
-      <paper-autocomplete label="Select User"
-                          id="input-remote-custom-template"
-                          text-property="login"
-                          value-property="id"
-                          min-length="2"
-                          remote-source>
-        <template autocomplete-custom-template>
-          <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-            <img src$="[[item.avatar_url]]" height="50" width="50" style="margin: 8px 8px 8px 0; min-height: 50px;"/>[[item.login]]
-            <paper-ripple></paper-ripple>
-          </paper-item>
-        </template>
-      </paper-autocomplete>
+        <paper-autocomplete label="Select User"
+                            id="input-remote-custom-template"
+                            text-property="login"
+                            value-property="id"
+                            min-length="2"
+                            remote-source>
+          <template autocomplete-custom-template>
+            <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+              <img src$="[[item.avatar_url]]" height="50" width="50" style="margin: 8px 8px 8px 0; min-height: 50px;"/>[[item.login]]
+              <paper-ripple></paper-ripple>
+            </paper-item>
+          </template>
+        </paper-autocomplete>
 
-      <script>
-        (function() {
-          var queryTimer = null;
-          var remoteInput = document.querySelector('#input-remote-custom-template');
-          var dataExtra = createMockData('login', 'id');
+        <script>
+          window.addEventListener('WebComponentsReady', function () {
+            Polymer.Base.async(function () {
+              var queryTimer = null;
+              var remoteInput = document.querySelector('#input-remote-custom-template');
+              var dataExtra = createMockData('login', 'id');
 
-          remoteInput.addEventListener('autocomplete-selected', onCustomSelect);
-          remoteInput.addEventListener('autocomplete-change', onCustomChange);
+              remoteInput.addEventListener('autocomplete-selected', onCustomSelect);
+              remoteInput.addEventListener('autocomplete-change', onCustomChange);
 
-          function onSelect(event) {
-            var paperToast = document.querySelector('paper-toast');
-            var selected = event.detail.text;
-            paperToast.text = 'Selected: ' + selected;
-            paperToast.show();
-          }
+              function onCustomSelect(event) {
+                var paperToast = document.querySelector('paper-toast');
+                var selected = event.detail.text;
+                paperToast.text = 'Selected: ' + selected + ' with a value ' + event.detail.value;
+                paperToast.show();
+              }
 
-          function onCustomSelect(event) {
-            var paperToast = document.querySelector('paper-toast');
-            var selected = event.detail.text;
-            paperToast.text = 'Selected: ' + selected + ' with a value ' + event.detail.value;
-            paperToast.show();
-          }
+              function onCustomChange(event) {
+                clearTimeout(queryTimer);
 
-          function onCustomChange(event) {
-            clearTimeout(queryTimer);
+                queryTimer = setTimeout(function () {
+                  var search = event.detail.option.text;
+                  var delay = Math.random() * (500 - 100) + 100;
 
-            queryTimer = setTimeout(function() {
-              var search = event.detail.option.text;
-              var delay = Math.random() * (500 - 100) + 100;
-
-              setTimeout(function() {
-                remoteInput.suggestions(dataExtra.filter(function(obj) {
-                  return obj[remoteInput.textProperty].toLowerCase().indexOf(search.toLowerCase()) !== -1;
-                }));
-              }.bind(this), delay);
-            }, 300);
-          }
-        }());
-      </script>
+                  setTimeout(function () {
+                    remoteInput.suggestions(dataExtra.filter(function (obj) {
+                      return obj[remoteInput.textProperty].toLowerCase().indexOf(search.toLowerCase()) !== -1;
+                    }));
+                  }.bind(this), delay);
+                }, 300);
+              }
+            });
+          });
+        </script>
       </template>
     </demo-snippet>
 
@@ -357,7 +383,9 @@
     <demo-snippet>
       <template is="dom-bind">
         <form is="iron-form" id="form">
-          <paper-autocomplete label="State" id="ironFormExample" disable-show-clear="true"
+          <paper-autocomplete label="State"
+                              id="ironFormExample"
+                              disable-show-clear="true"
                               name="state"></paper-autocomplete>
 
           <paper-input label="City" name="city"></paper-input>
@@ -369,22 +397,26 @@
         <pre id="output" style="min-height: 75px; background-color:#eee; border: 1px solid #999;"></pre>
 
         <script>
-          var autocompleteFormExample = document.getElementById('ironFormExample');
+          window.addEventListener('WebComponentsReady', function () {
+            Polymer.Base.async(function () {
+              var autocompleteFormExample = document.getElementById('ironFormExample');
 
-          autocompleteFormExample.source = states;
+              autocompleteFormExample.source = states;
 
-          document.getElementById('form').addEventListener('iron-form-submit', function () {
-            var formContent;
+              document.getElementById('form').addEventListener('iron-form-submit', function () {
+                var formContent;
 
-            formContent = this.serialize();
-            document.getElementById('output').innerHTML = JSON.stringify(formContent, null, 3);
-          });
+                formContent = this.serialize();
+                document.getElementById('output').innerHTML = JSON.stringify(formContent, null, 3);
+              });
 
-          // preventDefault() for ENTER. See issue: https://github.com/ellipticaljs/paper-autocomplete/issues/52
-          autocompleteFormExample.addEventListener('keydown', function (event) {
-            if (event.which === 13) {
-              event.preventDefault();
-            }
+              // preventDefault() for ENTER. See issue: https://github.com/ellipticaljs/paper-autocomplete/issues/52
+              autocompleteFormExample.addEventListener('keydown', function (event) {
+                if (event.which === 13) {
+                  event.preventDefault();
+                }
+              });
+            });
           });
         </script>
       </template>
