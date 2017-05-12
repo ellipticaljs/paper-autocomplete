@@ -101,52 +101,53 @@
   @demo demo/index.html
 -->
 <dom-module id="paper-autocomplete">
-  <style>
-     :host {
-      display: block;
-      box-sizing: border-box;
-      position: relative;
-      --paper-input-container-focus-color: var(--primary-color);
-    }
-
-    .input-wrapper {
-      @apply(--layout-horizontal);
-    }
-
-    .input-wrapper paper-input {
-      @apply(--layout-flex);
-    }
-
-    paper-input ::content input::-ms-clear {
-      display: none;
-    }
-
-    #clear {
-      display: none;
-      margin-top: auto;
-      line-height: 8px;
-
-      --paper-icon-button: {
-        height: 24px;
-        width: 24px;
-        padding: 2px;
-      };
-    }
-
-    .sr-only {
-      position: absolute;
-      clip: rect(1px, 1px, 1px, 1px);
-    }
-
-    paper-autocomplete-suggestions {
-      --suggestions-wrapper: {
-        @apply(--paper-autocomplete-suggestions-wrapper);
-      };
-
-      --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
-    }
-  </style>
   <template>
+    <style>
+      :host {
+        display: block;
+        box-sizing: border-box;
+        position: relative;
+        --paper-input-container-focus-color: var(--primary-color);
+      }
+
+      .input-wrapper {
+        @apply --layout-horizontal;
+      }
+
+      .input-wrapper paper-input {
+        @apply --layout-flex ;
+      }
+
+      paper-input ::slotted(input::-ms-clear) {
+        display: none;
+      }
+
+      #clear {
+        display: none;
+        margin-top: auto;
+        line-height: 8px;
+
+        --paper-icon-button: {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+        };
+      }
+
+      .sr-only {
+        position: absolute;
+        clip: rect(1px, 1px, 1px, 1px);
+      }
+
+      paper-autocomplete-suggestions {
+        --suggestions-wrapper: {
+          @apply --paper-autocomplete-suggestions-wrapper;
+        };
+
+        --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
+      }
+    </style>
+
     <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded$="[[_isSuggestionsOpened]]">
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
       <label for="autocompleteInput" class="sr-only">[[label]]</label>
@@ -194,469 +195,470 @@
                                     event-namespace="[[eventNamespace]]"
                                     highlighted-suggestion="{{_highlightedSuggestion}}"
                                     is-open="{{_isSuggestionsOpened}}">
-      <content id="templates" select="[autocomplete-custom-template]"></content>
+      <slot id="templates" name="autocomplete-custom-template"></slot>
     </paper-autocomplete-suggestions>
   </template>
-</dom-module>
-<script>
-  (function () {
-    Polymer({
-      is: 'paper-autocomplete',
 
-      properties: {
-        /**
-         * `autoValidate` Set to true to auto-validate the input value.
-         */
-        autoValidate: {
-          type: Boolean,
-          value: false
+  <script>
+    (function () {
+      Polymer({
+        is: 'paper-autocomplete',
+
+        properties: {
+          /**
+          * `autoValidate` Set to true to auto-validate the input value.
+          */
+          autoValidate: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * `errorMessage` The error message to display when the input is invalid.
+          */
+          errorMessage: {
+            type: String
+          },
+
+          /**
+          * `label` Text to display as the input label
+          */
+          label: String,
+
+          /**
+          * `noLabelFloat` Set to true to disable the floating label.
+          */
+          noLabelFloat: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * `alwaysFloatLabel` Set to true to always float label
+          */
+          alwaysFloatLabel: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * The placeholder text
+          */
+          placeholder: String,
+
+          /**
+          * `required` Set to true to mark the input as required.
+          */
+          required: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * `source` Array of objects with the options to execute the autocomplete feature
+          */
+          source: {
+            type: Array,
+            observer: '_onSourceChanged'
+          },
+
+          /**
+          * Property of local datasource to as the text property
+          */
+          textProperty: {
+            type: String,
+            value: 'text'
+          },
+
+          /**
+          * Property of local datasource to as the value property
+          */
+          valueProperty: {
+            type: String,
+            value: 'value'
+          },
+
+          /**
+          * `value` Selected object from the suggestions
+          */
+          value: {
+            type: Object,
+            notify: true
+          },
+
+          /**
+          * The current/selected text of the input
+          */
+          text: {
+            type: String,
+            notify: true,
+            value: ''
+          },
+
+          /**
+          * Disable showing the clear X button
+          */
+          disableShowClear: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * Binds to a remote data source
+          */
+          remoteSource: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * Event type separator
+          */
+          eventNamespace: {
+            type: String,
+            value: '-'
+          },
+
+          /**
+          * Minimum length to trigger suggestions
+          */
+          minLength: {
+            type: Number,
+            value: 1
+          },
+
+          /**
+          * `pattern` Pattern to validate input field
+          */
+          pattern: String,
+
+          /**
+          * allowedPattern` allowedPattern to validate input field
+          */
+          allowedPattern: String,
+
+          /**
+          * Set to `true` to show a character counter.
+          */
+          charCounter: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * The maximum length of the input value.
+          */
+          maxlength: {
+            type: Number
+          },
+
+          /**
+          * Name to be used by the autocomplete input. This is necessary if wanted to be integrated with iron-form.
+          */
+          name: String,
+
+          /**
+          * Function used to filter available items. This function is actually used by paper-autocomplete-suggestions,
+          * it is also exposed here so it is possible to provide a custom queryFn.
+          */
+          queryFn: {
+            type: Function
+          },
+
+          /*************
+          * PRIVATE
+          *************/
+          // TODO: check if we need _value and _text properties. It seems they can be removed
+          _value: {
+            value: undefined
+          },
+
+          _text: {
+            value: undefined
+          },
+
+          /**
+          * Indicates whether the clear button is visible or not
+          */
+          _isClearButtonVisible: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * Indicates whether the suggestion popup is visible or not.
+          */
+          _isSuggestionsOpened: {
+            type: Boolean,
+            value: false
+          },
+
+          /**
+          * Object containing the information of the currently selected option
+          */
+          _selectedOption: {
+            type: Object
+          }
+        },
+
+        observers: [
+          '_onQueryFnChanged(queryFn)'
+        ],
+
+        listeners: {
+          'autocompleteInput.input': '_onInput'
+        },
+
+        // Element Lifecycle
+        ready: function () {
+          this._value = this.value;
+
+          this.addEventListener(
+            'autocomplete' + this.eventNamespace + 'selected',
+            this._onAutocompleteSelected.bind(this)
+          );
         },
 
         /**
-         * `errorMessage` The error message to display when the input is invalid.
-         */
-        errorMessage: {
-          type: String
-        },
+        * Clears the input text
+        */
+        _clear: function () {
+          var option = {
+            text: this.text,
+            value: this.value
+          };
 
-        /**
-         * `label` Text to display as the input label
-         */
-        label: String,
+          this.value = null;
+          this._value = null;
+          this.text = '';
+          this._text = '';
 
-        /**
-         * `noLabelFloat` Set to true to disable the floating label.
-         */
-        noLabelFloat: {
-          type: Boolean,
-          value: false
-        },
+          this._fireEvent(option, 'reset');
 
-        /**
-         * `alwaysFloatLabel` Set to true to always float label
-         */
-        alwaysFloatLabel: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * The placeholder text
-         */
-        placeholder: String,
-
-        /**
-         * `required` Set to true to mark the input as required.
-         */
-        required: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * `source` Array of objects with the options to execute the autocomplete feature
-         */
-        source: {
-          type: Array,
-          observer: '_onSourceChanged'
-        },
-
-        /**
-         * Property of local datasource to as the text property
-         */
-        textProperty: {
-          type: String,
-          value: 'text'
-        },
-
-        /**
-         * Property of local datasource to as the value property
-         */
-        valueProperty: {
-          type: String,
-          value: 'value'
-        },
-
-        /**
-         * `value` Selected object from the suggestions
-         */
-        value: {
-          type: Object,
-          notify: true
-        },
-
-        /**
-         * The current/selected text of the input
-         */
-        text: {
-          type: String,
-          notify: true,
-          value: ''
-        },
-
-        /**
-         * Disable showing the clear X button
-         */
-        disableShowClear: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * Binds to a remote data source
-         */
-        remoteSource: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * Event type separator
-         */
-        eventNamespace: {
-          type: String,
-          value: '-'
-        },
-
-        /**
-         * Minimum length to trigger suggestions
-         */
-        minLength: {
-          type: Number,
-          value: 1
-        },
-
-        /**
-         * `pattern` Pattern to validate input field
-         */
-        pattern: String,
-
-        /**
-         * allowedPattern` allowedPattern to validate input field
-         */
-        allowedPattern: String,
-
-        /**
-         * Set to `true` to show a character counter.
-         */
-        charCounter: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * The maximum length of the input value.
-         */
-        maxlength: {
-          type: Number
-        },
-
-        /**
-         * Name to be used by the autocomplete input. This is necessary if wanted to be integrated with iron-form.
-         */
-        name: String,
-
-        /**
-         * Function used to filter available items. This function is actually used by paper-autocomplete-suggestions,
-         * it is also exposed here so it is possible to provide a custom queryFn.
-         */
-        queryFn: {
-          type: Function
-        },
-
-        /*************
-         * PRIVATE
-         *************/
-        // TODO: check if we need _value and _text properties. It seems they can be removed
-        _value: {
-          value: undefined
-        },
-
-        _text: {
-          value: undefined
-        },
-
-        /**
-         * Indicates whether the clear button is visible or not
-         */
-        _isClearButtonVisible: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * Indicates whether the suggestion popup is visible or not.
-         */
-        _isSuggestionsOpened: {
-          type: Boolean,
-          value: false
-        },
-
-        /**
-         * Object containing the information of the currently selected option
-         */
-        _selectedOption: {
-          type: Object
-        }
-      },
-
-      observers: [
-        '_onQueryFnChanged(queryFn)'
-      ],
-
-      listeners: {
-        'autocompleteInput.input': '_onInput'
-      },
-
-      // Element Lifecycle
-      ready: function () {
-        this._value = this.value;
-
-        this.addEventListener(
-          'autocomplete' + this.eventNamespace + 'selected',
-          this._onAutocompleteSelected.bind(this)
-        );
-      },
-
-      /**
-       * Clears the input text
-       */
-      _clear: function () {
-        var option = {
-          text: this.text,
-          value: this.value
-        };
-
-        this.value = null;
-        this._value = null;
-        this.text = '';
-        this._text = '';
-
-        this._fireEvent(option, 'reset');
-
-        this._hideClearButton();
-        this.$.autocompleteInput.focus();
-      },
-
-      _fireEvent: function (option, evt) {
-        var id = this._getId();
-        var event = 'autocomplete' + this.eventNamespace + evt;
-
-        // TODO: this might not be needed
-        this.fire(event, {
-          id: id,
-          value: option[this.valueProperty] || option.value,
-          text: option[this.textProperty] || option.text,
-          target: this,
-          option: option
-        });
-      },
-
-      /**
-       * Callback called when source property changes
-       */
-      _onSourceChanged: function () {
-        this.$.paperAutocompleteSuggestions.source = this.source;
-      },
-
-      _onQueryFnChanged: function () {
-        this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
-      },
-
-      /**
-       * On input event handler
-       */
-      _onInput: function () {
-        if (this.$.autocompleteInput.value) {
-          this._showClearButton();
-        } else {
           this._hideClearButton();
+          this.$.autocompleteInput.focus();
+        },
+
+        _fireEvent: function (option, evt) {
+          var id = this._getId();
+          var event = 'autocomplete' + this.eventNamespace + evt;
+
+          // TODO: this might not be needed
+          this.fire(event, {
+            id: id,
+            value: option[this.valueProperty] || option.value,
+            text: option[this.textProperty] || option.text,
+            target: this,
+            option: option
+          });
+        },
+
+        /**
+        * Callback called when source property changes
+        */
+        _onSourceChanged: function () {
+          this.$.paperAutocompleteSuggestions.source = this.source;
+        },
+
+        _onQueryFnChanged: function () {
+          this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
+        },
+
+        /**
+        * On input event handler
+        */
+        _onInput: function () {
+          if (this.$.autocompleteInput.value) {
+            this._showClearButton();
+          } else {
+            this._hideClearButton();
+          }
+        },
+
+        /**
+        * On autocomplete selection
+        */
+        _onAutocompleteSelected: function (event) {
+          var selection = event.detail;
+
+          this.value = selection.value;
+          this.text = selection.text;
+        },
+
+        /**
+        * Show the clear button (X)
+        */
+        _showClearButton: function () {
+          if (this.disableShowClear) {
+            return;
+          }
+
+          if (this._isClearButtonVisible) {
+            return;
+          }
+
+          this.$.clear.style.display = 'block';
+          this._isClearButtonVisible = true;
+        },
+
+        /**
+        * Hide the clear button (X)
+        */
+        _hideClearButton: function () {
+          if (!this._isClearButtonVisible) {
+            return;
+          }
+
+          this.$.clear.style.display = 'none';
+          this._isClearButtonVisible = false;
+        },
+
+        _getId: function () {
+          var id = this.getAttribute('id');
+          if (!id) id = this.dataset.id;
+          return id;
+        },
+
+        /****************************
+        * PUBLIC
+        ****************************/
+
+        /**
+        * Gets the current value of the input
+        * @returns {String}
+        */
+        getValue: function () {
+          return this.value;
+        },
+
+        /**
+        * Gets the current text/value option of the input
+        * @returns {Object}
+        */
+        getOption: function () {
+          return {
+            text: this.text,
+            value: this.value
+          };
+        },
+
+        /**
+        * Sets the current text/value option of the input
+        * @param {Object} option
+        */
+        setOption: function (option) {
+          this.text = option[this.textProperty] || option.text;
+          this.value = option[this.valueProperty] || option.value;
+
+          this._showClearButton();
+        },
+
+        /**
+        * Disables the input
+        */
+        disable: function () {
+          this.disabled = true;
+          this.$.autocompleteInput.disabled = true;
+        },
+
+        /**
+        * Enables the input
+        */
+        enable: function () {
+          this.disabled = false;
+          this.$.autocompleteInput.disabled = false;
+        },
+
+        /**
+        * Sets the component's current suggestions
+        * @param {Array} arr
+        */
+        suggestions: function (arr) {
+          this.$.paperAutocompleteSuggestions.suggestions(arr);
+        },
+
+        /**
+        * Validates the input
+        * @returns {Boolean}
+        */
+        validate: function () {
+          return this.$.autocompleteInput.validate();
+        },
+
+        /**
+        * Clears the current input
+        */
+        clear: function () {
+          this._value = '';
+          this._text = '';
+          this._clear();
+        },
+
+        /**
+        * Resets the current input (DEPRECATED: please use clear)
+        */
+        reset: function () {
+          this._clear();
+        },
+
+        /**
+        * Hides the suggestions popup
+        */
+        hideSuggestions: function () {
+          this._hideClearButton();
+          this.$.paperAutocompleteSuggestions.hideSuggestions();
         }
-      },
 
-      /**
-       * On autocomplete selection
-       */
-      _onAutocompleteSelected: function (event) {
-        var selection = event.detail;
+        /**
+        * Fired when a selection is made
+        *
+        * @event autocomplete-selected
+        * @param {String} id
+        * @param {String} text
+        * @param {Element} target
+        * @param {Object} option
+        */
 
-        this.value = selection.value;
-        this.text = selection.text;
-      },
+        /**
+        * Fired on input change
+        *
+        * @event autocomplete-change
+        * @param {String} id
+        * @param {String} text
+        * @param {Element} target
+        * @param {Object} option
+        */
 
-      /**
-       * Show the clear button (X)
-       */
-      _showClearButton: function () {
-        if (this.disableShowClear) {
-          return;
-        }
+        /**
+        * Fired on input focus
+        *
+        * @event autocomplete-focus
+        * @param {String} id
+        * @param {String} text
+        * @param {Element} target
+        * @param {Object} option
+        */
 
-        if (this._isClearButtonVisible) {
-          return;
-        }
+        /**
+        * Fired on input blur
+        *
+        * @event autocomplete-blur
+        * @param {String} id
+        * @param {String} text
+        * @param {Element} target
+        * @param {Object} option
+        */
 
-        this.$.clear.style.display = 'block';
-        this._isClearButtonVisible = true;
-      },
-
-      /**
-       * Hide the clear button (X)
-       */
-      _hideClearButton: function () {
-        if (!this._isClearButtonVisible) {
-          return;
-        }
-
-        this.$.clear.style.display = 'none';
-        this._isClearButtonVisible = false;
-      },
-
-      _getId: function () {
-        var id = this.getAttribute('id');
-        if (!id) id = this.dataset.id;
-        return id;
-      },
-
-      /****************************
-       * PUBLIC
-       ****************************/
-
-      /**
-       * Gets the current value of the input
-       * @returns {String}
-       */
-      getValue: function () {
-        return this.value;
-      },
-
-      /**
-       * Gets the current text/value option of the input
-       * @returns {Object}
-       */
-      getOption: function () {
-        return {
-          text: this.text,
-          value: this.value
-        };
-      },
-
-      /**
-       * Sets the current text/value option of the input
-       * @param {Object} option
-       */
-      setOption: function (option) {
-        this.text = option[this.textProperty] || option.text;
-        this.value = option[this.valueProperty] || option.value;
-
-        this._showClearButton();
-      },
-
-      /**
-       * Disables the input
-       */
-      disable: function () {
-        this.disabled = true;
-        this.$.autocompleteInput.disabled = true;
-      },
-
-      /**
-       * Enables the input
-       */
-      enable: function () {
-        this.disabled = false;
-        this.$.autocompleteInput.disabled = false;
-      },
-
-      /**
-       * Sets the component's current suggestions
-       * @param {Array} arr
-       */
-      suggestions: function (arr) {
-        this.$.paperAutocompleteSuggestions.suggestions(arr);
-      },
-
-      /**
-       * Validates the input
-       * @returns {Boolean}
-       */
-      validate: function () {
-        return this.$.autocompleteInput.validate();
-      },
-
-      /**
-       * Clears the current input
-       */
-      clear: function () {
-        this._value = '';
-        this._text = '';
-        this._clear();
-      },
-
-      /**
-       * Resets the current input (DEPRECATED: please use clear)
-       */
-      reset: function () {
-        this._clear();
-      },
-
-      /**
-       * Hides the suggestions popup
-       */
-      hideSuggestions: function () {
-        this._hideClearButton();
-        this.$.paperAutocompleteSuggestions.hideSuggestions();
-      }
-
-      /**
-       * Fired when a selection is made
-       *
-       * @event autocomplete-selected
-       * @param {String} id
-       * @param {String} text
-       * @param {Element} target
-       * @param {Object} option
-       */
-
-      /**
-       * Fired on input change
-       *
-       * @event autocomplete-change
-       * @param {String} id
-       * @param {String} text
-       * @param {Element} target
-       * @param {Object} option
-       */
-
-      /**
-       * Fired on input focus
-       *
-       * @event autocomplete-focus
-       * @param {String} id
-       * @param {String} text
-       * @param {Element} target
-       * @param {Object} option
-       */
-
-      /**
-       * Fired on input blur
-       *
-       * @event autocomplete-blur
-       * @param {String} id
-       * @param {String} text
-       * @param {Element} target
-       * @param {Object} option
-       */
-
-      /**
-       * Fired on input reset/clear
-       *
-       * @event autocomplete-reset-blur
-       * @param {String} id
-       * @param {String} text
-       * @param {Element} target
-       * @param {Object} option
-       */
-    });
-  }());
-</script>
+        /**
+        * Fired on input reset/clear
+        *
+        * @event autocomplete-reset-blur
+        * @param {String} id
+        * @param {String} text
+        * @param {Element} target
+        * @param {Object} option
+        */
+      });
+    }());
+  </script>
+</dom-module>
