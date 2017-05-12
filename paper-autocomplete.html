@@ -524,14 +524,6 @@
         ****************************/
 
         /**
-        * Gets the current value of the input
-        * @returns {String}
-        */
-        getValue: function () {
-          return this.value;
-        },
-
-        /**
         * Gets the current text/value option of the input
         * @returns {Object}
         */
@@ -558,7 +550,6 @@
         */
         disable: function () {
           this.disabled = true;
-          this.$.autocompleteInput.disabled = true;
         },
 
         /**
@@ -566,7 +557,6 @@
         */
         enable: function () {
           this.disabled = false;
-          this.$.autocompleteInput.disabled = false;
         },
 
         /**
