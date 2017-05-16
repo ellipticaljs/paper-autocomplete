@@ -156,47 +156,47 @@
       <input type="hidden" name$="[[name]]" value$="[[value]]" >
 
       <paper-input id="autocompleteInput"
-                   label="[[label]]"
-                   no-label-float="[[noLabelFloat]]"
-                   disabled="{{disabled}}"
-                   auto-validate$="[[autoValidate]]"
-                   error-message$="[[errorMessage]]"
-                   required$="[[required]]"
-                   value="{{text}}"
-                   allowed-pattern="[[allowedPattern]]"
-                   pattern="[[pattern]]"
-                   no-label-float="[[noLabelFloat]]"
-                   auto-validate$="[[autoValidate]]"
-                   always-float-label="[[alwaysFloatLabel]]"
-                   char-counter$="[[charCounter]]"
-                   maxlength$="[[maxlength]]"
-                   placeholder="[[placeholder]]"
+        label="[[label]]"
+        no-label-float="[[noLabelFloat]]"
+        disabled="{{disabled}}"
+        auto-validate$="[[autoValidate]]"
+        error-message$="[[errorMessage]]"
+        required$="[[required]]"
+        value="{{text}}"
+        allowed-pattern="[[allowedPattern]]"
+        pattern="[[pattern]]"
+        no-label-float="[[noLabelFloat]]"
+        auto-validate$="[[autoValidate]]"
+        always-float-label="[[alwaysFloatLabel]]"
+        char-counter$="[[charCounter]]"
+        maxlength$="[[maxlength]]"
+        placeholder="[[placeholder]]"
 
-                   role="textbox"
-                   aria-autocomplete="list"
-                   aria-multiline="false"
-                   aria-activedescendant$="[[_highlightedSuggestion.elementId]]"
-                   aria-disabled$="[[disabled]]"
-                   aria-controls="autocompleteStatus suggestionsWrapper">
+        role="textbox"
+        aria-autocomplete="list"
+        aria-multiline="false"
+        aria-activedescendant$="[[_highlightedSuggestion.elementId]]"
+        aria-disabled$="[[disabled]]"
+        aria-controls="autocompleteStatus suggestionsWrapper">
 
-                  <paper-icon-button suffix id="clear" icon="clear" on-click="_clear"></paper-icon-button>
-        </paper-input>
+        <paper-icon-button suffix id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+      </paper-input>
       <!-- to announce current selection to screen reader -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
     </div>
 
     <paper-autocomplete-suggestions for="autocompleteInput"
-                                    id="paperAutocompleteSuggestions"
-                                    min-length="[[minLength]]"
-                                    text-property="[[textProperty]]"
-                                    value-property="[[valueProperty]]"
-                                    selected-option="{{_selectedOption}}"
-                                    source="[[source]]"
-                                    remote-source="[[remoteSource]]"
-                                    query-fn="[[queryFn]]"
-                                    event-namespace="[[eventNamespace]]"
-                                    highlighted-suggestion="{{_highlightedSuggestion}}"
-                                    is-open="{{_isSuggestionsOpened}}">
+      id="paperAutocompleteSuggestions"
+      min-length="[[minLength]]"
+      text-property="[[textProperty]]"
+      value-property="[[valueProperty]]"
+      selected-option="{{_selectedOption}}"
+      source="[[source]]"
+      remote-source="[[remoteSource]]"
+      query-fn="[[queryFn]]"
+      event-namespace="[[eventNamespace]]"
+      highlighted-suggestion="{{_highlightedSuggestion}}"
+      is-open="{{_isSuggestionsOpened}}">
       <slot id="templates" name="autocomplete-custom-template"></slot>
     </paper-autocomplete-suggestions>
   </template>
