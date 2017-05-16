@@ -300,13 +300,6 @@
           },
 
           /**
-          * Reference to the current suggestion template
-          */
-          _suggestionTemplate: {
-            type: Object
-          },
-
-          /**
           * `_suggestions` Array with the actual suggestions to display
           */
           _suggestions: {
@@ -389,12 +382,14 @@
 
           // This is important to be able to access component methods inside the templates used with Templatizer
           this.dataHost = this;
-          this._suggestionTemplate = this.$.defaultTemplate;
+
           // Need to capture mousedown to prevent the focus to switch from input field when user clicks in the scrollbar
           // and the autosuggest is a child of an element with tabindex.
           this.$.suggestionsWrapper.addEventListener('mousedown', function (event) {
             event.preventDefault();
           });
+
+          this.templatize(this.$.defaultTemplate);
         },
 
         attached: function () {
@@ -416,9 +411,13 @@
         },
 
         _nodeObserver: function (info) {
-          debugger;
-          // templatize must be called once before stamp is called
-          this.templatize(this._suggestionTemplate);
+          var suggestionTpl = info.addedNodes.find(function(node) {
+            return node.slot === "autocomplete-custom-template";
+          });
+
+          if (suggestionTpl !== undefined) {
+            this.templatize(suggestionTpl);
+          }
         },
 
         detached: function () {
