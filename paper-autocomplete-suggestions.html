@@ -407,7 +407,7 @@
           this._input.addEventListener('focus', this._bindedFunctions._onFocus);
           this._input.addEventListener('blur', this._bindedFunctions._onBlur);
 
-           var observer = Polymer.dom(this).observeNodes(this._nodeObserver); //TODO: clean up observer later
+          this._observer = Polymer.dom(this).observeNodes(this._nodeObserver); //TODO: clean up observer later
         },
 
         _nodeObserver: function (info) {
@@ -428,6 +428,8 @@
           this._input.removeEventListener('blur', this._bindedFunctions._onBlur);
 
           this._input = null;
+          
+          Polymer.dom(this).unobserveNodes(this._observer);
         },
 
         // Element Behavior
