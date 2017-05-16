@@ -552,7 +552,7 @@
         _clearSuggestions: function () {
           var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
 
-          suggestionsContainer.children.forEach(function (child) {
+          [].forEach.call(suggestionsContainer.children, function(child) {
             suggestionsContainer.removeChild(child);
           });
         },
