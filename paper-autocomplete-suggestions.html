@@ -529,10 +529,9 @@
 
           suggestions.forEach(function (result, index) {
             // clone the template and bind with the model
-            var clone = this.stamp({
-              item: result,
-              index: index
-            });
+            var clone = this.stamp();
+            clone.item = result;
+            clone.index = index;
 
             suggestionsContainer.appendChild(clone.root);
           }.bind(this));
@@ -540,10 +539,12 @@
 
         _clearSuggestions: function () {
           var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
+          var children = suggestionsContainer.children;
+          var length = children.length;
 
-          [].forEach.call(suggestionsContainer.children, function(child) {
-            suggestionsContainer.removeChild(child);
-          });
+          for (var i = 0; i < length; i++) {
+            suggestionsContainer.removeChild(children[0]);
+          }
         },
 
         /**
@@ -772,7 +773,7 @@
         },
 
         _onSelect: function (event) {
-          var index = event.model.index;
+          var index = this.modelForElement(event.currentTarget).index;
           this._selection(index);
         },
 
