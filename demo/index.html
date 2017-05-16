@@ -21,11 +21,15 @@
 <body unresolved>
   <dom-bind>
     <template is="dom-bind">
-      <paper-autocomplete source="[[states]]" label="patata">
-        <span>juan y medio</span>
+      <paper-autocomplete id="input" source="[[states]]" label="patata">
+        <span slot="autocomplete-custom-template">juan y medio</span>
       </paper-autocomplete>
     </template>
   </dom-bind>
+
+  <script>
+    document.querySelector('dom-bind').states = states;
+  </script>
 </body>
 
 </html>

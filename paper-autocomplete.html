@@ -191,7 +191,9 @@
                                     text-property="[[textProperty]]"
                                     value-property="[[valueProperty]]"
                                     selected-option="{{_selectedOption}}"
+                                    source="[[source]]"
                                     remote-source="[[remoteSource]]"
+                                    query-fn="[[queryFn]]"
                                     event-namespace="[[eventNamespace]]"
                                     highlighted-suggestion="{{_highlightedSuggestion}}"
                                     is-open="{{_isSuggestionsOpened}}">
@@ -258,8 +260,7 @@
           * `source` Array of objects with the options to execute the autocomplete feature
           */
           source: {
-            type: Array,
-            observer: '_onSourceChanged'
+            type: Array
           },
 
           /**
@@ -401,10 +402,6 @@
           }
         },
 
-        observers: [
-          '_onQueryFnChanged(queryFn)'
-        ],
-
         listeners: {
           'autocompleteInput.input': '_onInput'
         },
@@ -451,17 +448,6 @@
             target: this,
             option: option
           });
-        },
-
-        /**
-        * Callback called when source property changes
-        */
-        _onSourceChanged: function () {
-          this.$.paperAutocompleteSuggestions.source = this.source;
-        },
-
-        _onQueryFnChanged: function () {
-          this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
         },
 
         /**
