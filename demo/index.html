@@ -14,20 +14,411 @@
   <link rel="import" href="../../elliptical-sass/elliptical-sass.html">
   <link rel="import" href="../../css-docs/css-docs.html">
   <link rel="import" href="../paper-autocomplete.html">
+  <link rel="import" href="./address-autocomplete.html">
 
-  <script id="states" src="assets/states.js"></script>
+  <link rel="stylesheet" href="demo.css">
+
+  <style is="custom-style" include="demo-pages-shared-styles">
+    .vertical-section-container {
+      max-width: 800px;
+    }
+
+    paper-autocomplete#styled {
+      --paper-input-container-focus-color: var(--accent-color);
+      --paper-autocomplete-suggestions-item-min-height: 60px;
+      --paper-autocomplete-suggestions-wrapper: {
+        background-color: var(--paper-amber-50);
+      };
+    }
+  </style>
+
+  <script>
+    function createMockString() {
+      var textString = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      var length = Math.random() * (10 - 4) + 4;
+      var mockString = '';
+
+      for (var i = 0; i < length; i += 1) {
+        var stringIndex = Math.random() * (textString.length - 0);
+        mockString += textString.substring(stringIndex, stringIndex + 1);
+      }
+
+      return mockString;
+    }
+
+    function createMockData(textProperty, valueProperty) {
+      var data = [];
+
+      for (var i = 0; i < 200; i += 1) {
+        var mockObj = {};
+        mockObj[textProperty] = createMockString();
+        mockObj[valueProperty] = createMockString();
+        mockObj.avatar_url = 'http://www.avatarsdb.com/avatars/ban_key.gif';
+
+        data.push(mockObj);
+      }
+
+      return data;
+    }
+
+    var states = [
+      {"text": "Alabama", "value": "AL"},
+      {"text": "Alaska", "value": "AK"},
+      {"text": "American Samoa", "value": "AS"},
+      {"text": "Arizona", "value": "AZ"},
+      {"text": "Arkansas", "value": "AR"},
+      {"text": "California", "value": "CA"},
+      {"text": "Colorado", "value": "CO"},
+      {"text": "Connecticut", "value": "CT"},
+      {"text": "Delaware", "value": "DE"},
+      {"text": "District Of Columbia", "value": "DC"},
+      {"text": "Federated States Of Micronesia", "value": "FM"},
+      {"text": "Florida", "value": "FL"},
+      {"text": "Georgia", "value": "GA"},
+      {"text": "Guam", "value": "GU"},
+      {"text": "Hawaii", "value": "HI"},
+      {"text": "Idaho", "value": "ID"},
+      {"text": "Illinois", "value": "IL"},
+      {"text": "Indiana", "value": "IN"},
+      {"text": "Iowa", "value": "IA"},
+      {"text": "Kansas", "value": "KS"},
+      {"text": "Kentucky", "value": "KY"},
+      {"text": "Louisiana", "value": "LA"},
+      {"text": "Maine", "value": "ME"},
+      {"text": "Marshall Islands", "value": "MH"},
+      {"text": "Maryland", "value": "MD"},
+      {"text": "Massachusetts", "value": "MA"},
+      {"text": "Michigan", "value": "MI"},
+      {"text": "Minnesota", "value": "MN"},
+      {"text": "Mississippi", "value": "MS"},
+      {"text": "Missouri", "value": "MO"},
+      {"text": "Montana", "value": "MT"},
+      {"text": "Nebraska", "value": "NE"},
+      {"text": "Nevada", "value": "NV"},
+      {"text": "New Hampshire", "value": "NH"},
+      {"text": "New Jersey", "value": "NJ"},
+      {"text": "New Mexico", "value": "NM"},
+      {"text": "New York", "value": "NY"},
+      {"text": "North Carolina", "value": "NC"},
+      {"text": "North Dakota", "value": "ND"},
+      {"text": "Northern Mariana Islands", "value": "MP"},
+      {"text": "Ohio", "value": "OH"},
+      {"text": "Oklahoma", "value": "OK"},
+      {"text": "Oregon", "value": "OR"},
+      {"text": "Palau", "value": "PW"},
+      {"text": "Pennsylvania", "value": "PA"},
+      {"text": "Puerto Rico", "value": "PR"},
+      {"text": "Rhode Island", "value": "RI"},
+      {"text": "South Carolina", "value": "SC"},
+      {"text": "South Dakota", "value": "SD"},
+      {"text": "Tennessee", "value": "TN"},
+      {"text": "Texas", "value": "TX"},
+      {"text": "Utah", "value": "UT"},
+      {"text": "Vermont", "value": "VT"},
+      {"text": "Virgin Islands", "value": "VI"},
+      {"text": "Virginia", "value": "VA"},
+      {"text": "Washington", "value": "WA"},
+      {"text": "West Virginia", "value": "WV"},
+      {"text": "Wisconsin", "value": "WI"},
+      {"text": "Wyoming", "value": "WY"}
+    ];
+  </script>
 </head>
 
 <body unresolved>
-  <dom-bind>
-    <template is="dom-bind">
-      <paper-autocomplete id="input" source="[[states]]" label="patata" required>
-      </paper-autocomplete>
-    </template>
-  </dom-bind>
+
+  <div class="vertical-section-container centered">
+    <h3>Local Data-Source Binding</h3>
+    <p>
+      Directly bind a local array to paper-autocomplete. The component internally will filter suggestions based on the
+      component attribute settings.
+    </p>
+
+    <blockquote class="info">
+      <span class="bold">LOCAL DATA BINDING</span><br>
+      <div>
+        The component internally remaps the passed array to the template binding array (which will be an array of
+        objects with a `text` and `value` properties). The passed array can be a simple array of strings.
+      </div>
+      <br>
+      <div>
+        Public properties, `textProperty` and `valueProperty`, can be declaratively set in the element attributes,
+        allowing to bind an arbitrary object array to the component's <span class="bold">source</span> property.
+      </div>
+    </blockquote>
+
+    <demo-snippet>
+      <template>
+        <paper-autocomplete class="autocomplete-states"
+                            label="Select State"
+                            id="input-local"
+                            no-label-float="true"></paper-autocomplete>
+
+        <script>
+          // This will initialize all paper-autocomplete with class autocomplete-states in this demo page.
+          window.addEventListener('WebComponentsReady', function () {
+            // Async call needed here for IE11/Edge compatibility.
+            Polymer.Base.async(function () {
+              var allAutoCompleteStates = document.querySelectorAll('paper-autocomplete.autocomplete-states');
+
+              [].slice.call(allAutoCompleteStates).forEach(function (element) {
+                element.source = states;
+
+                element.addEventListener('autocomplete-selected', function () {
+                  var paperToast = document.querySelector('paper-toast');
+                  var selected = event.detail.text;
+                  paperToast.text = 'Selected: ' + selected;
+                  paperToast.show();
+                });
+              });
+            });
+          });
+        </script>
+      </template>
+    </demo-snippet>
+
+    <demo-snippet>
+      <template>
+        <paper-autocomplete class="autocomplete-states"
+                            placeholder="With a placeholder"
+                            label="State"
+                            id="input-local-placeholder"
+                            always-float-lable="true"></paper-autocomplete>
+      </template>
+    </demo-snippet>
+
+    <demo-snippet>
+      <template>
+        
+        <autocomplete-example>
+          <paper-autocomplete id="styled"
+                              class="autocomplete-states"
+                              label="State (custom styled)"
+                              id="input-local-styled"></paper-autocomplete>
+        </autocomplete-example>
+      </template>
+    </demo-snippet>
+
+    <h3>Remote Data-Source Binding</h3>
+    <p>
+      Remote bind to the github user API. Remote data binding delegates the responsibility of filtering the data source
+      to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the
+      suggestions back to the
+      component. The change event is fired based on the <span class="bold">min-length</span> attribute setting.
+    </p>
+
+    <blockquote class="warning">
+      <span class="bold">REMOTE DATA BINDING</span><br>
+      <div>
+        The filtered suggestions is expected to be mapped to an array of text/value pairs before being passed to the
+        component.
+      </div>
+    </blockquote>
+
+    <demo-snippet>
+      <template>
+
+        <paper-autocomplete label="Select User"
+                            id="input-remote"
+                            remote-source="true"
+                            min-length="2"></paper-autocomplete>
+
+        
+      </template>
+    </demo-snippet>
+
+    <h3>Remote Data-Source Binding with Custom Text & Value properties</h3>
+    <p>
+      Remote bind to the github user API. Remote data binding delegates the responsibility of filtering the data source
+      to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the
+      suggestions back to the
+      component. The change event is fired based on the <span class="bold">min-length</span> attribute setting.
+    </p>
+
+    <demo-snippet>
+      <template>
+
+        <paper-autocomplete label="Select User"
+                            id="input-remote-custom-properties"
+                            text-property="login"
+                            value-property="id"
+                            min-length="2"
+                            remote-source>
+        </paper-autocomplete>
+      </template>
+    </demo-snippet>
+
+    <h3>Custom template</h3>
+    <p>
+      This is an example using custom template. Open the file `demo/address-autocomplete.html` in this repository to see
+      how it works internally. You can use that one as an example when you need to implement your own.
+    </p>
+
+    <demo-snippet>
+      <template>
+        <address-autocomplete></address-autocomplete>
+      </template>
+    </demo-snippet>
+
+    <h3>Remote Data-Source Binding with custom template</h3>
+
+    <p>
+      This example is similar to previous remote one with the only difference that this time a custom template is used.
+    </p>
+
+    <demo-snippet>
+      <template is="dom-bind">
+
+        <paper-autocomplete label="Select User"
+                            id="input-remote-custom-template"
+                            text-property="login"
+                            value-property="id"
+                            min-length="2"
+                            remote-source>
+          <template autocomplete-custom-template>
+            <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+              <img src$="[[item.avatar_url]]" height="50" width="50" style="margin: 8px 8px 8px 0; min-height: 50px;"/>[[item.login]]
+              <paper-ripple></paper-ripple>
+            </paper-item>
+          </template>
+        </paper-autocomplete>
+
+        <script>
+          window.addEventListener('WebComponentsReady', function () {
+            Polymer.Base.async(function () {
+              var queryTimer = null;
+              var remoteInput = document.querySelector('#input-remote-custom-template');
+              var dataExtra = createMockData('login', 'id');
+
+              remoteInput.addEventListener('autocomplete-selected', onCustomSelect);
+              remoteInput.addEventListener('autocomplete-change', onCustomChange);
+
+              function onCustomSelect(event) {
+                var paperToast = document.querySelector('paper-toast');
+                var selected = event.detail.text;
+                paperToast.text = 'Selected: ' + selected + ' with a value ' + event.detail.value;
+                paperToast.show();
+              }
+
+              function onCustomChange(event) {
+                clearTimeout(queryTimer);
+
+                queryTimer = setTimeout(function () {
+                  var search = event.detail.option.text;
+                  var delay = Math.random() * (500 - 100) + 100;
+
+                  setTimeout(function () {
+                    remoteInput.suggestions(dataExtra.filter(function (obj) {
+                      return obj[remoteInput.textProperty].toLowerCase().indexOf(search.toLowerCase()) !== -1;
+                    }));
+                  }.bind(this), delay);
+                }, 300);
+              }
+            });
+          });
+        </script>
+      </template>
+    </demo-snippet>
+
+    <h3>Integration with iron-form</h3>
+
+    <demo-snippet>
+      <template is="dom-bind">
+        <form is="iron-form" id="form">
+          <paper-autocomplete label="State"
+                              id="ironFormExample"
+                              disable-show-clear="true"
+                              name="state"></paper-autocomplete>
+
+          <paper-input label="City" name="city"></paper-input>
+
+          <button type="submit" style="padding: 8px 10px; margin-top: 7px;">Submit</button>
+        </form>
+
+        <h4>Form output</h4>
+        <pre id="output" style="min-height: 75px; background-color:#eee; border: 1px solid #999;"></pre>
+
+        <script>
+          window.addEventListener('WebComponentsReady', function () {
+            Polymer.Base.async(function () {
+              var autocompleteFormExample = document.getElementById('ironFormExample');
+
+              autocompleteFormExample.source = states;
+
+              document.getElementById('form').addEventListener('iron-form-submit', function () {
+                var formContent;
+
+                formContent = this.serialize();
+                document.getElementById('output').innerHTML = JSON.stringify(formContent, null, 3);
+              });
+
+              // preventDefault() for ENTER. See issue: https://github.com/ellipticaljs/paper-autocomplete/issues/52
+              autocompleteFormExample.addEventListener('keydown', function (event) {
+                if (event.which === 13) {
+                  event.preventDefault();
+                }
+              });
+            });
+          });
+        </script>
+      </template>
+    </demo-snippet>
+  </div>
+
+  <paper-toast></paper-toast>
 
   <script>
-    document.querySelector('dom-bind').states = states;
+    window.addEventListener('WebComponentsReady', function () {
+      Polymer.Base.async(function () {
+        var data = createMockData('text', 'value');
+
+        document.querySelector('#input-remote').addEventListener('autocomplete-selected', onSelect);
+        document.querySelector('#input-remote').addEventListener('autocomplete-change', onChange);
+
+        function onSelect(event) {
+          var paperToast = document.querySelector('paper-toast');
+          var selected = event.detail.text;
+          paperToast.text = 'Selected: ' + selected;
+          paperToast.show();
+        }
+
+        function onChange(event) {
+          var input = document.querySelector('#input-remote');
+          var search = event.detail.option.text;
+          var delay = Math.random() * (500 - 100) + 100;
+
+          setTimeout(function () {
+            input.suggestions(data.filter(function (obj) {
+              return obj.text.toLowerCase().indexOf(search) !== -1;
+            }));
+          }.bind(this), delay);
+        }
+
+        var dataCustom = createMockData('login', 'id');
+        var autocomplete = document.querySelector('#input-remote-custom-properties');
+        autocomplete.addEventListener('autocomplete-selected', onCustomSelect);
+        autocomplete.addEventListener('autocomplete-change', onCustomChange);
+
+        function onCustomChange(event) {
+          var input = document.querySelector('#input-remote-custom-properties');
+          var search = event.detail.option.text;
+          var delay = Math.random() * (500 - 100) + 100;
+
+          setTimeout(function () {
+            input.suggestions(dataCustom.filter(function (obj) {
+              return obj[autocomplete.textProperty].toLowerCase().indexOf(search) !== -1;
+            }));
+          }.bind(this), delay);
+        }
+
+        function onCustomSelect(event) {
+          var paperToast = document.querySelector('paper-toast');
+          var selected = event.detail.text;
+          paperToast.text = 'Selected: ' + selected + ' with a value ' + event.detail.value;
+          paperToast.show();
+        }
+      });
+    });
   </script>
 </body>
 

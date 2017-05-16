@@ -583,6 +583,13 @@
         hideSuggestions: function () {
           this._hideClearButton();
           this.$.paperAutocompleteSuggestions.hideSuggestions();
+        },
+
+        /**
+         * Allows calling the onSelect function from outside
+         */ 
+        onSelectHandler: function(event) {
+          this.$.paperAutocompleteSuggestions._onSelect(event);
         }
 
         /**
