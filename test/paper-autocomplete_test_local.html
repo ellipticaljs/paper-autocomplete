@@ -15,19 +15,16 @@
 <body>
   <test-fixture id='basic'>
     <template>
-    <paper-autocomplete label='Select State' id='input-local' no-label-float
-                        required name='state'></paper-autocomplete>
+      <paper-autocomplete 
+        label='Select State' 
+        id='input-local' 
+        no-label-float
+        required 
+        name='state'>
+      </paper-autocomplete>
   </template>
   </test-fixture>
   <script>
-    /*global describe
-                    beforeEach
-                    fixture
-                    expect
-                    a11ySuite
-                    MockInteractions
-                    it */
-
     describe('paper-autocomplete', function () {
       var element, states;
 
@@ -124,7 +121,7 @@
       });
 
       it('should set the name attribute in the hidden input', function () {
-          expect(element.$$('input[type="hidden"]').getAttribute('name')).to.equal('state');
+        expect(element.$$('input[type="hidden"]').getAttribute('name')).to.equal('state');
       });
 
       describe('when input is typed', function () {
@@ -223,7 +220,7 @@
         describe('the "disableShowClear" option should disable showing the clear X button', function () {
 
           var input,
-              displayStyle;
+            displayStyle;
 
           var doInput = function (input, inputText) {
             enterCharacter(input, inputText);
@@ -263,7 +260,7 @@
           element._onInput(); // trigger an onInput event which in turn evaluates whether to display the button
         };
 
-        it('should hide the suggestion wrapper and clear button', function () {
+        it('should hide the suggestion wrapper and clear button', function (done) {
           doInput(input, 'A');
 
           expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('block');
@@ -282,7 +279,39 @@
         });
       });
 
-      a11ySuite('basic', ['badAriaAttributeValue']); 
+      describe('_clear()', function () {
+        beforeEach(function () {
+          element.value = 'AL';
+          element.text = 'Alabama';
+        });
+
+        it('should reset the content of the autocomplete', function () {
+          element._clear();
+
+          expect(element.value).to.be.null;
+          expect(element.text).to.equal('');
+        });
+
+        it('should hide the clear button', function () {
+          element.$.clear.style.display = 'block';
+          element._isClearButtonVisible = true;
+
+          element._clear();
+
+          expect(element.$.clear.style.display).to.equal('none');
+        });
+
+        it('should fire the correct event', function (done) {
+          element.addEventListener('autocomplete-reset-blur', function (event) {
+            expect(event.type).to.equal('autocomplete-reset-blur');
+            done();
+          });
+
+          element._clear();
+        });
+      });
+
+      a11ySuite('basic', ['badAriaAttributeValue', 'nonExistentRelatedElement']);
 
       // HELPERS
 

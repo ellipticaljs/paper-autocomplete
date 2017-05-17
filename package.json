@@ -24,7 +24,7 @@
     "start": "polymer serve -o",
     "postinstall": "bower i",
     "test": "polymer test",
-    "lint": "polymer lint paper-autocomplete*.html && eslint paper-autocomplete*.html",
+    "lint": "eslint --cache paper-autocomplete*.html test/paper*.html && polymer lint paper-autocomplete*.html",
     "publish-docs": "./publish-docs.sh"
   },
   "devDependencies": {

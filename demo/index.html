@@ -14,6 +14,7 @@
   <link rel="import" href="../../elliptical-sass/elliptical-sass.html">
   <link rel="import" href="../../css-docs/css-docs.html">
   <link rel="import" href="../paper-autocomplete.html">
+
   <link rel="import" href="account-autocomplete.html">
 
   <link rel="stylesheet" href="demo.css">
@@ -161,10 +162,12 @@
       <template>
         <iron-form id="form">
           <form method="GET">
-            <paper-autocomplete label="State"
+            <paper-autocomplete 
+              label="State"
               id="ironFormExample"
               disable-show-clear="true"
-              name="state"></paper-autocomplete>
+              name="state">
+            </paper-autocomplete>
             <paper-input label="City" name="city"></paper-input>
             <button type="submit">Submit</button>
           </form>
@@ -334,7 +337,6 @@
 
         // Integration with iron-form
         var autocompleteFormExample = document.getElementById('ironFormExample');
-
         autocompleteFormExample.source = states;
 
         document.getElementById('form').addEventListener('iron-form-submit', function (event) {
@@ -352,6 +354,3 @@
       });
     });
   </script>
-</body>
-
-</html>
