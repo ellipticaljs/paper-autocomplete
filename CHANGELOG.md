@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.6.0 (2017-05-17)
+
+### New Features
+- Polymer 1 & 2 hybrid component
+
 ## Release 2.5.2 (2017-05-12)
 
 ### Bug Fixes
