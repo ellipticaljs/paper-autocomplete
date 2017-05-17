@@ -436,20 +436,6 @@
           this.$.autocompleteInput.focus();
         },
 
-        _fireEvent: function (option, evt) {
-          var id = this._getId();
-          var event = 'autocomplete' + this.eventNamespace + evt;
-
-          // TODO: this might not be needed
-          this.fire(event, {
-            id: id,
-            value: option[this.valueProperty] || option.value,
-            text: option[this.textProperty] || option.text,
-            target: this,
-            option: option
-          });
-        },
-
         /**
         * On input event handler
         */
@@ -587,6 +573,8 @@
 
         /**
          * Allows calling the onSelect function from outside
+         * This in time triggers the autocomplete-selected event
+         * with all the data required
          */ 
         onSelectHandler: function(event) {
           this.$.paperAutocompleteSuggestions._onSelect(event);

@@ -50,29 +50,14 @@
   ### Custom templates
   A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
   the template. Please read the the following sections carefully.
-  In order to set your own template, you need to add a `<template>` tag with the attribute
-  `autocomplete-custom-template` and the following structure:
-
-  ```
-  <paper-autocomplete-suggestions
-      for="myInput"
-      source="[[accounts]]"
-      text-property="accountNumber"
-      value-property="id">
-
-      <template autocomplete-custom-template>
-        <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          YOUR CUSTOM TEMPLATE
-          <paper-ripple></paper-ripple>
-        </paper-item>
-      </template>
-  </paper-autocomplete-suggestions>
-  ```
+  In order to set your own template, you need to add a `<template>` tag with the slot name
+  `autocomplete-custom-template` and a structure equivalent to the one shown in the `<account-autocomplete>` component in
+  the demo.
 
   You need to always maintain this structure. Then you can customize the content of paper-item. These are the reasons
   why you need to maintain it:
 
-  - `_onSelect` it is very important because it will notify the `autocomplete` component when user selects one item.
+  - `onSelectHandler` it is very important because it will notify the `autocomplete` component when user selects one item.
   If you don't add this option, when user clicks in one of the items, nothing will happen.
   - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
   will continue working but it will not be accessible for user with disabilities.

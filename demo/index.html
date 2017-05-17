@@ -14,7 +14,7 @@
   <link rel="import" href="../../elliptical-sass/elliptical-sass.html">
   <link rel="import" href="../../css-docs/css-docs.html">
   <link rel="import" href="../paper-autocomplete.html">
-  <link rel="import" href="./address-autocomplete.html">
+  <link rel="import" href="account-autocomplete.html">
 
   <link rel="stylesheet" href="demo.css">
 
@@ -106,7 +106,7 @@
     <blockquote class="warning">
       <span class="bold">REMOTE USERS DATA BINDING</span><br>
       <div>
-        The filtered suggestions is expected to be mapped to an array of text/value pairs before being passed to the
+        The filtered suggestions are expected to be mapped to an array of text/value pairs before being passed to the
         component.
       </div>
     </blockquote>
@@ -124,7 +124,7 @@
 
     <h3>Remote Data-Source Binding with Custom Text & Value properties</h3>
     <p>
-      Mock remote bind to the github user API. Remote data binding delegates the responsibility of filtering the data source
+      Mock remote bind to a user API. Remote data binding delegates the responsibility of filtering the data source
       to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the
       suggestions back to the
       component. The change event is fired based on the <span class="bold">min-length</span> attribute setting.
@@ -145,84 +145,35 @@
 
     <h3>Custom template</h3>
     <p>
-      This is an example using custom template. Open the file `demo/address-autocomplete.html` in this repository to see
+      This is an example using custom template. Open the file `demo/account-autocomplete.html` in this repository to see
       how it works internally. You can use that one as an example when you need to implement your own.
     </p>
 
     <demo-snippet>
       <template>
-        <address-autocomplete></address-autocomplete>
+        <account-autocomplete></account-autocomplete>
       </template>
     </demo-snippet>
 
-    <!--<h3>Remote Data-Source Binding with custom template</h3>
-
-    <p>
-      This example is similar to previous remote one with the only difference that this time a custom template is used.
-    </p>
+    <h3>Integration with iron-form</h3>
 
     <demo-snippet>
       <template>
-        <paper-autocomplete 
-          label="Select User"
-          id="input-remote-custom-template"
-          text-property="login"
-          value-property="id"
-          min-length="2"
-          remote-source>
-          <template slot="autocomplete-custom-template">
-            <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-              <img src$="[[item.avatar_url]]" height="50" width="50" style="margin: 8px 8px 8px 0; min-height: 50px;"/>[[item.login]]
-              <paper-ripple></paper-ripple>
-            </paper-item>
-          </template>
-        </paper-autocomplete>
-      </template>
-    </demo-snippet>-->
-
-    <!--<h3>Integration with iron-form</h3>
-
-    <demo-snippet>
-      <template>
-        <form is="iron-form" id="form">
-          <paper-autocomplete label="State"
-                              id="ironFormExample"
-                              disable-show-clear="true"
-                              name="state"></paper-autocomplete>
-
-          <paper-input label="City" name="city"></paper-input>
-
-          <button type="submit" style="padding: 8px 10px; margin-top: 7px;">Submit</button>
-        </form>
+        <iron-form id="form">
+          <form method="GET">
+            <paper-autocomplete label="State"
+              id="ironFormExample"
+              disable-show-clear="true"
+              name="state"></paper-autocomplete>
+            <paper-input label="City" name="city"></paper-input>
+            <button type="submit">Submit</button>
+          </form>
+        </iron-form>
 
         <h4>Form output</h4>
         <pre id="output" style="min-height: 75px; background-color:#eee; border: 1px solid #999;"></pre>
-
-        <script>
-          window.addEventListener('WebComponentsReady', function () {
-            Polymer.Base.async(function () {
-              var autocompleteFormExample = document.getElementById('ironFormExample');
-
-              autocompleteFormExample.source = states;
-
-              document.getElementById('form').addEventListener('iron-form-submit', function () {
-                var formContent;
-
-                formContent = this.serialize();
-                document.getElementById('output').innerHTML = JSON.stringify(formContent, null, 3);
-              });
-
-              // preventDefault() for ENTER. See issue: https://github.com/ellipticaljs/paper-autocomplete/issues/52
-              autocompleteFormExample.addEventListener('keydown', function (event) {
-                if (event.which === 13) {
-                  event.preventDefault();
-                }
-              });
-            });
-          });
-        </script>
       </template>
-    </demo-snippet>-->
+    </demo-snippet>
   </div>
 
   <paper-toast></paper-toast>
@@ -381,7 +332,23 @@
 
         // Custom template (Accounts)
 
-        // Custom template (Users)
+        // Integration with iron-form
+        var autocompleteFormExample = document.getElementById('ironFormExample');
+
+        autocompleteFormExample.source = states;
+
+        document.getElementById('form').addEventListener('iron-form-submit', function (event) {
+          var formContent;
+          formContent = this.serializeForm();
+          document.getElementById('output').innerHTML = JSON.stringify(formContent, null, 3);
+        });
+
+        // preventDefault() for ENTER. See issue: https://github.com/ellipticaljs/paper-autocomplete/issues/52
+        autocompleteFormExample.addEventListener('keydown', function (event) {
+          if (event.which === 13) {
+            event.preventDefault();
+          }
+        });
       });
     });
   </script>

@@ -14,7 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   This example shows how to implement your own autocomplete with custom template and search function.
 -->
 
-<dom-module id="address-autocomplete">
+<dom-module id="account-autocomplete">
   <template>
     <style>
       :host {
@@ -49,7 +49,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       text-property="accountNumber"
       value-property="id">
       <template slot="autocomplete-custom-template">
-        <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+        <paper-item on-tap="_onTap" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
           <div>
             <div class="company-name">[[item.companyName]]</div>
             <div class="account-number">[[item.accountNumber]]</div>
@@ -117,13 +117,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   ];
 
   Polymer({
-    is: "address-autocomplete",
+    is: "account-autocomplete",
 
     properties: {
       accounts: {
         type: Array,
         value: accounts
       }
+    },
+
+    listeners: {
+      'autocomplete-selected': '_onSelect'
     },
 
     ready: function () {
@@ -134,12 +138,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       autocomplete.queryFn = this._queryFn;
     },
 
+    _onTap: function(event) {
+      this.$['input-local'].onSelectHandler(event);
+    },
+
     _onSelect: function (event) {
       var paperToast = document.querySelector('paper-toast');
       var selected = event.detail.text;
       paperToast.text = 'Selected: ' + selected;
       paperToast.show();
-      this.$['input-local'].onSelectHandler(event)
     },
 
     _getSuggestionId: function(index) {
