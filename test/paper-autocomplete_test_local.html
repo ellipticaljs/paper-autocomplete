@@ -302,8 +302,8 @@
         });
 
         it('should fire the correct event', function (done) {
-          element.addEventListener('autocomplete-reset-blur', function (event) {
-            expect(event.type).to.equal('autocomplete-reset-blur');
+          element.addEventListener('autocomplete-reset', function (event) {
+            expect(event.type).to.equal('autocomplete-reset');
             done();
           });
 
