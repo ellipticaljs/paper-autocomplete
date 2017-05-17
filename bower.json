@@ -25,28 +25,28 @@
     "/test/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#^2.0.0-rc.8",
-    "paper-input": "2.0-preview",
-    "iron-flex-layout": "PolymerElements/iron-flex-layout#2.0-preview",
-    "paper-icon-button": "2.0-preview",
-    "iron-icon": "2.0-preview",
-    "iron-icons": "2.0-preview",
-    "iron-iconset": "2.0-preview",
-    "iron-iconset-svg": "2.0-preview",
-    "paper-item": "2.0-preview",
-    "paper-ripple": "PolymerElements/paper-ripple#2.0-preview",
-    "paper-material": "2.0-preview"
+    "polymer": "Polymer/polymer#^2.0.0",
+    "paper-input": "^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.0",
+    "paper-icon-button": "^2.0.0",
+    "iron-icon": "^2.0.0",
+    "iron-icons": "^2.0.0",
+    "iron-iconset": "^2.0.0",
+    "iron-iconset-svg": "^2.0.0",
+    "paper-item": "^2.0.0",
+    "paper-ripple": "PolymerElements/paper-ripple#^2.0.0",
+    "paper-material": "^2.0.0"
   },
   "devDependencies": {
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0-rc.11",
-    "iron-component-page": "2.0-preview",
-    "web-component-tester": "*",
-    "iron-demo-helpers": "2.0-preview",
-    "paper-toast": "2.0-preview",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "iron-component-page": "^2.0.0",
+    "web-component-tester": "^6.0.0",
+    "iron-demo-helpers": "^2.0.0",
+    "paper-toast": "^2.0.0",
     "elliptical-sass": "^1.2.29",
     "css-docs": "^1.0.3",
-    "iron-test-helpers": "2.0-preview",
+    "iron-test-helpers": "^2.0.0",
     "iron-form": "2.0-preview",
-    "paper-button": "2.0-preview"
+    "paper-button": "^2.0.0"
   }
 }
