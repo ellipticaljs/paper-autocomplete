@@ -437,6 +437,22 @@
         },
 
         /**
+         * Dispatches autocomplete events
+         */
+        _fireEvent: function (option, evt) {
+          var id = this._getId();
+          var event = 'autocomplete' + this.eventNamespace + evt;
+
+          this.fire(event, {
+            id: id,
+            value: option[this.valueProperty] || option.value,
+            text: option[this.textProperty] || option.text,
+            target: this,
+            option: option
+          });
+        },
+        
+        /**
         * On input event handler
         */
         _onInput: function () {
