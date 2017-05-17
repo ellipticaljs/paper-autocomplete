@@ -1,11 +1,13 @@
 {
   "name": "paper-autocomplete",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "authors": [
     "S. Francis",
     "Rodolfo Oviedo <rodo1111@gmail.com>",
     "Alfonso Aguilar <laltfuns@gmail.com>",
-    "Jaime Vega <jhuesos@gmail.com>"
+    "Jaime Vega <jhuesos@gmail.com>",
+    "Antonio Barrios <ajosebarrios@gmail.com>",
+    "Miguel Collado <colladosegura.miguel@gmail.com>"
   ],
   "description": "Paper autocomplete element.",
   "keywords": [
