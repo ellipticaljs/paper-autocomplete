@@ -50,5 +50,8 @@
     "iron-test-helpers": "^2.0.0",
     "iron-form": "2.0-preview",
     "paper-button": "^2.0.0"
+  },
+  "resolutions": {
+    "iron-ajax": "1 - 2"
   }
 }
