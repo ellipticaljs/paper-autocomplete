@@ -405,6 +405,10 @@
           'autocompleteInput.input': '_onInput'
         },
 
+        observers: [
+          '_textObserver(text)'
+        ],
+
         // Element Lifecycle
         ready: function () {
           this._value = this.value;
@@ -454,8 +458,8 @@
         /**
         * On input event handler
         */
-        _onInput: function () {
-          if (this.$.autocompleteInput.value) {
+        _textObserver: function (text) {
+          if (text && text !== "") {
             this._showClearButton();
           } else {
             this._hideClearButton();
@@ -528,7 +532,6 @@
         setOption: function (option) {
           this.text = option[this.textProperty] || option.text;
           this.value = option[this.valueProperty] || option.value;
-
           this._showClearButton();
         },
 
