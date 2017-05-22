@@ -19,23 +19,21 @@
 
   <link rel="stylesheet" href="demo.css">
 
-  <style is="custom-style" include="demo-pages-shared-styles">
-    .vertical-section-container {
-      max-width: 800px;
-    }
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      .vertical-section-container {
+        max-width: 800px;
+      }
 
-    paper-autocomplete#styled {
-      --paper-input-container-focus-color: var(--accent-color);
-      --paper-autocomplete-suggestions-item-min-height: 60px;
-      --paper-autocomplete-suggestions-wrapper: {
-        background-color: var(--paper-amber-50);
-      };
-    }
-  </style>
-
-  <script>
-    
-  </script>
+      paper-autocomplete#styled {
+        --paper-input-container-focus-color: var(--accent-color);
+        --paper-autocomplete-suggestions-item-min-height: 60px;
+        --paper-autocomplete-suggestions-wrapper: {
+          background-color: var(--paper-amber-50);
+        };
+      }
+    </style>
+  </custom-style>
 </head>
 
 <body unresolved>
@@ -62,7 +60,7 @@
 
     <demo-snippet>
       <template>
-        <paper-autocomplete 
+        <paper-autocomplete
           class="autocomplete-states"
           label="Select State"
           id="input-local"
@@ -73,7 +71,7 @@
 
     <demo-snippet>
       <template>
-        <paper-autocomplete 
+        <paper-autocomplete
           class="autocomplete-states"
           placeholder="With a placeholder"
           label="State"
@@ -86,7 +84,7 @@
     <demo-snippet>
       <template>
         <autocomplete-example>
-          <paper-autocomplete 
+          <paper-autocomplete
             id="styled"
             class="autocomplete-states"
             label="State (custom styled)"
@@ -119,7 +117,7 @@
           id="input-remote-users"
           remote-source
           min-length="2">
-        </paper-autocomplete>        
+        </paper-autocomplete>
       </template>
     </demo-snippet>
 
@@ -133,7 +131,7 @@
 
     <demo-snippet>
       <template>
-        <paper-autocomplete 
+        <paper-autocomplete
           label="Select User"
           id="input-remote-custom-properties"
           text-property="login"
@@ -162,7 +160,7 @@
       <template>
         <iron-form id="form">
           <form method="GET">
-            <paper-autocomplete 
+            <paper-autocomplete
               label="State"
               id="ironFormExample"
               disable-show-clear="true"
