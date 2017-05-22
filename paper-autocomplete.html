@@ -115,7 +115,7 @@
       }
 
       .input-wrapper paper-input {
-        @apply --layout-flex ;
+        @apply --layout-flex;
       }
 
       paper-input ::slotted(input::-ms-clear) {
@@ -123,7 +123,6 @@
       }
 
       #clear {
-        display: none;
         margin-top: auto;
         line-height: 8px;
 
@@ -179,7 +178,7 @@
         aria-disabled$="[[disabled]]"
         aria-controls="autocompleteStatus suggestionsWrapper">
 
-        <paper-icon-button suffix id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+        <paper-icon-button slot="suffix" id="clear" icon="clear" on-click="_clear"></paper-icon-button>
       </paper-input>
       <!-- to announce current selection to screen reader -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
@@ -451,7 +450,7 @@
             option: option
           });
         },
-        
+
         /**
         * On input event handler
         */
@@ -591,7 +590,7 @@
          * Allows calling the onSelect function from outside
          * This in time triggers the autocomplete-selected event
          * with all the data required
-         */ 
+         */
         onSelectHandler: function(event) {
           this.$.paperAutocompleteSuggestions._onSelect(event);
         }
