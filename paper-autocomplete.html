@@ -179,7 +179,7 @@
         aria-disabled$="[[disabled]]"
         aria-controls="autocompleteStatus suggestionsWrapper">
 
-        <paper-icon-button suffix id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+        <paper-icon-button slot="suffix" id="clear" icon="clear" on-click="_clear"></paper-icon-button>
       </paper-input>
       <!-- to announce current selection to screen reader -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
@@ -406,6 +406,10 @@
           'autocompleteInput.input': '_onInput'
         },
 
+        observers: [
+          '_textObserver(text)'
+        ],
+
         // Element Lifecycle
         ready: function () {
           this._value = this.value;
@@ -455,8 +459,8 @@
         /**
         * On input event handler
         */
-        _onInput: function () {
-          if (this.$.autocompleteInput.value) {
+        _textObserver: function (text) {
+          if (text && text !== "") {
             this._showClearButton();
           } else {
             this._hideClearButton();
@@ -529,7 +533,6 @@
         setOption: function (option) {
           this.text = option[this.textProperty] || option.text;
           this.value = option[this.valueProperty] || option.value;
-
           this._showClearButton();
         },
 
