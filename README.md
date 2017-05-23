@@ -44,6 +44,13 @@ Clone the repository and run:
 
 You just need
 
+## How to run the project with Polymer 1.x and Polymer 2
+This component runs in Polymer hybrid mode, that means it can run in a Polymer 1.x or Polymer 2.x app.
+```
+npm run variants
+```
+After running this command, it will open two different ports  in the dev browser with Polymer 1.x and Polymer 2.x
+
 ## How to run the tests
 
 In order to run the tests you have two option. You can either run:
