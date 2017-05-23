@@ -116,7 +116,7 @@
         width: 100%;
         z-index: 1000;
         background-color: white;
-        max-height: 252px;
+        max-height: 2G2px;
         overflow-y: auto;
         
         @apply --suggestions-wrapper;
@@ -527,9 +527,13 @@
           var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
           var children = suggestionsContainer.children;
           var length = children.length;
+          var elem;
 
           for (var i = 0; i < length; i++) {
-            suggestionsContainer.removeChild(children[0]);
+            elem = children[0];
+            if (elem.parentNode === this.$.suggestionsWrapper) {
+              suggestionsContainer.removeChild(elem);
+            }
           }
         },
 

@@ -402,10 +402,6 @@
           }
         },
 
-        listeners: {
-          'autocompleteInput.input': '_onInput'
-        },
-
         observers: [
           '_textObserver(text)'
         ],
@@ -457,7 +453,7 @@
         },
 
         /**
-        * On input event handler
+        * On text event handler
         */
         _textObserver: function (text) {
           if (text && text !== "") {
