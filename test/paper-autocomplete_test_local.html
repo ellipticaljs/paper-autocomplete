@@ -224,7 +224,7 @@
 
           var doInput = function (input, inputText) {
             enterCharacter(input, inputText);
-            element._onInput(); // trigger an onInput event which in turn evaluates whether to display the button
+            element._textObserver(inputText); // trigger an onInput event which in turn evaluates whether to display the button
           };
 
           beforeEach(function () {
@@ -257,7 +257,7 @@
 
         var doInput = function (input, inputText) {
           enterCharacter(input, inputText);
-          element._onInput(); // trigger an onInput event which in turn evaluates whether to display the button
+          element._textObserver(inputText); // trigger an onInput event which in turn evaluates whether to display the button
         };
 
         it('should hide the suggestion wrapper and clear button', function (done) {
