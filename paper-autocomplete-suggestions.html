@@ -118,7 +118,7 @@
         background-color: white;
         max-height: 2G2px;
         overflow-y: auto;
-        
+
         @apply --suggestions-wrapper;
       }
 
@@ -395,8 +395,8 @@
         },
 
         _nodeObserver: function (info) {
-          var suggestionTpl = info.addedNodes.find(function(node) {
-            return node.slot === "autocomplete-custom-template";
+          var suggestionTpl = info.addedNodes.find(function (node) {
+            return node.slot === 'autocomplete-custom-template';
           });
 
           if (suggestionTpl !== undefined) {
@@ -412,7 +412,7 @@
           this._input.removeEventListener('blur', this._bindedFunctions._onBlur);
 
           this._input = null;
-          
+
           Polymer.dom(this).unobserveNodes(this._observer);
         },
 
@@ -530,10 +530,10 @@
           if (Polymer.Element !== undefined) {
             var length = children.length;
             for (var i = 0; i < length; i++) {
-              suggestionsContainer.removeChild(children[0]); 
+              suggestionsContainer.removeChild(children[0]);
             }
           } else {
-            children.forEach(function(elem) {
+            children.forEach(function (elem) {
               suggestionsContainer.removeChild(elem);
             });
           }

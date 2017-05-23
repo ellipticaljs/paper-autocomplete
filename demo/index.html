@@ -60,23 +60,21 @@
 
     <demo-snippet>
       <template>
-        <paper-autocomplete
-          class="autocomplete-states"
-          label="Select State"
-          id="input-local"
-          no-label-float>
+        <paper-autocomplete class="autocomplete-states"
+                            label="Select State"
+                            id="input-local"
+                            no-label-float>
         </paper-autocomplete>
       </template>
     </demo-snippet>
 
     <demo-snippet>
       <template>
-        <paper-autocomplete
-          class="autocomplete-states"
-          placeholder="With a placeholder"
-          label="State"
-          id="input-local-placeholder"
-          always-float-label>
+        <paper-autocomplete class="autocomplete-states"
+                            placeholder="With a placeholder"
+                            label="State"
+                            id="input-local-placeholder"
+                            always-float-label>
         </paper-autocomplete>
       </template>
     </demo-snippet>
@@ -84,11 +82,10 @@
     <demo-snippet>
       <template>
         <autocomplete-example>
-          <paper-autocomplete
-            id="styled"
-            class="autocomplete-states"
-            label="State (custom styled)"
-            id="input-local-styled">
+          <paper-autocomplete id="styled"
+                              class="autocomplete-states"
+                              label="State (custom styled)"
+                              id="input-local-styled">
           </paper-autocomplete>
         </autocomplete-example>
       </template>
@@ -112,11 +109,10 @@
 
     <demo-snippet>
       <template>
-        <paper-autocomplete
-          label="Select User"
-          id="input-remote-users"
-          remote-source
-          min-length="2">
+        <paper-autocomplete label="Select User"
+                            id="input-remote-users"
+                            remote-source
+                            min-length="2">
         </paper-autocomplete>
       </template>
     </demo-snippet>
@@ -131,13 +127,12 @@
 
     <demo-snippet>
       <template>
-        <paper-autocomplete
-          label="Select User"
-          id="input-remote-custom-properties"
-          text-property="login"
-          value-property="id"
-          min-length="2"
-          remote-source>
+        <paper-autocomplete label="Select User"
+                            id="input-remote-custom-properties"
+                            text-property="login"
+                            value-property="id"
+                            min-length="2"
+                            remote-source>
         </paper-autocomplete>
       </template>
     </demo-snippet>
@@ -160,11 +155,10 @@
       <template>
         <iron-form id="form">
           <form method="GET">
-            <paper-autocomplete
-              label="State"
-              id="ironFormExample"
-              disable-show-clear="true"
-              name="state">
+            <paper-autocomplete label="State"
+                                id="ironFormExample"
+                                disable-show-clear="true"
+                                name="state">
             </paper-autocomplete>
             <paper-input label="City" name="city"></paper-input>
             <button type="submit">Submit</button>
@@ -331,7 +325,7 @@
           paperToast.show();
         }
 
-        // Custom template (Accounts)
+        // Custom template (account-autocomplete)
 
         // Integration with iron-form
         var autocompleteFormExample = document.getElementById('ironFormExample');

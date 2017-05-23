@@ -41,13 +41,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- When using custom template and or custom query function, it is important to also set the `textProperty`
      and `valueProperty properties`. -->
-    <paper-autocomplete
-      label="Select Account"
-      id="input-local"
-      no-label-float="true"
-      source="[[accounts]]"
-      text-property="accountNumber"
-      value-property="id">
+    <paper-autocomplete label="Select Account"
+                        id="input-local"
+                        no-label-float="true"
+                        source="[[accounts]]"
+                        text-property="accountNumber"
+                        value-property="id">
       <template slot="autocomplete-custom-template">
         <paper-item on-tap="_onTap" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
           <div>
