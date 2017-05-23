@@ -525,15 +525,17 @@
 
         _clearSuggestions: function () {
           var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
-          var children = suggestionsContainer.children;
-          var length = children.length;
-          var elem;
+          var children = suggestionsContainer.childNodes;
 
-          for (var i = 0; i < length; i++) {
-            elem = children[0];
-            if (elem.parentNode === this.$.suggestionsWrapper) {
-              suggestionsContainer.removeChild(elem);
+          if (Polymer.Element !== undefined) {
+            var length = children.length;
+            for (var i = 0; i < length; i++) {
+              suggestionsContainer.removeChild(children[0]); 
             }
+          } else {
+            children.forEach(function(elem) {
+              suggestionsContainer.removeChild(elem);
+            });
           }
         },
 
