@@ -25,7 +25,8 @@
     "postinstall": "bower i",
     "test": "polymer test",
     "lint": "eslint --cache paper-autocomplete*.html test/paper*.html && polymer lint paper-autocomplete*.html",
-    "publish-docs": "./publish-docs.sh"
+    "publish-docs": "./publish-docs.sh",
+    "variants": "polymer install --variants"
   },
   "devDependencies": {
     "eslint": "^3.11.0",
