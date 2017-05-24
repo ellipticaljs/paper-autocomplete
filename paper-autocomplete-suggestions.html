@@ -190,15 +190,15 @@
 
       properties: {
         /**
-        * Id of input
-        */
+         * Id of input
+         */
         'for': {
           type: String
         },
 
         /**
-        * `true` if the suggestions list is open, `false otherwise`
-        */
+         * `true` if the suggestions list is open, `false otherwise`
+         */
         isOpen: {
           type: Boolean,
           value: false,
@@ -206,78 +206,78 @@
         },
 
         /**
-        * Minimum length to trigger suggestions
-        */
+         * Minimum length to trigger suggestions
+         */
         minLength: {
           type: Number,
           value: 1
         },
 
         /**
-        * Max number of suggestions to be displayed without scrolling
-        */
+         * Max number of suggestions to be displayed without scrolling
+         */
         maxViewableItems: {
           type: Number,
           value: 7
         },
 
         /**
-        * Property of local datasource to as the text property
-        */
+         * Property of local datasource to as the text property
+         */
         textProperty: {
           type: String,
           value: 'text'
         },
 
         /**
-        * Property of local datasource to as the value property
-        */
+         * Property of local datasource to as the value property
+         */
         valueProperty: {
           type: String,
           value: 'value'
         },
 
         /**
-        * `source` Array of objects with the options to execute the autocomplete feature
-        */
+         * `source` Array of objects with the options to execute the autocomplete feature
+         */
         source: {
           type: Array
         },
 
         /**
-        *  Object containing information about the current selected option. The structure of the object depends on the
-        *  structure of each element in the data source.
-        */
+         *  Object containing information about the current selected option. The structure of the object depends on the
+         *  structure of each element in the data source.
+         */
         selectedOption: {
           type: Object,
           notify: true
         },
 
         /**
-        * Binds to a remote data source
-        */
+         * Binds to a remote data source
+         */
         remoteSource: {
           type: Boolean,
           value: false
         },
 
         /**
-        * Event type separator
-        */
+         * Event type separator
+         */
         eventNamespace: {
           type: String,
           value: '-'
         },
 
         /**
-        * Current highlighted suggestion. The structure of the object is:
-        * ```
-        * {
-        *    elementId: ID // id of the highlighted DOM element
-        *    option: // highlighted option data
-        * }
-        * ```
-        */
+         * Current highlighted suggestion. The structure of the object is:
+         * ```
+         * {
+         *    elementId: ID // id of the highlighted DOM element
+         *    option: // highlighted option data
+         * }
+         * ```
+         */
         highlightedSuggestion: {
           type: Object,
           value: {},
@@ -285,41 +285,40 @@
         },
 
         /**
-        * `_suggestions` Array with the actual suggestions to display
-        */
+         * `_suggestions` Array with the actual suggestions to display
+         */
         _suggestions: {
           type: Array,
           observer: '_onSuggestionsChanged'
         },
 
         /**
-        * Indicates the position in the suggestions popup of the currently highlighted element, being `0` the first one,
-        * and `this._suggestions.length - 1` the position of the last one.
-        */
+         * Indicates the position in the suggestions popup of the currently highlighted element, being `0` the first one,
+         * and `this._suggestions.length - 1` the position of the last one.
+         */
         _currentIndex: {
           type: Number,
           value: -1
         },
 
         /**
-        * Indicates the current position of the scroll. Then the `scrollTop` position is calculated multiplying the
-        * `_itemHeight` with the current index.
-        */
+         * Indicates the current position of the scroll. Then the `scrollTop` position is calculated multiplying the
+         * `_itemHeight` with the current index.
+         */
         _scrollIndex: {
           type: Number,
           value: 0
         },
 
         /**
-        * Height of each suggestion element in pixels
-        */
+         * Height of each suggestion element in pixels
+         */
         _itemHeight: {
           type: Number,
           value: 36,
           observer: '_itemHeightChanged'
         },
 
-        // TODO: check if we need _value and _text properties. It seems they can be removed
         _value: {
           value: undefined
         },
@@ -329,9 +328,9 @@
         },
 
         /**
-        * This value is used as a base to generate unique individual ids that need to be added to each suggestion for
-        * accessibility reasons.
-        */
+         * This value is used as a base to generate unique individual ids that need to be added to each suggestion for
+         * accessibility reasons.
+         */
         _idItemSeed: {
           type: String,
           value: 'aria-' + new Date().getTime() + '-' + (Math.floor(Math.random() * 1000)),
@@ -339,8 +338,8 @@
         },
 
         /**
-        * Reference to binded functions so we can call removeEventListener on element detached
-        */
+         * Reference to binded functions so we can call removeEventListener on element detached
+         */
         _bindedFunctions: {
           type: Object,
           value: {
@@ -351,9 +350,9 @@
         },
 
         /**
-        * Indicates if the the height of each suggestion item has been already calculated.
-        * The assumption is that item height is fixed and it will not change.
-        */
+         * Indicates if the the height of each suggestion item has been already calculated.
+         * The assumption is that item height is fixed and it will not change.
+         */
         _hasItemHighBeenCalculated: {
           type: Boolean,
           value: false
@@ -420,17 +419,17 @@
       // Element Behavior
 
       /**
-      * Get the text property from the suggestion
-      * @param {Object} suggestion The suggestion item
-      * @return {String}
-      */
+       * Get the text property from the suggestion
+       * @param {Object} suggestion The suggestion item
+       * @return {String}
+       */
       _getItemText: function (suggestion) {
         return suggestion[this.textProperty];
       },
 
       /**
-      * Show the suggestions wrapper
-      */
+       * Show the suggestions wrapper
+       */
       _showSuggestionsWrapper: function () {
         var suggestionsWrapper = this.$.suggestionsWrapper;
 
@@ -441,8 +440,8 @@
       },
 
       /**
-      * Hide the suggestions wrapper
-      */
+       * Hide the suggestions wrapper
+       */
       _hideSuggestionsWrapper: function () {
         var suggestionsWrapper = this.$.suggestionsWrapper;
 
@@ -505,10 +504,10 @@
       },
 
       /**
-      * Render suggestions in the suggestionsWrapper container
-      * @param {Array} suggestions An array containing the suggestions to be rendered. This value is not optional, so
-      *    in case no suggestions need to be rendered, you should either not call this method or provide an empty array.
-      */
+       * Render suggestions in the suggestionsWrapper container
+       * @param {Array} suggestions An array containing the suggestions to be rendered. This value is not optional, so
+       *    in case no suggestions need to be rendered, you should either not call this method or provide an empty array.
+       */
       _renderSuggestions: function (suggestions) {
         var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
 
@@ -541,8 +540,8 @@
       },
 
       /**
-      * Listener to changes to _suggestions state
-      */
+       * Listener to changes to _suggestions state
+       */
       _onSuggestionsChanged: function () {
         this.debounce('_onSuggestionChanged', function () {
           this._renderSuggestions(this._suggestions);
@@ -586,16 +585,16 @@
       },
 
       /**
-      * Get all suggestion elements
-      * @return {Array} a list of all suggestion elements
-      */
+       * Get all suggestion elements
+       * @return {Array} a list of all suggestion elements
+       */
       _getItems: function () {
         return this.$.suggestionsWrapper.querySelectorAll('paper-item');
       },
 
       /**
-      * Empty the list of current suggestions being displayed
-      */
+       * Empty the list of current suggestions being displayed
+       */
       _emptyItems: function () {
         this._suggestions = [];
       },
@@ -607,8 +606,8 @@
       },
 
       /**
-      * Remove the the active state from all suggestion items
-      */
+       * Remove the the active state from all suggestion items
+       */
       _removeActive: function (items) {
         [].slice.call(items).forEach(function (item) {
           item.classList.remove('active');
@@ -617,8 +616,8 @@
       },
 
       /**
-      * Key press event handler
-      */
+       * Key press event handler
+       */
       _onKeypress: function (event) {
         var keyCode = event.which || event.keyCode;
 
@@ -646,8 +645,8 @@
       },
 
       /**
-      * Event handler for the key ENTER press event
-      */
+       * Event handler for the key ENTER press event
+       */
       _keyenter: function () {
         if (this.$.suggestionsWrapper.style.display === 'block' && this._currentIndex > -1) {
           var index = this._currentIndex;
@@ -656,9 +655,9 @@
       },
 
       /**
-      *  Move the current highlighted suggestion up or down
-      *  @param {string} direction Possible values are DIRECTION.UP or DIRECTION.DOWN
-      */
+       *  Move the current highlighted suggestion up or down
+       *  @param {string} direction Possible values are DIRECTION.UP or DIRECTION.DOWN
+       */
       _moveHighlighted: function (direction) {
         var items = this._getItems();
 
@@ -695,9 +694,9 @@
       },
 
       /**
-      * Move scroll (if needed) to display the active element in the suggestions list.
-      * @param {string} direction Direction to scroll. Possible values are `DIRECTION.UP` and `DIRECTION.DOWN`.
-      */
+       * Move scroll (if needed) to display the active element in the suggestions list.
+       * @param {string} direction Direction to scroll. Possible values are `DIRECTION.UP` and `DIRECTION.DOWN`.
+       */
       _scroll: function (direction) {
         var newScrollValue, isSelectedOutOfView;
 
@@ -732,17 +731,17 @@
       },
 
       /**
-      * Reset scroll back to zero
-      */
+       * Reset scroll back to zero
+       */
       _resetScroll: function () {
         this.$.suggestionsWrapper.scrollTop = 0;
       },
 
       /**
-      * Set the current highlighted suggestion
-      * @param {Object} option Data of the highlighted option
-      * @param {string} elementId id of the highlighted dom element.
-      */
+       * Set the current highlighted suggestion
+       * @param {Object} option Data of the highlighted option
+       * @param {string} elementId id of the highlighted dom element.
+       */
       _setHighlightedSuggestion: function (option, elementId) {
         this.highlightedSuggestion = {
           option: option,
@@ -771,8 +770,8 @@
       },
 
       /**
-      * Event handler for the onBlur event
-      */
+       * Event handler for the onBlur event
+       */
       _onBlur: function () {
         var option = {
           text: this.text,
@@ -785,8 +784,8 @@
       },
 
       /**
-      * Event handler for the onFocus event
-      */
+       * Event handler for the onFocus event
+       */
       _onFocus: function () {
         var option = {
           text: this.text,
@@ -797,18 +796,18 @@
       },
 
       /**
-      * Generate a suggestion id for a certain index
-      * @param {number} index Position of the element in the suggestions list
-      * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
-      * @private
-      */
+       * Generate a suggestion id for a certain index
+       * @param {number} index Position of the element in the suggestions list
+       * @returns {string} a unique id based on the _idItemSeed and the position of that element in the suggestions popup
+       * @private
+       */
       _getSuggestionId: function (index) {
         return this._idItemSeed + '-' + index;
       },
 
       /**
-      * When item height is changed, the maxHeight of the suggestionWrapper need to be updated
-      */
+       * When item height is changed, the maxHeight of the suggestionWrapper need to be updated
+       */
       _itemHeightChanged: function () {
         this.$.suggestionsWrapper.style.maxHeight = this._itemHeight * this.maxViewableItems + 'px';
       },
@@ -818,16 +817,16 @@
       ****************************/
 
       /**
-      * Sets the component's current suggestions
-      * @param {Array} arr
-      */
+       * Sets the component's current suggestions
+       * @param {Array} arr
+       */
       suggestions: function (arr) {
         this._bindSuggestions(arr);
       },
 
       /**
-      * Hides the suggestions popup
-      */
+       * Hides the suggestions popup
+       */
       hideSuggestions: function () {
         setTimeout(function () {
           this._hideSuggestionsWrapper();
@@ -835,12 +834,12 @@
       },
 
       /**
-      * Query function is called on each keystroke to query the data source and returns the suggestions that matches
-      * with the filtering logic included.
-      * @param {Array} datasource An array containing all items before filtering
-      * @param {string} query Current value in the input field
-      * @returns {Array} an array containing only those items in the data source that matches the filtering logic.
-      */
+       * Query function is called on each keystroke to query the data source and returns the suggestions that matches
+       * with the filtering logic included.
+       * @param {Array} datasource An array containing all items before filtering
+       * @param {string} query Current value in the input field
+       * @returns {Array} an array containing only those items in the data source that matches the filtering logic.
+       */
       queryFn: function (datasource, query) {
         var queryResult = [];
 
@@ -869,54 +868,54 @@
       }
 
       /**
-      * Fired when a selection is made
-      *
-      * @event autocomplete-selected
-      * @param {String} id
-      * @param {String} text
-      * @param {Element} target
-      * @param {Object} option
-      */
+       * Fired when a selection is made
+       *
+       * @event autocomplete-selected
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
 
       /**
-      * Fired on input change
-      *
-      * @event autocomplete-change
-      * @param {String} id
-      * @param {String} text
-      * @param {Element} target
-      * @param {Object} option
-      */
+       * Fired on input change
+       *
+       * @event autocomplete-change
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
 
       /**
-      * Fired on input focus
-      *
-      * @event autocomplete-focus
-      * @param {String} id
-      * @param {String} text
-      * @param {Element} target
-      * @param {Object} option
-      */
+       * Fired on input focus
+       *
+       * @event autocomplete-focus
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
 
       /**
-      * Fired on input blur
-      *
-      * @event autocomplete-blur
-      * @param {String} id
-      * @param {String} text
-      * @param {Element} target
-      * @param {Object} option
-      */
+       * Fired on input blur
+       *
+       * @event autocomplete-blur
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
 
       /**
-      * Fired on input reset/clear
-      *
-      * @event autocomplete-reset-blur
-      * @param {String} id
-      * @param {String} text
-      * @param {Element} target
-      * @param {Object} option
-      */
+       * Fired on input reset/clear
+       *
+       * @event autocomplete-reset-blur
+       * @param {String} id
+       * @param {String} text
+       * @param {Element} target
+       * @param {Object} option
+       */
     });
   }());
 </script>
