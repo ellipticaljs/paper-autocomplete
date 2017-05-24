@@ -435,7 +435,11 @@
         this._fireEvent(option, 'reset');
 
         this._hideClearButton();
-        this.$.autocompleteInput.focus();
+
+        // Fix: https://github.com/PolymerElements/paper-input/issues/493
+        if (!this.$.autocompleteInput.focused) {
+          this.$.autocompleteInput.focus();
+        }
       },
 
       /**
