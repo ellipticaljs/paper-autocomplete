@@ -24,19 +24,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           padding: 8px 16px;
         }
       }
-
-      .company-name {
-        color: #333;
-      }
-
-      .account-number, .email {
-        margin-top: 4px;
-        color: #999;
-      }
-
-      .email {
-        font-size: small;
-      }
     </style>
 
     <!-- When using custom template and or custom query function, it is important to also set the `textProperty`
@@ -48,6 +35,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         text-property="accountNumber"
                         value-property="id">
       <template slot="autocomplete-custom-template">
+        <style>
+          .company-name {
+            color: #333;
+          }
+
+          .account-number, .email {
+            margin-top: 4px;
+            color: #999;
+          }
+
+          .email {
+            font-size: small;
+          }
+        </style>
         <paper-item on-tap="_onTap" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
           <div>
             <div class="company-name">[[item.companyName]]</div>
