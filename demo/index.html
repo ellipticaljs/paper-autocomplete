@@ -269,7 +269,7 @@
         allAutoCompleteStates.forEach(function (element) {
           element.source = states;
 
-          element.addEventListener('autocomplete-selected', function () {
+          element.addEventListener('autocomplete-selected', function (event) {
             var paperToast = document.querySelector('paper-toast');
             var selected = event.detail.text;
             paperToast.text = 'Selected: ' + selected;
