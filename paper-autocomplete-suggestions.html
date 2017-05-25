@@ -519,6 +519,13 @@
           clone.item = result;
           clone.index = index;
 
+          // Different stamping mode based on Polymer version
+          if (!Polymer.Element) {
+            suggestionsContainer.appendChild(clone.root.querySelector('*'));
+          } else {
+            suggestionsContainer.appendChild(clone.root);
+          }
+
           suggestionsContainer.appendChild(clone.root);
         }.bind(this));
       },
