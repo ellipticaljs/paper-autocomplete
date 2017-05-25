@@ -19,10 +19,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <style>
       :host {
         display: block;
-
-        --paper-item: {
-          padding: 8px 16px;
-        }
       }
     </style>
 
@@ -36,6 +32,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         value-property="id">
       <template slot="autocomplete-custom-template">
         <style>
+          paper-item {
+            padding: 8px 16px;
+          }
+
           .company-name {
             color: #333;
           }
