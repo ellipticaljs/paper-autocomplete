@@ -124,7 +124,7 @@
 
       paper-item {
         min-height: var(--paper-item-min-height, 36px);
-        padding: 8px 16px;
+        padding: 0 16px;
       }
 
       paper-item,
@@ -391,6 +391,7 @@
         this._input.addEventListener('focus', this._bindedFunctions._onFocus);
         this._input.addEventListener('blur', this._bindedFunctions._onBlur);
 
+
         this._observer = Polymer.dom(this).observeNodes(this._nodeObserver); //TODO: clean up observer later
       },
 
@@ -399,8 +400,8 @@
           return node.slot === 'autocomplete-custom-template';
         });
 
-        if (suggestionTpl !== undefined) {
-          this.templatize(suggestionTpl);
+        if (suggestionTpl) {
+            this.templatize(suggestionTpl);
         }
       },
 
@@ -534,7 +535,7 @@
         var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
         var children = suggestionsContainer.childNodes;
 
-        if (Polymer.Element !== undefined) {
+        if (Polymer.Element) {
           var length = children.length;
           for (var i = 0; i < length; i++) {
             suggestionsContainer.removeChild(children[0]);
@@ -787,7 +788,7 @@
 
         this._fireEvent(option, 'blur');
 
-        this.hideSuggestions();
+        //this.hideSuggestions();
       },
 
       /**
