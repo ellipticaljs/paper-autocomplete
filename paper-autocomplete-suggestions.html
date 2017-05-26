@@ -523,8 +523,7 @@
           // Different stamping mode based on Polymer version
           if (!Polymer.Element) {
             suggestionsContainer.appendChild(clone.root.querySelector('*'));
-          } else {
-            suggestionsContainer.appendChild(clone.root);
+            return;
           }
 
           suggestionsContainer.appendChild(clone.root);
