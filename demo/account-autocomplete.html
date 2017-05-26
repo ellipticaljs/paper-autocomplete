@@ -18,8 +18,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="account-autocomplete">
   <template>
     <style>
+      /* NOTICE: Polymer 1.x with Shady-Dom styles works fine with styles in this place */
       :host {
         display: block;
+      }
+
+      paper-item.account-item {
+        padding: 8px 16px;
+      }
+
+      .company-name {
+        color: #333;
+      }
+
+      .account-number, .email {
+        margin-top: 4px;
+        color: #999;
+      }
+
+      .email {
+        font-size: small;
       }
     </style>
 
@@ -31,30 +49,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         source="[[accounts]]"
                         text-property="accountNumber"
                         value-property="id">
-      <template slot="autocomplete-custom-template">
-        <style>
-          .company-name {
-            color: #333;
-          }
+        <template slot="autocomplete-custom-template">
+          <!-- NOTICE: Due to Shadow-dom specification, styles should be included into the template to be transcluted to the slot-->
+          <style>
+            :host {
+              display: block;
+            }
 
-          .account-number, .email {
-            margin-top: 4px;
-            color: #999;
-          }
+            paper-item.account-item {
+              padding: 8px 16px;
+            }
 
-          .email {
-            font-size: small;
-          }
-        </style>
-        <paper-item on-tap="_onTap" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>
-            <div class="company-name">[[item.companyName]]</div>
-            <div class="account-number">[[item.accountNumber]]</div>
-            <div class="email">[[item.email]]</div>
-          </div>
-          <paper-ripple></paper-ripple>
-        </paper-item>
-      </template>
+            .company-name {
+              color: #333;
+            }
+
+            .account-number, .email {
+              margin-top: 4px;
+              color: #999;
+            }
+
+            .email {
+              font-size: small;
+            }
+          </style>
+          <paper-item class="account-item" on-tap="_onTap" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+            <div>
+              <div class="company-name">[[item.companyName]]</div>
+              <div class="account-number">[[item.accountNumber]]</div>
+              <div class="email">[[item.email]]</div>
+            </div>
+            <paper-ripple></paper-ripple>
+          </paper-item>
+        </template>
     </paper-autocomplete>
   </template>
 </dom-module>
