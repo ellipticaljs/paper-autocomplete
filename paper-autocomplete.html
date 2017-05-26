@@ -107,7 +107,18 @@
         display: block;
         box-sizing: border-box;
         position: relative;
+
         --paper-input-container-focus-color: var(--primary-color);
+
+        --paper-icon-button: {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+        }
+
+        --paper-input-container-ms-clear: {
+          display: none;
+        }
       }
 
       .input-wrapper {
@@ -118,20 +129,10 @@
         @apply --layout-flex;
       }
 
-      paper-input ::slotted(input::-ms-clear) {
-        display: none;
-      }
-
       #clear {
         display: none;
         margin-top: auto;
         line-height: 8px;
-
-        --paper-icon-button: {
-          height: 24px;
-          width: 24px;
-          padding: 2px;
-        };
       }
 
       .sr-only {
