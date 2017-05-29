@@ -131,7 +131,7 @@
       :host ::slotted(paper-item) {
         position: relative;
         line-height: 18px;
-      }
+        }
 
       paper-item:hover,
       :host ::slotted(paper-item:hover) {
@@ -787,7 +787,7 @@
 
         this._fireEvent(option, 'blur');
 
-        //this.hideSuggestions();
+        this.hideSuggestions();
       },
 
       /**
@@ -837,7 +837,7 @@
       hideSuggestions: function () {
         setTimeout(function () {
           this._hideSuggestionsWrapper();
-        }.bind(this), 300);
+        }.bind(this), 0);
       },
 
       /**
