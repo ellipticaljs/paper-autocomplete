@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <title>paper-autocomplete demo</title>
-  <script src="../../webcomponentsjs/webcomponents-lite.min.js"></script>
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
@@ -24,6 +24,11 @@
 
     .autocomplete-wrapper {
       position: relative;
+    }
+
+    .centered {
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -51,7 +56,7 @@
     </blockquote>
 
     <demo-snippet>
-      <template is="dom-bind">
+      <template>
         <div class="autocomplete-wrapper">
           <paper-input id="myInput" label="Select State"></paper-input>
 
@@ -129,7 +134,7 @@
 
               autocompleteSuggestions.source = states;
 
-              autocompleteSuggestions.addEventListener('autocomplete-selected', function () {
+              autocompleteSuggestions.addEventListener('autocomplete-selected', function (event) {
                 var paperToast = document.querySelector('paper-toast');
                 var selected = event.detail.text;
                 paperToast.text = 'Selected: ' + selected;

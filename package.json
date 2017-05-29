@@ -1,7 +1,7 @@
 {
   "name": "paper-autocomplete",
   "description": "Material Design autocomplete component.",
-  "version": "2.5.2",
+  "version": "2.6.0",
   "author": "S. Francis <sfrancis@misinteractive.com>",
   "contributors": [
     "Rodolfo Oviedo <rodo1111@gmail.com>",
@@ -11,7 +11,9 @@
     "Tobias Koppers @sokra",
     "David Ford <dford@smart-soft.com>",
     "Arun Kumar TK <aruntknambiar@gmail.com>",
-    "Jaime Vega <jhuesos@gmail.com>"
+    "Jaime Vega <jhuesos@gmail.com>",
+    "Antonio José Barrios <ajosebarrios@gmail.com>",
+    "Miguel Collado <colladosegura.miguel@gmail.com>"
   ],
   "license": "MIT",
   "repository": {
@@ -23,7 +25,9 @@
     "postinstall": "bower i",
     "test": "polymer test",
     "lint": "eslint --cache paper-autocomplete*.html test/paper*.html && polymer lint paper-autocomplete*.html",
-    "publish-docs": "./publish-docs.sh"
+    "publish-docs": "./publish-docs.sh",
+    "variants": "polymer install --variants && polymer serve -o",
+    "clean": "rm -rf bower_components bower_components-1.x bower-1.x.json"
   },
   "devDependencies": {
     "eslint": "^3.11.0",

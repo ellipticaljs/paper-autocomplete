@@ -107,31 +107,32 @@
         display: block;
         box-sizing: border-box;
         position: relative;
+
         --paper-input-container-focus-color: var(--primary-color);
+
+        --paper-icon-button: {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+        }
+
+        --paper-input-container-ms-clear: {
+          display: none;
+        }
       }
 
       .input-wrapper {
-        @apply(--layout-horizontal);
+        @apply --layout-horizontal;
       }
 
       .input-wrapper paper-input {
-        @apply(--layout-flex);
-      }
-
-      paper-input ::content input::-ms-clear {
-        display: none;
+        @apply --layout-flex;
       }
 
       #clear {
         display: none;
         margin-top: auto;
         line-height: 8px;
-
-        --paper-icon-button: {
-          height: 24px;
-          width: 24px;
-          padding: 2px;
-        };
       }
 
       .sr-only {
@@ -141,7 +142,7 @@
 
       paper-autocomplete-suggestions {
         --suggestions-wrapper: {
-          @apply(--paper-autocomplete-suggestions-wrapper);
+          @apply --paper-autocomplete-suggestions-wrapper;
         };
 
         --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
@@ -179,8 +180,8 @@
                    aria-disabled$="[[disabled]]"
                    aria-controls="autocompleteStatus suggestionsWrapper">
 
-                  <paper-icon-button suffix id="clear" icon="clear" on-click="_clear"></paper-icon-button>
-        </paper-input>
+        <paper-icon-button slot="suffix" suffix id="clear" icon="clear" on-click="_clear"></paper-icon-button>
+      </paper-input>
       <!-- to announce current selection to screen reader -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
     </div>
@@ -191,11 +192,15 @@
                                     text-property="[[textProperty]]"
                                     value-property="[[valueProperty]]"
                                     selected-option="{{_selectedOption}}"
+                                    source="[[source]]"
                                     remote-source="[[remoteSource]]"
+                                    query-fn="[[queryFn]]"
                                     event-namespace="[[eventNamespace]]"
                                     highlighted-suggestion="{{_highlightedSuggestion}}"
                                     is-open="{{_isSuggestionsOpened}}">
-      <content id="templates" select="[autocomplete-custom-template]"></content>
+
+      <slot id="templates" name="autocomplete-custom-template"></slot>
+
     </paper-autocomplete-suggestions>
   </template>
 </dom-module>
@@ -258,8 +263,7 @@
          * `source` Array of objects with the options to execute the autocomplete feature
          */
         source: {
-          type: Array,
-          observer: '_onSourceChanged'
+          type: Array
         },
 
         /**
@@ -366,8 +370,8 @@
         },
 
         /*************
-         * PRIVATE
-         *************/
+        * PRIVATE
+        *************/
         // TODO: check if we need _value and _text properties. It seems they can be removed
         _value: {
           value: undefined
@@ -402,12 +406,8 @@
       },
 
       observers: [
-        '_onQueryFnChanged(queryFn)'
+        '_textObserver(text)'
       ],
-
-      listeners: {
-        'autocompleteInput.input': '_onInput'
-      },
 
       // Element Lifecycle
       ready: function () {
@@ -433,17 +433,23 @@
         this.text = '';
         this._text = '';
 
-        this._fireEvent(option, 'reset-blur');
+        this._fireEvent(option, 'reset');
 
         this._hideClearButton();
-        this.$.autocompleteInput.focus();
+
+        // Fix: https://github.com/PolymerElements/paper-input/issues/493
+        if (!this.$.autocompleteInput.focused) {
+          this.$.autocompleteInput.focus();
+        }
       },
 
+      /**
+       * Dispatches autocomplete events
+       */
       _fireEvent: function (option, evt) {
         var id = this._getId();
         var event = 'autocomplete' + this.eventNamespace + evt;
 
-        // TODO: this might not be needed
         this.fire(event, {
           id: id,
           value: option[this.valueProperty] || option.value,
@@ -454,21 +460,10 @@
       },
 
       /**
-       * Callback called when source property changes
+       * On text event handler
        */
-      _onSourceChanged: function () {
-        this.$.paperAutocompleteSuggestions.source = this.source;
-      },
-
-      _onQueryFnChanged: function () {
-        this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
-      },
-
-      /**
-       * On input event handler
-       */
-      _onInput: function () {
-        if (this.$.autocompleteInput.value) {
+      _textObserver: function (text) {
+        if (text && text.trim()) {
           this._showClearButton();
         } else {
           this._hideClearButton();
@@ -524,14 +519,6 @@
        ****************************/
 
       /**
-       * Gets the current value of the input
-       * @returns {String}
-       */
-      getValue: function () {
-        return this.value;
-      },
-
-      /**
        * Gets the current text/value option of the input
        * @returns {Object}
        */
@@ -549,7 +536,6 @@
       setOption: function (option) {
         this.text = option[this.textProperty] || option.text;
         this.value = option[this.valueProperty] || option.value;
-
         this._showClearButton();
       },
 
@@ -558,7 +544,6 @@
        */
       disable: function () {
         this.disabled = true;
-        this.$.autocompleteInput.disabled = true;
       },
 
       /**
@@ -566,7 +551,6 @@
        */
       enable: function () {
         this.disabled = false;
-        this.$.autocompleteInput.disabled = false;
       },
 
       /**
@@ -607,6 +591,15 @@
       hideSuggestions: function () {
         this._hideClearButton();
         this.$.paperAutocompleteSuggestions.hideSuggestions();
+      },
+
+      /**
+       * Allows calling the onSelect function from outside
+       * This in time triggers the autocomplete-selected event
+       * with all the data required
+       */
+      onSelectHandler: function (event) {
+        this.$.paperAutocompleteSuggestions._onSelect(event);
       }
 
       /**

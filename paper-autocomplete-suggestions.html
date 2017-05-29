@@ -50,29 +50,14 @@
   ### Custom templates
   A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
   the template. Please read the the following sections carefully.
-  In order to set your own template, you need to add a `<template>` tag with the attribute
-  `autocomplete-custom-template` and the following structure:
-
-  ```
-  <paper-autocomplete-suggestions
-      for="myInput"
-      source="[[accounts]]"
-      text-property="accountNumber"
-      value-property="id">
-
-      <template autocomplete-custom-template>
-        <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          YOUR CUSTOM TEMPLATE
-          <paper-ripple></paper-ripple>
-        </paper-item>
-      </template>
-  </paper-autocomplete-suggestions>
-  ```
+  In order to set your own template, you need to add a `<template>` tag with the slot name
+  `autocomplete-custom-template` and a structure equivalent to the one shown in the `<account-autocomplete>` component in
+  the demo.
 
   You need to always maintain this structure. Then you can customize the content of paper-item. These are the reasons
   why you need to maintain it:
 
-  - `_onSelect` it is very important because it will notify the `autocomplete` component when user selects one item.
+  - `onSelectHandler` it is very important because it will notify the `autocomplete` component when user selects one item.
   If you don't add this option, when user clicks in one of the items, nothing will happen.
   - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
   will continue working but it will not be accessible for user with disabilities.
@@ -134,34 +119,33 @@
         max-height: 252px;
         overflow-y: auto;
 
-        @apply(--suggestions-wrapper);
+        @apply --suggestions-wrapper;
       }
 
       paper-item {
         min-height: var(--paper-item-min-height, 36px);
+        padding: 0 16px;
       }
 
       paper-item,
-      :host ::content paper-item {
+      :host ::slotted(paper-item) {
         position: relative;
         line-height: 18px;
       }
 
       paper-item:hover,
-      :host ::content paper-item:hover {
+      :host ::slotted(paper-item:hover) {
         background: #eee;
         color: #333;
         cursor: pointer;
       }
 
       paper-item.active,
-      :host ::content paper-item.active {
+      :host ::slotted(paper-item.active) {
         background: #eee;
         color: #333;
       }
-
     </style>
-
     <div>
       <!-- unselectable is needed to fix an issue related to the focus being taken away when clicking in the
        results scrollbar -->
@@ -176,11 +160,10 @@
       </template>
 
       <!-- Custom template -->
-      <content id="templates" select="[autocomplete-custom-template]"></content>
+      <slot id="templates" name="autocomplete-custom-template"></slot>
     </div>
   </template>
 </dom-module>
-
 <script>
   (function () {
 
@@ -302,18 +285,6 @@
         },
 
         /**
-         * Reference to the current suggestion template
-         */
-        _suggestionTemplate: {
-          type: Object,
-          value: function () {
-            var customTemplate = this.getEffectiveChildren();
-
-            return customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
-          }
-        },
-
-        /**
          * `_suggestions` Array with the actual suggestions to display
          */
         _suggestions: {
@@ -348,7 +319,6 @@
           observer: '_itemHeightChanged'
         },
 
-        // TODO: check if we need _value and _text properties. It seems they can be removed
         _value: {
           value: undefined
         },
@@ -397,14 +367,13 @@
         // This is important to be able to access component methods inside the templates used with Templatizer
         this.dataHost = this;
 
-        // templatize must be called once before stamp is called
-        this.templatize(this._suggestionTemplate);
-
         // Need to capture mousedown to prevent the focus to switch from input field when user clicks in the scrollbar
         // and the autosuggest is a child of an element with tabindex.
         this.$.suggestionsWrapper.addEventListener('mousedown', function (event) {
           event.preventDefault();
         });
+
+        this.templatize(this.$.defaultTemplate);
       },
 
       attached: function () {
@@ -421,6 +390,19 @@
         this._input.addEventListener('keyup', this._bindedFunctions._onKeypress);
         this._input.addEventListener('focus', this._bindedFunctions._onFocus);
         this._input.addEventListener('blur', this._bindedFunctions._onBlur);
+
+
+        this._observer = Polymer.dom(this).observeNodes(this._nodeObserver); //TODO: clean up observer later
+      },
+
+      _nodeObserver: function (info) {
+        var suggestionTpl = info.addedNodes.find(function (node) {
+          return node.slot === 'autocomplete-custom-template';
+        });
+
+        if (suggestionTpl) {
+            this.templatize(suggestionTpl);
+        }
       },
 
       detached: function () {
@@ -431,6 +413,8 @@
         this._input.removeEventListener('blur', this._bindedFunctions._onBlur);
 
         this._input = null;
+
+        Polymer.dom(this).unobserveNodes(this._observer);
       },
 
       // Element Behavior
@@ -532,10 +516,15 @@
 
         suggestions.forEach(function (result, index) {
           // clone the template and bind with the model
-          var clone = this.stamp({
-            item: result,
-            index: index
-          });
+          var clone = this.stamp();
+          clone.item = result;
+          clone.index = index;
+
+          // Different stamping mode based on Polymer version
+          if (!Polymer.Element) {
+            suggestionsContainer.appendChild(clone.root.querySelector('*'));
+            return;
+          }
 
           suggestionsContainer.appendChild(clone.root);
         }.bind(this));
@@ -543,10 +532,18 @@
 
       _clearSuggestions: function () {
         var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
+        var children = suggestionsContainer.childNodes;
 
-        suggestionsContainer.children.forEach(function (child) {
-          suggestionsContainer.removeChild(child);
-        });
+        if (Polymer.Element) {
+          var length = children.length;
+          for (var i = 0; i < length; i++) {
+            suggestionsContainer.removeChild(children[0]);
+          }
+        } else {
+          children.forEach(function (elem) {
+            suggestionsContainer.removeChild(elem);
+          });
+        }
       },
 
       /**
@@ -775,7 +772,7 @@
       },
 
       _onSelect: function (event) {
-        var index = event.model.index;
+        var index = this.modelForElement(event.currentTarget).index;
         this._selection(index);
       },
 
@@ -790,7 +787,7 @@
 
         this._fireEvent(option, 'blur');
 
-        this.hideSuggestions();
+        //this.hideSuggestions();
       },
 
       /**
@@ -823,8 +820,8 @@
       },
 
       /****************************
-       * PUBLIC
-       ****************************/
+      * PUBLIC
+      ****************************/
 
       /**
        * Sets the component's current suggestions
