@@ -396,12 +396,13 @@
       },
 
       _nodeObserver: function (info) {
-        var suggestionTpl = info.addedNodes.find(function (node) {
+        var nodes = [].slice.call(info.addedNodes);
+        var suggestionTpl = nodes.filter(function (node) {
           return node.slot === 'autocomplete-custom-template';
         });
 
-        if (suggestionTpl) {
-            this.templatize(suggestionTpl);
+        if (suggestionTpl.length === 1) {
+            this.templatize(suggestionTpl[0]);
         }
       },
 
