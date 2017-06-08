@@ -147,7 +147,7 @@
        * IE11 paper-item min-height bug: https://github.com/PolymerElements/paper-item/issues/35
        */
       @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-        paper-item { 
+        paper-item {
           min-height: 0;
           height: var(--paper-item-min-height, 36px);
         }
@@ -404,7 +404,7 @@
 
       _nodeObserver: function (info) {
         var suggestionTpl = info.addedNodes.find(function (node) {
-          return node.slot === 'autocomplete-custom-template';
+          return node.nodeName === 'TEMPLATE';
         });
 
         if (suggestionTpl) {
@@ -526,7 +526,7 @@
           var clone = this.stamp();
           clone.item = result;
           clone.index = index;
-         
+
           // Different stamping mode based on Polymer version
           if (!Polymer.Element) {
             suggestionsContainer.appendChild(clone.root.querySelector('*'));
