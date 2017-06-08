@@ -122,16 +122,13 @@
         @apply --suggestions-wrapper;
       }
 
-      paper-item {
-        min-height: var(--paper-item-min-height, 36px);
-        padding: 0 16px;
-      }
-
       paper-item,
       :host ::slotted(paper-item) {
+        min-height: var(--paper-item-min-height, 36px);
+        padding: 0 16px;
         position: relative;
         line-height: 18px;
-        }
+      }
 
       paper-item:hover,
       :host ::slotted(paper-item:hover) {
@@ -144,6 +141,16 @@
       :host ::slotted(paper-item.active) {
         background: #eee;
         color: #333;
+      }
+
+      /**
+       * IE11 paper-item min-height bug: https://github.com/PolymerElements/paper-item/issues/35
+       */
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        paper-item { 
+          min-height: 0;
+          height: var(--paper-item-min-height, 36px);
+        }
       }
     </style>
     <div>
@@ -519,7 +526,7 @@
           var clone = this.stamp();
           clone.item = result;
           clone.index = index;
-
+         
           // Different stamping mode based on Polymer version
           if (!Polymer.Element) {
             suggestionsContainer.appendChild(clone.root.querySelector('*'));
