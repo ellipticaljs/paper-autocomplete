@@ -372,10 +372,12 @@
          */
         _bindedFunctions: {
           type: Object,
-          value: {
-            _onKeyPress: null,
-            _onFocus: null,
-            _onBlur: null
+          value: function () {
+            return {
+              _onKeypress: null,
+              _onFocus: null,
+              _onBlur: null
+            };
           }
         },
 
