@@ -18,7 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="account-autocomplete">
   <template>
     <style>
-      /* NOTICE: Polymer 1.x with Shady-Dom styles work fine with styles in this place */
+      /* NOTICE: Due to shady-dom, custom template styles need to be included within the host component in Polymer 1.x */
       :host {
         display: block;
       }
@@ -67,7 +67,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         text-property="accountNumber"
                         value-property="id">
         <template slot="autocomplete-custom-template">
-          <!-- NOTICE: Due to Shadow-dom v1 specification, styles work fine in this place on Polymer 2.x -->
+          <!-- NOTICE: Due to shadow-dom, custom template styles need to be included with the template in Polymer 2.x -->
           <style>
             :host {
               display: block;
