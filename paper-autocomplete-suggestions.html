@@ -24,6 +24,17 @@
   or custom templates.** They are needed to keep the component accessible and for the events (e.g. onSelect) to keep
   working.
 
+  ### About Polymer 1.x and 2.x Compatibility
+  The latest version released (`v2.6.1`) is **not** compatible with Polymer 2.x. At this moment there is a work in
+  progress version that works with Polymer 2.x in the branch **2.0-preview**. It is functional but it contains a few
+  known issues:
+
+  - When using custom templates, you must implement the methods `_onTap` and `_getSuggestionId`.
+  - It does not work on IE11/Edge when used in combination with Polymer 1.x.
+
+  Using the version from the preview branch should allow you to migrate to Polymer 2.x as soon as possible while we
+  work in a fully stable and compatible version of `paper-autocomplete`.
+
   ### Custom search
   This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
   all items in the `source` and returns only those items that matches certain filtering criteria. By default, this

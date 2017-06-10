@@ -1,6 +1,6 @@
 {
   "name": "paper-autocomplete",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "authors": [
     "S. Francis",
     "Rodolfo Oviedo <rodo1111@gmail.com>",
@@ -48,5 +48,10 @@
     "iron-test-helpers": "PolymerElements/iron-test-helpers#^1.3.0",
     "iron-form": "^1.1.4",
     "paper-button": "^1.0.14"
+  },
+  "resolutions": {
+    "hydrolysis": "^1.18",
+    "iron-location": "1 - 2",
+    "webcomponentsjs": "^0.7.24"
   }
 }

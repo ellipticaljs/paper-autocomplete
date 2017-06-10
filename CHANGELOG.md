@@ -2,6 +2,12 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 2.6.1 (2017-06-10)
+
+### Bug Fixes
+- Private property `_bindedFunctions` inside `paper-autocomplete-suggestions` was being shared between all 
+instances. This now has been solved thanks to [@plequang](https://github.com/plequang).
+
 ## Release 2.6.0 (2017-05-31)
 
 ### New Features
