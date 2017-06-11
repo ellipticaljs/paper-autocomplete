@@ -402,12 +402,12 @@
       },
 
       _nodeObserver: function (info) {
-        var suggestionTpl = info.addedNodes.find(function (node) {
+        var suggestionTpl = info.addedNodes.filter(function (node) {
           return node.nodeName === 'TEMPLATE';
-        });
+        })[0];
 
         if (suggestionTpl) {
-            this.templatize(suggestionTpl);
+          this.templatize(suggestionTpl);
         }
       },
 
