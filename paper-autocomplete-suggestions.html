@@ -122,16 +122,13 @@
         @apply --suggestions-wrapper;
       }
 
-      paper-item {
-        min-height: var(--paper-item-min-height, 36px);
-        padding: 0 16px;
-      }
-
       paper-item,
       :host ::slotted(paper-item) {
+        min-height: var(--paper-item-min-height, 36px);
+        padding: 0 16px;
         position: relative;
         line-height: 18px;
-        }
+      }
 
       paper-item:hover,
       :host ::slotted(paper-item:hover) {
@@ -144,6 +141,15 @@
       :host ::slotted(paper-item.active) {
         background: #eee;
         color: #333;
+      }
+
+      /**
+       * IE11 paper-item min-height bug: https://github.com/PolymerElements/paper-item/issues/35
+       */
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        paper-item {
+          height: var(--paper-item-min-height, 36px);
+        }
       }
     </style>
     <div>
@@ -396,13 +402,12 @@
       },
 
       _nodeObserver: function (info) {
-        var nodes = [].slice.call(info.addedNodes);
-        var suggestionTpl = nodes.filter(function (node) {
-          return node.slot === 'autocomplete-custom-template';
-        });
+        var suggestionTpl = info.addedNodes.filter(function (node) {
+          return node.nodeName === 'TEMPLATE';
+        })[0];
 
-        if (suggestionTpl.length === 1) {
-            this.templatize(suggestionTpl[0]);
+        if (suggestionTpl) {
+          this.templatize(suggestionTpl);
         }
       },
 
