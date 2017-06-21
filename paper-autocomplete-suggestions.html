@@ -537,19 +537,8 @@
       },
 
       _clearSuggestions: function () {
-        var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
-        var children = suggestionsContainer.childNodes;
-
-        if (Polymer.Element) {
-          var length = children.length;
-          for (var i = 0; i < length; i++) {
-            suggestionsContainer.removeChild(children[0]);
-          }
-        } else {
-          children.forEach(function (elem) {
-            suggestionsContainer.removeChild(elem);
-          });
-        }
+        var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper), last;
+        while (last = suggestionsContainer.lastChild) suggestionsContainer.removeChild(last);
       },
 
       /**
