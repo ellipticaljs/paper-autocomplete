@@ -26,7 +26,7 @@
     "test": "polymer test",
     "lint": "eslint --cache paper-autocomplete*.html test/paper*.html && polymer lint paper-autocomplete*.html",
     "publish-docs": "./publish-docs.sh",
-    "variants": "polymer install --variants && polymer serve -o",
+    "variants": "polymer install --variants && polymer serve -o -H 0.0.0.0",
     "clean": "rm -rf bower_components bower_components-1.x bower-1.x.json"
   },
   "devDependencies": {

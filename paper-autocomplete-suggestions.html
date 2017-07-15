@@ -520,7 +520,7 @@
 
         this._clearSuggestions();
 
-        suggestions.forEach(function (result, index) {
+        [].slice.call(suggestions).forEach(function (result, index) {
           // clone the template and bind with the model
           var clone = this.stamp();
           clone.item = result;
