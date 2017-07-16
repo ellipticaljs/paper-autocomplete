@@ -1,0 +1,66 @@
+<!doctype html>
+
+<html>
+
+<head>
+  <title>Paper-autocomplete test</title>
+  <meta charset='utf-8'>
+  <meta name='viewport' content='width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes'>
+  <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
+  <script src='../../web-component-tester/browser.js'></script>
+  <script src='../../iron-test-helpers/mock-interactions.js'></script>
+  <link rel='import' href='../paper-autocomplete.html'>
+</head>
+
+<body>
+  <test-fixture id='multi'>
+    <template>
+      <paper-autocomplete label='Select State 1' id='input-local1' no-label-float='true'
+                          required='true' name='state1'></paper-autocomplete>
+      <paper-autocomplete label='Select State 2' id='input-local2' no-label-float='true'
+                          required='true' name='state'></paper-autocomplete>
+    </template>
+  </test-fixture>
+  <script>
+    describe('when several paper-autocomplete are used', function () {
+      var element1, element2, states1, states2;
+
+      beforeEach(function (done) {
+        var elements = fixture('multi');
+
+        element1 = elements[0];
+        element2 = elements[1];
+
+        states1 = [
+          {'text': 'Alabama', 'value': 'AL'},
+          {'text': 'Alaska', 'value': 'AK'},
+          {'text': 'American Samoa', 'value': 'AS'},
+          {'text': 'Arizona', 'value': 'AZ'},
+          {'text': 'Arkansas', 'value': 'AR'}
+        ];
+
+        states2 = [
+          {'text': 'California', 'value': 'CA'},
+          {'text': 'Colorado', 'value': 'CO'},
+          {'text': 'Connecticut', 'value': 'CT'}
+        ];
+
+        element1.source = states1;
+        element2.source = states2;
+
+        done();
+      });
+
+      it('uses distinct _bindedFunctions in suggestions', function () {
+        var suggestions1 = element1.$.paperAutocompleteSuggestions,
+            suggestions2 = element2.$.paperAutocompleteSuggestions;
+        expect(suggestions1._bindedFunctions._onKeypress).to.not.equal(suggestions2._bindedFunctions._onKeypress);
+        expect(suggestions1._bindedFunctions._onFocus).to.not.equal(suggestions2._bindedFunctions._onFocus);
+        expect(suggestions1._bindedFunctions._onBlur).to.not.equal(suggestions2._bindedFunctions._onBlur);
+      });
+    });
+  </script>
+
+</body>
+
+</html>
