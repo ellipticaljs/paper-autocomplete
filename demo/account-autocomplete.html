@@ -17,47 +17,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="account-autocomplete">
   <template>
-    <style>
-      /* NOTICE: Due to shady-dom, custom template styles need to be included within the host component in Polymer 1.x */
-      :host {
-        display: block;
-      }
-
-      paper-item.account-item {
-        padding: 8px 16px;
-      }
-
-      .company-name {
-        color: #333;
-      }
-
-      .account-number, .email {
-        margin-top: 4px;
-        color: #999;
-      }
-
-      .email {
-        font-size: small;
-      }
-
-      /**
-       * IE11 paper-item min-height bug: https://github.com/PolymerElements/paper-item/issues/35
-       * If you are running on IE11, add this lines to reset min-height on IE11
-       */
-      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-        paper-item.account-item {
-          min-height: 100% !important;
-          height: auto !important;
-
-          /**
-           * If you are experimenting that some CSS properties for paper-item are not overriden in Polymer 2.x with IE11,
-           * please add !important to ensure the shadow-dom v1 polyfill works properly
-           */
-          padding: 8px 16px !important;
-        }
-      }
-    </style>
-
     <!-- When using custom template and or custom query function, it is important to also set the `textProperty`
      and `valueProperty properties`. -->
     <paper-autocomplete label="Select Account"
