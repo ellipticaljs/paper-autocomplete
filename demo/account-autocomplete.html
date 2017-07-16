@@ -107,7 +107,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               }
             }
           </style>
-          <paper-item class="account-item" on-tap="_onTap" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+          <paper-item class="account-item" on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
             <div>
               <div class="company-name">[[item.companyName]]</div>
               <div class="account-number">[[item.accountNumber]]</div>
@@ -185,34 +185,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     },
 
     listeners: {
-      'autocomplete-selected': '_onSelect'
+      'autocomplete-selected': '_onOptionSelected'
     },
 
     ready: function () {
       var autocomplete = this.$$('paper-autocomplete');
       autocomplete.addEventListener('autocomplete-selected', this.onSelect);
-      //Polymer 1 fix
-      if (Polymer.Element === undefined) {
-        autocomplete.$.paperAutocompleteSuggestions._onTap = this._onTap.bind(this);
-      }
 
       // Override default queryFn with our custom. This is a needed requirement to implement the custom template
       autocomplete.queryFn = this._queryFn;
     },
 
-    _onTap: function(event) {
-      this.$['input-local'].onSelectHandler(event);
-    },
-
-    _onSelect: function (event) {
+    _onOptionSelected: function (event) {
       var paperToast = document.querySelector('paper-toast');
       var selected = event.detail.text;
       paperToast.text = 'Selected: ' + selected;
       paperToast.show();
-    },
-
-    _getSuggestionId: function(index) {
-      return 'custom-tpl-' + index;
     },
 
     // This custom queryFn will filter results searching in both companyName and accountNumber, then it will return the

@@ -407,6 +407,10 @@
         })[0];
 
         if (suggestionTpl) {
+          // We need to enforce that dataHost is the suggestions and not the custom polymer element where the template
+          // is defined. If we do not do this, it won't be possible to access paperSuggestions from the custom template
+          // TODO: find a way to achieve this without modifying Polymer internal properties
+          suggestionTpl.__dataHost = this;
           this.templatize(suggestionTpl);
         }
       },
@@ -517,6 +521,7 @@
        */
       _renderSuggestions: function (suggestions) {
         var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
+        var isPolymer1 = !Polymer.Element;
 
         this._clearSuggestions();
 
@@ -527,12 +532,12 @@
           clone.index = index;
 
           // Different stamping mode based on Polymer version
-          if (!Polymer.Element) {
+          if (isPolymer1) {
             suggestionsContainer.appendChild(clone.root.querySelector('*'));
-            return;
+          } else {
+            suggestionsContainer.appendChild(clone.root);
           }
 
-          suggestionsContainer.appendChild(clone.root);
         }.bind(this));
       },
 
