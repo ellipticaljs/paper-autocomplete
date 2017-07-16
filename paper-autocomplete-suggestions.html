@@ -5,6 +5,9 @@
 
 <!--
   `paper-autocomplete-suggestions`
+
+  **From v3.x.x, this component only works with Polymer 1.7+ or 2.0+.**
+
   Allows to add autocomplete capabilities to any input field. This is desirable when you have an input field with custom
   logic and you just want to add the feature to help users with the selection. If you want to use it in combination with
   a regular `<paper-input>`, you can use `<paper-autocomplete>`.
@@ -25,15 +28,8 @@
   working.
 
   ### About Polymer 1.x and 2.x Compatibility
-  The latest version released (`v2.6.1`) is **not** compatible with Polymer 2.x. At this moment there is a work in
-  progress version that works with Polymer 2.x in the branch **2.0-preview**. It is functional but it contains a few
-  known issues:
-
-  - When using custom templates, you must implement the methods `_onTap` and `_getSuggestionId`.
-  - It does not work on IE11/Edge when used in combination with Polymer 1.x.
-
-  Using the version from the preview branch should allow you to migrate to Polymer 2.x as soon as possible while we
-  work in a fully stable and compatible version of `paper-autocomplete`.
+  From version `3.x.x`, this component work with both Polymer 1.7+ or Polymer 2.0+ Please take a look to the
+  [MIGRATION.md](./MIGRATION.md) file that contains more information.
 
   ### Custom search
   This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
@@ -61,29 +57,14 @@
   ### Custom templates
   A template for each suggestion can be provided, but for now, there are limitations in the way you can customize
   the template. Please read the the following sections carefully.
-  In order to set your own template, you need to add a `<template>` tag with the attribute
-  `autocomplete-custom-template` and the following structure:
-
-  ```
-  <paper-autocomplete-suggestions
-      for="myInput"
-      source="[[accounts]]"
-      text-property="accountNumber"
-      value-property="id">
-
-      <template autocomplete-custom-template>
-        <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          YOUR CUSTOM TEMPLATE
-          <paper-ripple></paper-ripple>
-        </paper-item>
-      </template>
-  </paper-autocomplete-suggestions>
-  ```
+  In order to set your own template, you need to add a `<template>` tag with the slot name
+  `autocomplete-custom-template` and a structure equivalent to the one shown in the `<account-autocomplete>` component in
+  the demo.
 
   You need to always maintain this structure. Then you can customize the content of paper-item. These are the reasons
   why you need to maintain it:
 
-  - `_onSelect` it is very important because it will notify the `autocomplete` component when user selects one item.
+  - `onSelectHandler` it is very important because it will notify the `autocomplete` component when user selects one item.
   If you don't add this option, when user clicks in one of the items, nothing will happen.
   - `id`, `role` and `aria-selected` need to be there for accessibility reasons. If you don't set them, the component
   will continue working but it will not be accessible for user with disabilities.
@@ -145,34 +126,39 @@
         max-height: 252px;
         overflow-y: auto;
 
-        @apply(--suggestions-wrapper);
-      }
-
-      paper-item {
-        min-height: var(--paper-item-min-height, 36px);
+        @apply --suggestions-wrapper;
       }
 
       paper-item,
-      :host ::content paper-item {
+      :host ::slotted(paper-item) {
+        min-height: var(--paper-item-min-height, 36px);
+        padding: 0 16px;
         position: relative;
         line-height: 18px;
       }
 
       paper-item:hover,
-      :host ::content paper-item:hover {
+      :host ::slotted(paper-item:hover) {
         background: #eee;
         color: #333;
         cursor: pointer;
       }
 
       paper-item.active,
-      :host ::content paper-item.active {
+      :host ::slotted(paper-item.active) {
         background: #eee;
         color: #333;
       }
 
+      /**
+       * IE11 paper-item min-height bug: https://github.com/PolymerElements/paper-item/issues/35
+       */
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        paper-item {
+          height: var(--paper-item-min-height, 36px);
+        }
+      }
     </style>
-
     <div>
       <!-- unselectable is needed to fix an issue related to the focus being taken away when clicking in the
        results scrollbar -->
@@ -186,12 +172,11 @@
         </paper-item>
       </template>
 
-      <!-- Custom template -->
-      <content id="templates" select="[autocomplete-custom-template]"></content>
-    </div>
+  <!-- Custom template -->
+  <slot id="templates" name="autocomplete-custom-template"></slot>
+  </div>
   </template>
 </dom-module>
-
 <script>
   (function () {
 
@@ -313,18 +298,6 @@
         },
 
         /**
-         * Reference to the current suggestion template
-         */
-        _suggestionTemplate: {
-          type: Object,
-          value: function () {
-            var customTemplate = this.getEffectiveChildren();
-
-            return customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
-          }
-        },
-
-        /**
          * `_suggestions` Array with the actual suggestions to display
          */
         _suggestions: {
@@ -359,7 +332,6 @@
           observer: '_itemHeightChanged'
         },
 
-        // TODO: check if we need _value and _text properties. It seems they can be removed
         _value: {
           value: undefined
         },
@@ -399,7 +371,12 @@
         _hasItemHighBeenCalculated: {
           type: Boolean,
           value: false
-        }
+        },
+
+        /**
+         * To avoid unnecessary access to the DOM, we keep a reference to the current template being used
+         */
+        __customTplRef: Object
       },
 
       // Element Lifecycle
@@ -410,14 +387,17 @@
         // This is important to be able to access component methods inside the templates used with Templatizer
         this.dataHost = this;
 
-        // templatize must be called once before stamp is called
-        this.templatize(this._suggestionTemplate);
-
         // Need to capture mousedown to prevent the focus to switch from input field when user clicks in the scrollbar
         // and the autosuggest is a child of an element with tabindex.
         this.$.suggestionsWrapper.addEventListener('mousedown', function (event) {
           event.preventDefault();
         });
+
+        // We need to enforce that dataHost is the suggestions and not the custom polymer element where the template
+        // is defined. If we do not do this, it won't be possible to access paperSuggestions from the custom template
+        // TODO: find a way to achieve this without modifying Polymer internal properties
+        this._suggestionTemplate.__dataHost = this;
+        this.templatize(this._suggestionTemplate);
       },
 
       attached: function () {
@@ -444,6 +424,7 @@
         this._input.removeEventListener('blur', this._bindedFunctions._onBlur);
 
         this._input = null;
+        this.__customTplRef = null;
       },
 
       // Element Behavior
@@ -533,6 +514,16 @@
         }
       },
 
+      get _suggestionTemplate() {
+        if (this.__customTplRef) {
+          return this.__customTplRef;
+        }
+        var customTemplate = this.getEffectiveChildren();
+        this.__customTplRef = customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
+
+        return this.__customTplRef;
+      },
+
       /**
        * Render suggestions in the suggestionsWrapper container
        * @param {Array} suggestions An array containing the suggestions to be rendered. This value is not optional, so
@@ -540,26 +531,30 @@
        */
       _renderSuggestions: function (suggestions) {
         var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
+        var isPolymer1 = !Polymer.Element;
 
         this._clearSuggestions();
 
-        suggestions.forEach(function (result, index) {
+        [].slice.call(suggestions).forEach(function (result, index) {
           // clone the template and bind with the model
-          var clone = this.stamp({
-            item: result,
-            index: index
-          });
+          var clone = this.stamp();
+          clone.item = result;
+          clone.index = index;
 
-          suggestionsContainer.appendChild(clone.root);
+          // Different stamping mode based on Polymer version
+          if (isPolymer1) {
+            suggestionsContainer.appendChild(clone.root.querySelector('*'));
+          } else {
+            suggestionsContainer.appendChild(clone.root);
+          }
+
         }.bind(this));
       },
 
       _clearSuggestions: function () {
-        var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper);
-
-        suggestionsContainer.children.forEach(function (child) {
-          suggestionsContainer.removeChild(child);
-        });
+        var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper),
+          last;
+        while (last = suggestionsContainer.lastChild) suggestionsContainer.removeChild(last);
       },
 
       /**
@@ -645,25 +640,25 @@
         var keyCode = event.which || event.keyCode;
 
         switch (keyCode) {
-          case KEY_CODES.DOWN_ARROW:
-            this._moveHighlighted(DIRECTION.DOWN);
-            break;
-          case KEY_CODES.UP_ARROW:
-            this._moveHighlighted(DIRECTION.UP);
-            break;
-          case KEY_CODES.ENTER:
-            this._keyenter();
-            break;
-          case KEY_CODES.ESCAPE:
-            this._hideSuggestionsWrapper();
-            break;
+        case KEY_CODES.DOWN_ARROW:
+          this._moveHighlighted(DIRECTION.DOWN);
+          break;
+        case KEY_CODES.UP_ARROW:
+          this._moveHighlighted(DIRECTION.UP);
+          break;
+        case KEY_CODES.ENTER:
+          this._keyenter();
+          break;
+        case KEY_CODES.ESCAPE:
+          this._hideSuggestionsWrapper();
+          break;
           // For left and right arrow, component should do nothing
-          case KEY_CODES.LEFT_ARROW:
+        case KEY_CODES.LEFT_ARROW:
           // fall through
-          case KEY_CODES.RIGHT_ARROW:
-            break;
-          default:
-            this._handleSuggestions(event);
+        case KEY_CODES.RIGHT_ARROW:
+          break;
+        default:
+          this._handleSuggestions(event);
         }
       },
 
@@ -685,7 +680,7 @@
         var items = this._getItems();
 
         if (items.length === 0) {
-            return;
+          return;
         }
 
         var numberOfItems = items.length - 1;
@@ -788,7 +783,7 @@
       },
 
       _onSelect: function (event) {
-        var index = event.model.index;
+        var index = this.modelForElement(event.currentTarget).index;
         this._selection(index);
       },
 
@@ -853,7 +848,7 @@
       hideSuggestions: function () {
         setTimeout(function () {
           this._hideSuggestionsWrapper();
-        }.bind(this), 300);
+        }.bind(this), 0);
       },
 
       /**

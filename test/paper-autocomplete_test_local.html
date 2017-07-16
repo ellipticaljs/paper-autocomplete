@@ -15,9 +15,14 @@
 <body>
   <test-fixture id='basic'>
     <template>
-      <paper-autocomplete label='Select State' id='input-local' no-label-float='true'
-                          required='true' name='state'></paper-autocomplete>
-    </template>
+      <paper-autocomplete 
+        label='Select State' 
+        id='input-local' 
+        no-label-float
+        required 
+        name='state'>
+      </paper-autocomplete>
+  </template>
   </test-fixture>
   <script>
     describe('paper-autocomplete', function () {
@@ -103,8 +108,8 @@
       });
 
       it('copies the required property to the input field', function () {
-        var input = element.$.autocompleteInput.$.input;
-        expect(input.getAttribute('required')).to.not.equal(null);
+        var input = element.$.autocompleteInput;
+        expect(input.required).to.equal(element.required);
       });
 
       it('loads the list of sources', function () {
@@ -219,7 +224,7 @@
 
           var doInput = function (input, inputText) {
             enterCharacter(input, inputText);
-            element._onInput(); // trigger an onInput event which in turn evaluates whether to display the button
+            element._textObserver(inputText); // trigger an onInput event which in turn evaluates whether to display the button
           };
 
           beforeEach(function () {
@@ -252,7 +257,7 @@
 
         var doInput = function (input, inputText) {
           enterCharacter(input, inputText);
-          element._onInput(); // trigger an onInput event which in turn evaluates whether to display the button
+          element._textObserver(inputText); // trigger an onInput event which in turn evaluates whether to display the button
         };
 
         it('should hide the suggestion wrapper and clear button', function (done) {
@@ -297,8 +302,8 @@
         });
 
         it('should fire the correct event', function (done) {
-          element.addEventListener('autocomplete-reset-blur', function (event) {
-            expect(event.type).to.equal('autocomplete-reset-blur');
+          element.addEventListener('autocomplete-reset', function (event) {
+            expect(event.type).to.equal('autocomplete-reset');
             done();
           });
 

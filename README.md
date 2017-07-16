@@ -7,21 +7,8 @@
 keyboard support, remote binding and results scrolling.
 
 # About Polymer 1.x and 2.x Compatibility
-The latest version released (`v2.6.0`) is **not** compatible with Polymer 2.x. At this moment there is a work in 
-progress version that works with Polymer 2.x in the branch **2.0-preview**. It is functional but it contains a few 
-known issues:
-- When using custom templates, you must implement the methods `_onTap` and `_getSuggestionId`
-
-This should allow you to migrate to Polymer 2.x as soon as possible while we work in a fully stable and compatible
-version of `paper-autocomplete`.
-
-In addition, we are still considering what to do regarding Polymer 2.x. Due to the complexity of implementing a 
-hybrid version, it might be decided to release a new version that is only compatible with Polymer 2.x. But please, 
-be assured that we will continue maintaining the 1.x branch with bugfixes, but no new functionality will be added to 
-the 1.x branch. The aim is to maintain 100% API backward compatibility. But if that is not the case, a MIGRATION 
-guide will be provided.
-
-Since this is not 100% decided yet, feel free to open an issue and leave feedback. Thanks!
+From version `3.x.x`, this component work with both Polymer 1.7+ or Polymer 2.0+ Please take a look to the 
+[MIGRATION.md](./MIGRATION.md) file that contains more information.
 
 # Installation
 
@@ -60,6 +47,13 @@ Clone the repository and run:
 ## How to run the project
 
 You just need
+
+## How to run the project with Polymer 1.x and Polymer 2
+This component runs in Polymer hybrid mode, that means it can run in a Polymer 1.x or Polymer 2.x app.
+```
+npm run variants
+```
+After running this command, it will open two different ports  in the dev browser with Polymer 1.x and Polymer 2.x
 
 ## How to run the tests
 
