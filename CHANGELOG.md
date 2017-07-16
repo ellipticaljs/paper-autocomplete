@@ -2,17 +2,6 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
-<<<<<<< HEAD
-## Release 2.6.1 (2017-06-09)
-
-### Bug fixes
-- IE11 visual issues on Polymer 1 and 2
-
-## Release 2.6.0 (2017-05-17)
-
-### New Features
-- Polymer 1 & 2 hybrid component
-=======
 ## Release 2.6.1 (2017-06-10)
 
 ### Bug Fixes
@@ -23,7 +12,6 @@ instances. This now has been solved thanks to [@plequang](https://github.com/ple
 
 ### New Features
 - Updated `README.md` to clarify compatibility with Polymer 1.x and 2.x.
->>>>>>> @{-1}
 
 ## Release 2.5.2 (2017-05-12)
 
