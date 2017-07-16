@@ -2,6 +2,24 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.0.0 (2017-07-16)
+
+### Breaking Changes
+- This version does not contain any breaking change in the API. The breaking changes come from limitations in styling
+when working with `<slots>` and ``::slotted()``. Due to this limitations, when working with custom templates, you must
+put your `<style>` inside the custom template `<template>` tag.
+
+### New Features
+- The component has been transformed to work in *hybrid mode*, which means that the component is now compatible with
+both Polymer 1.x and Polymer 2.x.
+
+*Special thanks to everyone who has contributed to this version. Specially *@ajbarriosleon, @kamte* who did most of 
+heavy-lifting at the beginning of this new version.
+
+### Known Issues
+- `tabindex="-1"` was added to the clear button, so you can no longer use tab to focus it.
+This is a temporary workaround until this issue is fixed: https://github.com/PolymerElements/paper-input/issues/324 .
+
 ## Release 2.6.1 (2017-06-10)
 
 ### Bug Fixes

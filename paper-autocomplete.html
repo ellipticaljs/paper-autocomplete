@@ -11,7 +11,7 @@
 <!--
   `paper-autocomplete`
 
-  Paper Input Autocomplete field to offer a type-ahead functionality for Polymer v1.0.0 or greater.
+  **From v3.x.x, this component only works with Polymer 1.7+ or 2.0+.**
 
   paper-autocomplete extends earlier efforts such as this (https://github.com/rodo1111/paper-input-autocomplete)
   to provide keyboard support, remote binding and results scrolling.
@@ -24,15 +24,8 @@
   `text` value,
 
   ### About Polymer 1.x and 2.x Compatibility
-  The latest version released (`v2.6.1`) is **not** compatible with Polymer 2.x. At this moment there is a work in
-  progress version that works with Polymer 2.x in the branch **2.0-preview**. It is functional but it contains a few
-  known issues:
-
-  - When using custom templates, you must implement the methods `_onTap` and `_getSuggestionId`.
-  - It does not work on IE11/Edge when used in combination with Polymer 1.x.
-
-  Using the version from the preview branch should allow you to migrate to Polymer 2.x as soon as possible while we
-  work in a fully stable and compatible version of `paper-autocomplete`.
+  From version `3.x.x`, this component work with both Polymer 1.7+ or Polymer 2.0+ Please take a look to the
+  [MIGRATION.md](./MIGRATION.md) file that contains more information.
 
   ### Custom search
   This component has the public method `queryFn` that is called in each key stroke and it is responsible to query
@@ -59,10 +52,14 @@
   In order to set your own template, you need to add a `<template>` tag with the attribute
   `autocomplete-custom-template` and the following structure:
 
-  ```
+  ```html
   <paper-autocomplete>
     <template autocomplete-custom-template>
       <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+        <style>
+          /** Styles for your custom template here **/
+        </style>
+
         YOUR CUSTOM TEMPLATE
         <paper-ripple></paper-ripple>
       </paper-item>
@@ -118,31 +115,32 @@
         display: block;
         box-sizing: border-box;
         position: relative;
+
         --paper-input-container-focus-color: var(--primary-color);
+
+        --paper-icon-button: {
+          height: 24px;
+          width: 24px;
+          padding: 2px;
+        }
+
+        --paper-input-container-ms-clear: {
+          display: none;
+        }
       }
 
       .input-wrapper {
-        @apply(--layout-horizontal);
+        @apply --layout-horizontal;
       }
 
       .input-wrapper paper-input {
-        @apply(--layout-flex);
-      }
-
-      paper-input ::content input::-ms-clear {
-        display: none;
+        @apply --layout-flex;
       }
 
       #clear {
         display: none;
         margin-top: auto;
         line-height: 8px;
-
-        --paper-icon-button: {
-          height: 24px;
-          width: 24px;
-          padding: 2px;
-        };
       }
 
       .sr-only {
@@ -152,7 +150,7 @@
 
       paper-autocomplete-suggestions {
         --suggestions-wrapper: {
-          @apply(--paper-autocomplete-suggestions-wrapper);
+          @apply --paper-autocomplete-suggestions-wrapper;
         };
 
         --paper-item-min-height: var(--paper-autocomplete-suggestions-item-min-height, 36px);
@@ -190,8 +188,9 @@
                    aria-disabled$="[[disabled]]"
                    aria-controls="autocompleteStatus suggestionsWrapper">
 
-                  <paper-icon-button suffix id="clear" icon="clear" on-click="_clear"></paper-icon-button>
-        </paper-input>
+        <!-- TODO: remove tabindex workaround when  is fixed https://github.com/PolymerElements/paper-input/issues/324 -->
+        <paper-icon-button slot="suffix" suffix id="clear" icon="clear" on-click="_clear" tabindex="-1"></paper-icon-button>
+      </paper-input>
       <!-- to announce current selection to screen reader -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
     </div>
@@ -202,16 +201,31 @@
                                     text-property="[[textProperty]]"
                                     value-property="[[valueProperty]]"
                                     selected-option="{{_selectedOption}}"
+                                    source="[[source]]"
                                     remote-source="[[remoteSource]]"
+                                    query-fn="[[queryFn]]"
                                     event-namespace="[[eventNamespace]]"
                                     highlighted-suggestion="{{_highlightedSuggestion}}"
                                     is-open="{{_isSuggestionsOpened}}">
-      <content id="templates" select="[autocomplete-custom-template]"></content>
+
+      <slot id="templates" name="autocomplete-custom-template"></slot>
+
     </paper-autocomplete-suggestions>
   </template>
 </dom-module>
 <script>
   (function () {
+    // This Polyfill is needed for this version to work with IE11 and Polymer 1.x
+    // TODO: find out why this is needed in IE11
+    if (window.NodeList && !NodeList.prototype.forEach) {
+      NodeList.prototype.forEach = function (callback, argument) {
+          argument = argument || window;
+          for (var i = 0; i < this.length; i++) {
+              callback.call(argument, this[i], i, this);
+          }
+      };
+    }
+
     Polymer({
       is: 'paper-autocomplete',
 
@@ -269,8 +283,7 @@
          * `source` Array of objects with the options to execute the autocomplete feature
          */
         source: {
-          type: Array,
-          observer: '_onSourceChanged'
+          type: Array
         },
 
         /**
@@ -377,8 +390,8 @@
         },
 
         /*************
-         * PRIVATE
-         *************/
+        * PRIVATE
+        *************/
         // TODO: check if we need _value and _text properties. It seems they can be removed
         _value: {
           value: undefined
@@ -413,12 +426,8 @@
       },
 
       observers: [
-        '_onQueryFnChanged(queryFn)'
+        '_textObserver(text)'
       ],
-
-      listeners: {
-        'autocompleteInput.input': '_onInput'
-      },
 
       // Element Lifecycle
       ready: function () {
@@ -444,17 +453,23 @@
         this.text = '';
         this._text = '';
 
-        this._fireEvent(option, 'reset-blur');
+        this._fireEvent(option, 'reset');
 
         this._hideClearButton();
-        this.$.autocompleteInput.focus();
+
+        // Fix: https://github.com/PolymerElements/paper-input/issues/493
+        if (!this.$.autocompleteInput.focused) {
+          this.$.autocompleteInput.focus();
+        }
       },
 
+      /**
+       * Dispatches autocomplete events
+       */
       _fireEvent: function (option, evt) {
         var id = this._getId();
         var event = 'autocomplete' + this.eventNamespace + evt;
 
-        // TODO: this might not be needed
         this.fire(event, {
           id: id,
           value: option[this.valueProperty] || option.value,
@@ -465,21 +480,10 @@
       },
 
       /**
-       * Callback called when source property changes
+       * On text event handler
        */
-      _onSourceChanged: function () {
-        this.$.paperAutocompleteSuggestions.source = this.source;
-      },
-
-      _onQueryFnChanged: function () {
-        this.$.paperAutocompleteSuggestions.queryFn = this.queryFn;
-      },
-
-      /**
-       * On input event handler
-       */
-      _onInput: function () {
-        if (this.$.autocompleteInput.value) {
+      _textObserver: function (text) {
+        if (text && text.trim()) {
           this._showClearButton();
         } else {
           this._hideClearButton();
@@ -535,14 +539,6 @@
        ****************************/
 
       /**
-       * Gets the current value of the input
-       * @returns {String}
-       */
-      getValue: function () {
-        return this.value;
-      },
-
-      /**
        * Gets the current text/value option of the input
        * @returns {Object}
        */
@@ -560,7 +556,6 @@
       setOption: function (option) {
         this.text = option[this.textProperty] || option.text;
         this.value = option[this.valueProperty] || option.value;
-
         this._showClearButton();
       },
 
@@ -569,7 +564,6 @@
        */
       disable: function () {
         this.disabled = true;
-        this.$.autocompleteInput.disabled = true;
       },
 
       /**
@@ -577,7 +571,6 @@
        */
       enable: function () {
         this.disabled = false;
-        this.$.autocompleteInput.disabled = false;
       },
 
       /**
@@ -618,6 +611,15 @@
       hideSuggestions: function () {
         this._hideClearButton();
         this.$.paperAutocompleteSuggestions.hideSuggestions();
+      },
+
+      /**
+       * Allows calling the onSelect function from outside
+       * This in time triggers the autocomplete-selected event
+       * with all the data required
+       */
+      onSelectHandler: function (event) {
+        this.$.paperAutocompleteSuggestions._onSelect(event);
       }
 
       /**

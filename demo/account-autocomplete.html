@@ -8,55 +8,73 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 <link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../paper-item/paper-item.html">
 <link rel="import" href="../paper-autocomplete.html">
 
 <!--
   This example shows how to implement your own autocomplete with custom template and search function.
 -->
 
-<dom-module id="address-autocomplete">
-  <style>
-    :host {
-      display: block;
-
-      --paper-item: {
-        padding: 8px 16px;
-      }
-    }
-
-    .company-name {
-      color: #333;
-    }
-
-    .account-number, .email {
-      margin-top: 4px;
-      color: #999;
-    }
-
-    .email {
-      font-size: small;
-    }
-  </style>
+<dom-module id="account-autocomplete">
   <template>
     <!-- When using custom template and or custom query function, it is important to also set the `textProperty`
      and `valueProperty properties`. -->
-    <paper-autocomplete
-      label="Select Account"
-      id="input-local"
-      no-label-float="true"
-      source="[[accounts]]"
-      text-property="accountNumber"
-      value-property="id">
-      <template autocomplete-custom-template>
-        <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
-          <div>
-            <div class="company-name">[[item.companyName]]</div>
-            <div class="account-number">[[item.accountNumber]]</div>
-            <div class="email">[[item.email]]</div>
-          </div>
-          <paper-ripple></paper-ripple>
-        </paper-item>
-      </template>
+    <paper-autocomplete label="Select Account"
+                        id="input-local"
+                        no-label-float="true"
+                        source="[[accounts]]"
+                        text-property="accountNumber"
+                        value-property="id">
+        <template slot="autocomplete-custom-template">
+          <!-- NOTICE: Due to shadow-dom, custom template styles need to be included with the template in Polymer 2.x -->
+          <style>
+            :host {
+              display: block;
+            }
+
+            paper-item.account-item {
+              padding: 8px 16px;
+            }
+
+            .company-name {
+              color: #333;
+            }
+
+            .account-number, .email {
+              margin-top: 4px;
+              color: #999;
+            }
+
+            .email {
+              font-size: small;
+            }
+
+            /**
+             * IE11 paper-item min-height bug: https://github.com/PolymerElements/paper-item/issues/35
+             * If you are running on IE11, add this lines to reset min-height on IE11
+             */
+            @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+              paper-item.account-item {
+                min-height: 100% !important;
+                height: auto !important;
+
+                /**
+                 * If you are experimenting that some CSS properties for paper-item are not overriden in Polymer 2.x with IE11,
+                 * please add !important to ensure the shadow-dom v1 polyfill works properly
+                 */
+                padding: 8px 16px !important;
+              }
+            }
+          </style>
+          <paper-item class="account-item" on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+            <div>
+              <div class="company-name">[[item.companyName]]</div>
+              <div class="account-number">[[item.accountNumber]]</div>
+              <div class="email">[[item.email]]</div>
+            </div>
+            <paper-ripple></paper-ripple>
+          </paper-item>
+        </template>
     </paper-autocomplete>
   </template>
 </dom-module>
@@ -116,13 +134,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   ];
 
   Polymer({
-    is: "address-autocomplete",
+    is: "account-autocomplete",
 
     properties: {
       accounts: {
         type: Array,
         value: accounts
       }
+    },
+
+    listeners: {
+      'autocomplete-selected': '_onOptionSelected'
     },
 
     ready: function () {
@@ -133,7 +155,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       autocomplete.queryFn = this._queryFn;
     },
 
-    onSelect: function () {
+    _onOptionSelected: function (event) {
       var paperToast = document.querySelector('paper-toast');
       var selected = event.detail.text;
       paperToast.text = 'Selected: ' + selected;
