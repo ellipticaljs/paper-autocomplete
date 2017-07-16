@@ -7,7 +7,7 @@
 keyboard support, remote binding and results scrolling.
 
 # About Polymer 1.x and 2.x Compatibility
-From version `3.x.x`, this component work with both Polymer 1.x and Polymer 2.x. Please take a look to the 
+From version `3.x.x`, this component work with both Polymer 1.7+ or Polymer 2.0+ Please take a look to the 
 [MIGRATION.md](./MIGRATION.md) file that contains more information.
 
 # Installation

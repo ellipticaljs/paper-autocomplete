@@ -11,7 +11,7 @@
 <!--
   `paper-autocomplete`
 
-  Paper Input Autocomplete field to offer a type-ahead functionality for Polymer v1.0.0 or greater.
+  **From v3.x.x, this component only works with Polymer 1.7+ or 2.0+.**
 
   paper-autocomplete extends earlier efforts such as this (https://github.com/rodo1111/paper-input-autocomplete)
   to provide keyboard support, remote binding and results scrolling.
@@ -24,7 +24,7 @@
   `text` value,
 
   ### About Polymer 1.x and 2.x Compatibility
-  From version `3.x.x`, this component work with both Polymer 1.x and Polymer 2.x. Please take a look to the
+  From version `3.x.x`, this component work with both Polymer 1.7+ or Polymer 2.0+ Please take a look to the
   [MIGRATION.md](./MIGRATION.md) file that contains more information.
 
   ### Custom search
@@ -52,10 +52,14 @@
   In order to set your own template, you need to add a `<template>` tag with the attribute
   `autocomplete-custom-template` and the following structure:
 
-  ```
+  ```html
   <paper-autocomplete>
     <template autocomplete-custom-template>
       <paper-item on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+        <style>
+          /** Styles for your custom template here **/
+        </style>
+
         YOUR CUSTOM TEMPLATE
         <paper-ripple></paper-ripple>
       </paper-item>
