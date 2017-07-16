@@ -207,6 +207,17 @@
 </dom-module>
 <script>
   (function () {
+    // This Polyfill is needed for this version to work with IE11 and Polymer 1.x
+    // TODO: find out why this is needed in IE11
+    if (window.NodeList && !NodeList.prototype.forEach) {
+      NodeList.prototype.forEach = function (callback, argument) {
+          argument = argument || window;
+          for (var i = 0; i < this.length; i++) {
+              callback.call(argument, this[i], i, this);
+          }
+      };
+    }
+
     Polymer({
       is: 'paper-autocomplete',
 
