@@ -165,9 +165,9 @@
         </paper-item>
       </template>
 
-      <!-- Custom template -->
-      <slot id="templates" name="autocomplete-custom-template"></slot>
-    </div>
+  <!-- Custom template -->
+  <slot id="templates" name="autocomplete-custom-template"></slot>
+  </div>
   </template>
 </dom-module>
 <script>
@@ -362,7 +362,12 @@
         _hasItemHighBeenCalculated: {
           type: Boolean,
           value: false
-        }
+        },
+
+        /**
+         * To avoid unnecessary access to the DOM, we keep a reference to the current template being used
+         */
+        __customTplRef: Object
       },
 
       // Element Lifecycle
@@ -379,7 +384,11 @@
           event.preventDefault();
         });
 
-        this.templatize(this.$.defaultTemplate);
+        // We need to enforce that dataHost is the suggestions and not the custom polymer element where the template
+        // is defined. If we do not do this, it won't be possible to access paperSuggestions from the custom template
+        // TODO: find a way to achieve this without modifying Polymer internal properties
+        this._suggestionTemplate.__dataHost = this;
+        this.templatize(this._suggestionTemplate);
       },
 
       attached: function () {
@@ -396,23 +405,6 @@
         this._input.addEventListener('keyup', this._bindedFunctions._onKeypress);
         this._input.addEventListener('focus', this._bindedFunctions._onFocus);
         this._input.addEventListener('blur', this._bindedFunctions._onBlur);
-
-
-        this._observer = Polymer.dom(this).observeNodes(this._nodeObserver); //TODO: clean up observer later
-      },
-
-      _nodeObserver: function (info) {
-        var suggestionTpl = info.addedNodes.filter(function (node) {
-          return node.nodeName === 'TEMPLATE';
-        })[0];
-
-        if (suggestionTpl) {
-          // We need to enforce that dataHost is the suggestions and not the custom polymer element where the template
-          // is defined. If we do not do this, it won't be possible to access paperSuggestions from the custom template
-          // TODO: find a way to achieve this without modifying Polymer internal properties
-          suggestionTpl.__dataHost = this;
-          this.templatize(suggestionTpl);
-        }
       },
 
       detached: function () {
@@ -423,6 +415,7 @@
         this._input.removeEventListener('blur', this._bindedFunctions._onBlur);
 
         this._input = null;
+        this.__customTplRef = null;
 
         Polymer.dom(this).unobserveNodes(this._observer);
       },
@@ -514,6 +507,16 @@
         }
       },
 
+      get _suggestionTemplate() {
+        if (this.__customTplRef) {
+          return this.__customTplRef;
+        }
+        var customTemplate = this.getEffectiveChildren();
+        this.__customTplRef = customTemplate.length > 0 ? customTemplate[0] : this.$.defaultTemplate;
+
+        return this.__customTplRef;
+      },
+
       /**
        * Render suggestions in the suggestionsWrapper container
        * @param {Array} suggestions An array containing the suggestions to be rendered. This value is not optional, so
@@ -542,7 +545,8 @@
       },
 
       _clearSuggestions: function () {
-        var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper), last;
+        var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper),
+          last;
         while (last = suggestionsContainer.lastChild) suggestionsContainer.removeChild(last);
       },
 
@@ -629,25 +633,25 @@
         var keyCode = event.which || event.keyCode;
 
         switch (keyCode) {
-          case KEY_CODES.DOWN_ARROW:
-            this._moveHighlighted(DIRECTION.DOWN);
-            break;
-          case KEY_CODES.UP_ARROW:
-            this._moveHighlighted(DIRECTION.UP);
-            break;
-          case KEY_CODES.ENTER:
-            this._keyenter();
-            break;
-          case KEY_CODES.ESCAPE:
-            this._hideSuggestionsWrapper();
-            break;
+        case KEY_CODES.DOWN_ARROW:
+          this._moveHighlighted(DIRECTION.DOWN);
+          break;
+        case KEY_CODES.UP_ARROW:
+          this._moveHighlighted(DIRECTION.UP);
+          break;
+        case KEY_CODES.ENTER:
+          this._keyenter();
+          break;
+        case KEY_CODES.ESCAPE:
+          this._hideSuggestionsWrapper();
+          break;
           // For left and right arrow, component should do nothing
-          case KEY_CODES.LEFT_ARROW:
+        case KEY_CODES.LEFT_ARROW:
           // fall through
-          case KEY_CODES.RIGHT_ARROW:
-            break;
-          default:
-            this._handleSuggestions(event);
+        case KEY_CODES.RIGHT_ARROW:
+          break;
+        default:
+          this._handleSuggestions(event);
         }
       },
 
@@ -669,7 +673,7 @@
         var items = this._getItems();
 
         if (items.length === 0) {
-            return;
+          return;
         }
 
         var numberOfItems = items.length - 1;
@@ -820,8 +824,8 @@
       },
 
       /****************************
-      * PUBLIC
-      ****************************/
+       * PUBLIC
+       ****************************/
 
       /**
        * Sets the component's current suggestions
