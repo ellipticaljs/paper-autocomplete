@@ -39,7 +39,7 @@
     "gulp-uglify": "^2.1.2",
     "gulp-util": "^3.0.8",
     "sinon": "^2.1.0",
-    "web-component-tester": "^5.0.0",
+    "web-component-tester": "^6.0.0",
     "web-component-tester-istanbul": "^0.10.0"
   },
   "dependencies": {}
