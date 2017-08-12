@@ -15,11 +15,11 @@
 <body>
   <test-fixture id='basic'>
     <template>
-      <paper-autocomplete 
-        label='Select State' 
-        id='input-local' 
+      <paper-autocomplete
+        label='Select State'
+        id='input-local'
         no-label-float
-        required 
+        required
         name='state'>
       </paper-autocomplete>
   </template>
@@ -302,8 +302,8 @@
         });
 
         it('should fire the correct event', function (done) {
-          element.addEventListener('autocomplete-reset', function (event) {
-            expect(event.type).to.equal('autocomplete-reset');
+          element.addEventListener('autocomplete-reset-blur', function (event) {
+            expect(event.type).to.equal('autocomplete-reset-blur');
             done();
           });
 

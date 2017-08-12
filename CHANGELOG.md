@@ -2,6 +2,12 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.0.1 (2017-08-12)
+### Bug Fixes
+- Removed duplicated `auto-validate` attribute from paper-autocomplete (thanks to @kaseyhinton).
+- Fixed regression: `onClear()` now triggers `'autocomplete-reset-blur'` event (as is documented in the API) and *not*
+the event `'autocomplete-reset'`.
+
 ## Release 3.0.0 (2017-07-16)
 
 ### Breaking Changes
