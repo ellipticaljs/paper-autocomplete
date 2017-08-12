@@ -298,6 +298,14 @@
         },
 
         /**
+         * Function used to filter available items. This function is actually used by paper-autocomplete-suggestions,
+         * it is also exposed here so it is possible to provide a custom queryFn.
+         */
+         queryFn: {
+          type: Function
+        },
+
+        /**
          * `_suggestions` Array with the actual suggestions to display
          */
         _suggestions: {
