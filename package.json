@@ -24,7 +24,7 @@
     "start": "polymer serve -o",
     "postinstall": "bower i",
     "test": "polymer test --plugin local",
-    "test:sauce": "polymer test --plugin sauce",
+    "test:remote": "polymer test --plugin sauce",
     "lint": "eslint --cache paper-autocomplete*.html test/paper*.html && polymer lint paper-autocomplete*.html --rules polymer-2-hybrid",
     "publish-docs": "./publish-docs.sh",
     "variants": "polymer install --variants && polymer serve -o -H 0.0.0.0",

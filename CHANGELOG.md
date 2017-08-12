@@ -7,6 +7,7 @@ This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.
 - Removed duplicated `auto-validate` attribute from paper-autocomplete (thanks to @kaseyhinton).
 - Fixed regression: `onClear()` now triggers `'autocomplete-reset-blur'` event (as is documented in the API) and *not*
 the event `'autocomplete-reset'`.
+- Added integration with SauceLabs so now test can be run against multiple platforms and browsers.
 
 ## Release 3.0.0 (2017-07-16)
 

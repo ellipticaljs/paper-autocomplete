@@ -65,26 +65,21 @@ After running this command, it will open two different ports  in the dev browser
 
 ## How to run the tests
 
+### Localy
+
 In order to run the tests you have two option. You can either run:
 
 ```
 npm run test
 ```
 
-or you can run:
+### Remote (in Saucelabs)
 
 ```
-npm run start
+npm run test:remote
 ```
+> You must set these two environment variables: `SAUCE_USERNAME` and `SAUCE_ACCESS_KEY` before running remote tests.
 
-And then open this URL: [http://localhost:8080/components/paper-autocomplete/test/](http://localhost:8080/components/paper-autocomplete/test/)
-
-**Please note:** at this moment there is a known issues and these two tests always fail:
-
-```
-ARIA state and property values must be valid
-Attributes which refer to other elements by ID should refer to elements which exist in the DOM
-```
 
 ## How to *lint* the project
 
