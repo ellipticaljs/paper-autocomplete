@@ -210,7 +210,7 @@
               suggestionItems[0].click();
 
               setTimeout(function () {
-                expect(suggestions.querySelectorAll('paper-item')).to.be.empty;
+                expect(suggestions.querySelectorAll('paper-item').length).to.equal(0);
                 done();
               }, 300);
             });
