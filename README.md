@@ -1,6 +1,10 @@
 # paper-autocomplete
 
+> Autocomplete component compatible with Polymer 1.x and 2.x
+
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/ellipticaljs/paper-autocomplete)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/jhuesos.svg)](https://saucelabs.com/u/jhuesos)
 
 `paper-autocomplete` extends earlier efforts such as this 
 [https://github.com/rodo1111/paper-input-autocomplete](https://github.com/rodo1111/paper-input-autocomplete) to provide 
