@@ -36,6 +36,10 @@ bower install paper-autocomplete
 
 http://ellipticaljs.github.io/paper-autocomplete/
 
+**Important: The demos only work with browers which are ES2015/ES6 compatible.**. This component is compatible with older 
+browsers as well, but the code need to be transpiled to ES5. `polymer build` and `polymer serve` can do that for you.
+This code from this page is not transpiled.
+
 # Want to contribute?
 
 Check out our [Contributing guide](./CONTRIBUTING.md)! 
