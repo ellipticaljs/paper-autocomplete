@@ -13,6 +13,10 @@
 
   **From v3.x.x, this component only works with Polymer 1.7+ or 2.0+.**
 
+  [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/ellipticaljs/paper-autocomplete)
+
+  [![Sauce Test Status](https://saucelabs.com/browser-matrix/jhuesos.svg)](https://saucelabs.com/u/jhuesos)
+
   paper-autocomplete extends earlier efforts such as this (https://github.com/rodo1111/paper-input-autocomplete)
   to provide keyboard support, remote binding and results scrolling.
 
@@ -139,7 +143,6 @@
 
       #clear {
         display: none;
-        margin-top: auto;
         line-height: 8px;
       }
 
@@ -189,6 +192,7 @@
 
         <!-- TODO: remove tabindex workaround when  is fixed https://github.com/PolymerElements/paper-input/issues/324 -->
         <paper-icon-button slot="suffix" suffix id="clear" icon="clear" on-click="_clear" tabindex="-1"></paper-icon-button>
+        <slot name="suffix" slot="suffix"></slot>
       </paper-input>
       <!-- to announce current selection to screen reader -->
       <span id="autocompleteStatus" role="status" class="sr-only">[[_highlightedSuggestion.textValue]]</span>
@@ -511,7 +515,7 @@
           return;
         }
 
-        this.$.clear.style.display = 'block';
+        this.$.clear.style.display = 'inline-block';
         this._isClearButtonVisible = true;
       },
 

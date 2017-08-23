@@ -24,6 +24,17 @@
       </paper-autocomplete>
   </template>
   </test-fixture>
+
+  <test-fixture id='suffixTest'>
+    <template>
+      <paper-autocomplete
+        id='suffix'
+        name='state'>
+          <button slot="suffix" suffix id='suffixBtn'>OK</button>
+      </paper-autocomplete>
+    </template>
+  </test-fixture>
+
   <script>
     describe('paper-autocomplete', function () {
       var element, states;
@@ -236,14 +247,13 @@
 
             doInput(input, 'Ne');
             displayStyle = getClearButtonDisplayStyle();
-            expect(displayStyle).to.equal('none');
+            expect(displayStyle).to.equal('');
           });
 
           it('should display of the clear button when the option is set to false (default)', function () {
             doInput(input, 'New');
             displayStyle = getClearButtonDisplayStyle();
-            expect(displayStyle).to.equal('block');
-
+            expect(displayStyle).to.equal('inline-block');
           });
         });
       });
@@ -264,7 +274,7 @@
           doInput(input, 'A');
 
           expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('block');
-          expect(getClearButtonDisplayStyle()).to.equal('block');
+          expect(getClearButtonDisplayStyle()).to.equal('inline-block');
 
           element.hideSuggestions();
 
@@ -311,6 +321,17 @@
         });
       });
 
+      it('element with slot=preffix should be added as paper-input suffix', function () {
+        var suffixElement = fixture('suffixTest');
+        var children = Polymer.dom(suffixElement.$$('paper-input').$$('paper-input-container')).getEffectiveChildNodes();
+        var isSuffixBtnAdded = [].slice.call(children)
+          .filter(function (ele) {
+            return ele.id === 'suffixBtn';
+          }).length === 1;
+
+        expect(isSuffixBtnAdded).to.be.true;
+      });
+
       a11ySuite('basic', ['badAriaAttributeValue', 'nonExistentRelatedElement']);
 
       // HELPERS
@@ -323,7 +344,7 @@
       }
 
       function getClearButtonDisplayStyle() {
-        return window.getComputedStyle(element.$.clear).getPropertyValue('display');
+        return element.$.clear.style.display;
       }
     });
   </script>

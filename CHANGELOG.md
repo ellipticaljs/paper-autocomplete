@@ -2,6 +2,10 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.0.2 (2017-08-23)
+### Bug Fixes
+- It is now again possible to add a custom `paper-input` suffix. See the new demo.
+
 ## Release 3.0.1 (2017-08-12)
 ### Bug Fixes
 - Removed duplicated `auto-validate` attribute from paper-autocomplete (thanks to @kaseyhinton).
