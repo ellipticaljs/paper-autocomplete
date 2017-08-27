@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.1.0 (2017-08-27)
+### New Features
+- Added a new boolean option `highlight-first` to both `paper-autocomplete` and `paper-autocomplete-suggestions` that
+when set, it will always highlight the first result each time new suggestions are presented.
+
 ## Release 3.0.2 (2017-08-23)
 ### Bug Fixes
 - It is now again possible to add a custom `paper-input` suffix. See the new demo.

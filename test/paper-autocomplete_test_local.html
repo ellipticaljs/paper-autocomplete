@@ -332,6 +332,37 @@
         expect(isSuffixBtnAdded).to.be.true;
       });
 
+      describe('autocomplete option', function () {
+        it('if set to `true`, it should highlight always the first suggestion', function () {
+          element.setAttribute('highlight-first', '');
+
+          var suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapper;
+          var input = element.$.autocompleteInput;
+
+          enterCharacter(input, 'A');
+
+          var activeSuggestions = suggestions.querySelectorAll('paper-item.active');
+          var allSuggestions = suggestions.querySelectorAll('paper-item');
+
+          expect(allSuggestions).not.to.be.empty;
+          expect(activeSuggestions.length).to.equal(1);
+          expect(activeSuggestions[0]).to.equal(allSuggestions[0]);
+        });
+
+        it('with default value, it should not highlight the first suggestion', function () {
+          var suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapper;
+          var input = element.$.autocompleteInput;
+
+          enterCharacter(input, 'A');
+
+          var activeSuggestions = suggestions.querySelectorAll('paper-item.active');
+          var allSuggestions = suggestions.querySelectorAll('paper-item');
+
+          expect(allSuggestions).not.to.be.empty;
+          expect(activeSuggestions).to.be.empty;
+        });
+      });
+
       a11ySuite('basic', ['badAriaAttributeValue', 'nonExistentRelatedElement']);
 
       // HELPERS

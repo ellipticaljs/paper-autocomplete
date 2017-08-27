@@ -310,6 +310,14 @@
         },
 
         /**
+         * If `true`, it will always highlight the first result each time new suggestions are presented.
+         */
+        highlightFirst: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
          * `_suggestions` Array with the actual suggestions to display
          */
         _suggestions: {
@@ -595,6 +603,10 @@
 
               this._hasItemHighBeenCalculated = true;
             }
+          }
+
+          if (this.highlightFirst) {
+            this._moveHighlighted(DIRECTION.DOWN);
           }
         }, 100);
       },

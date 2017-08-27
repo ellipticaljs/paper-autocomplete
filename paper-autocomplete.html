@@ -209,7 +209,8 @@
                                     query-fn="[[queryFn]]"
                                     event-namespace="[[eventNamespace]]"
                                     highlighted-suggestion="{{_highlightedSuggestion}}"
-                                    is-open="{{_isSuggestionsOpened}}">
+                                    is-open="{{_isSuggestionsOpened}}"
+                                    highlight-first="[[highlightFirst]]">
 
       <slot id="templates" name="autocomplete-custom-template"></slot>
 
@@ -390,6 +391,14 @@
          */
         queryFn: {
           type: Function
+        },
+
+        /**
+         * If `true`, it will always highlight the first result each time new suggestions are presented.
+         */
+         highlightFirst: {
+          type: Boolean,
+          value: false
         },
 
         /*************
