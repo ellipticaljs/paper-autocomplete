@@ -828,11 +828,13 @@
       /**
        * Event handler for the onFocus event
        */
-      _onFocus: function () {
+      _onFocus: function (event) {
         var option = {
           text: this.text,
           value: this.value
         };
+
+        this._handleSuggestions(event);
 
         this._fireEvent(option, 'focus');
       },
