@@ -890,7 +890,11 @@
 
           if (typeof item === 'object') {
             objText = item[this.textProperty];
-            objValue = item[this.valueProperty];
+            if (this.valueProperty) {
+              objValue = item[this.valueProperty];
+            } else {
+              objValue = item;
+            }
           } else {
             objText = item.toString();
             objValue = objText;
