@@ -171,7 +171,7 @@
       <!-- Default suggestion template -->
       <template id="defaultTemplate">
         <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false" on-tap="_onSelect">
-          <div>[[_getItemText(item)]]</div>
+          <div inner-h-t-m-l="[[item.text]]"></div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
@@ -448,15 +448,6 @@
       },
 
       // Element Behavior
-
-      /**
-       * Get the text property from the suggestion
-       * @param {Object} suggestion The suggestion item
-       * @return {String}
-       */
-      _getItemText: function (suggestion) {
-        return suggestion[this.textProperty];
-      },
 
       /**
        * Show the suggestions wrapper
