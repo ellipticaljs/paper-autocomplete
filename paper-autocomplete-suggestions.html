@@ -521,7 +521,7 @@
 
         var value = event.target.value;
 
-        if (value !== null && value !== undefined && value.length >= this.minLength) {
+        if (value != null && value.length >= this.minLength) {
           value = value.toLowerCase();
 
           // Search for the word in the source properties.
