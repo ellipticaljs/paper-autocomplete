@@ -190,6 +190,7 @@
                    aria-disabled$="[[disabled]]"
                    aria-controls="autocompleteStatus suggestionsWrapper">
 
+        <slot name="prefix" slot="prefix"></slot>
         <!-- TODO: remove tabindex workaround when  is fixed https://github.com/PolymerElements/paper-input/issues/324 -->
         <paper-icon-button slot="suffix" suffix id="clear" icon="clear" on-click="_clear" tabindex="-1"></paper-icon-button>
         <slot name="suffix" slot="suffix"></slot>
