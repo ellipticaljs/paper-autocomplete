@@ -521,7 +521,7 @@
 
         var value = event.target.value;
 
-        if (value && value.length >= this.minLength) {
+        if (value != null && value.length >= this.minLength) {
           value = value.toLowerCase();
 
           // Search for the word in the source properties.
@@ -828,11 +828,13 @@
       /**
        * Event handler for the onFocus event
        */
-      _onFocus: function () {
+      _onFocus: function (event) {
         var option = {
           text: this.text,
           value: this.value
         };
+
+        this._handleSuggestions(event);
 
         this._fireEvent(option, 'focus');
       },
