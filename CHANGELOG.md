@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.2.0 (2017-09-10)
+### New Features
+- Suggestions will be displayed (if available) on focus.
+- New CSS mixin to give custom styles to suggestions (`--suggestions-item`);
+
 ## Release 3.1.0 (2017-08-27)
 ### New Features
 - Added a new boolean option `highlight-first` to both `paper-autocomplete` and `paper-autocomplete-suggestions` that

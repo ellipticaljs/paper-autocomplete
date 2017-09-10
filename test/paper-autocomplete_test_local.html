@@ -363,6 +363,19 @@
         });
       });
 
+      describe('when element is focused', function () {
+        beforeEach(function () {
+          sinon.stub(element.$.paperAutocompleteSuggestions, '_handleSuggestions');
+        });
+
+        it('should call _handleSuggestions', function () {
+          var event = {};
+          element.$.paperAutocompleteSuggestions._onFocus(event);
+
+          expect(element.$.paperAutocompleteSuggestions._handleSuggestions.calledWith(event)).to.be.true;
+        });
+      });
+
       a11ySuite('basic', ['badAriaAttributeValue', 'nonExistentRelatedElement']);
 
       // HELPERS
