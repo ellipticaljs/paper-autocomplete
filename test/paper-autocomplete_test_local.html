@@ -359,7 +359,7 @@
           var allSuggestions = suggestions.querySelectorAll('paper-item');
 
           expect(allSuggestions).not.to.be.empty;
-          expect(activeSuggestions).to.be.empty;
+          expect(activeSuggestions.length).to.equal(0);
         });
       });
 
