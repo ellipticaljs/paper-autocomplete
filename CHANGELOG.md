@@ -4,9 +4,9 @@ This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.
 
 ## Release 3.2.0 (2017-09-10)
 ### New Features
-- Suggestions will be displayed (if available) on focus.
+- Suggestions will be displayed (if available) on focus (thanks to @nomego)
 - New CSS mixin to give custom styles to suggestions (`--suggestions-item`);
-- `paper-item` slot `prefix` is also now exposed and it can be used.
+- `paper-item` slot `prefix` is also now exposed and it can be used (thanks to @nomego)
 
 ## Release 3.1.0 (2017-08-27)
 ### New Features
