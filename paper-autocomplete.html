@@ -169,6 +169,7 @@
 
       <paper-input id="autocompleteInput"
                    label="[[label]]"
+                   autocapitalize="[[autocapitalize]]"
                    no-label-float="[[noLabelFloat]]"
                    disabled="{{disabled}}"
                    auto-validate$="[[autoValidate]]"
@@ -242,6 +243,11 @@
           type: Boolean,
           value: false
         },
+
+        /**
+         * `autocapitalize` Sets auto-capitalization for the input element.
+         */
+        autocapitalize: String,
 
         /**
          * `errorMessage` The error message to display when the input is invalid.
