@@ -1,6 +1,6 @@
 {
   "name": "paper-autocomplete",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "authors": [
     "S. Francis",
     "Rodolfo Oviedo <rodo1111@gmail.com>",
@@ -89,6 +89,7 @@
     "iron-ajax": "^2.0.0",
     "webcomponentsjs": "^1.0",
     "polymer": "^2.0",
-    "iron-demo-helpers": "^2.0.0"
+    "iron-demo-helpers": "^2.0.0",
+    "iron-doc-viewer": "1 - 2"
   }
 }

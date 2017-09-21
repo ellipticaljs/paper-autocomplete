@@ -2,6 +2,14 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.3.0 (2017-09-21)
+### New Features
+- Show results on focus is now disabled by default. The new feature introduced in previous version changed the default
+behavior for everyone and that might not be the best solution in all cases. So for that reason, by default, suggestions
+are not displayed onfocus. If you want to add that behavior again, use the following option: `show-results-on-focus`.
+Sorry for that! :)
+- New option `autocapitalize` has been added (thanks @ardean).
+
 ## Release 3.2.0 (2017-09-10)
 ### New Features
 - Suggestions will be displayed (if available) on focus (thanks to @nomego)

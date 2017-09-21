@@ -116,6 +116,9 @@
  - `aria-selected="true|false"`. This value will be false for all suggestion except in the one which is currently
  highlighted.
 
+ By default, suggestions are only displayed after the user types, even if the current input should display them. If
+  you want to show suggestions on focus (when available), you should add the property `show-results-on-focus`.
+
   @demo demo/paper-autocomplete-suggestions-demo.html
 -->
 
@@ -316,6 +319,15 @@
          * If `true`, it will always highlight the first result each time new suggestions are presented.
          */
         highlightFirst: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Set to `true` to show available suggestions on focus. This overrides the default behavior that only shows
+         * notifications after user types
+         */
+        showResultsOnFocus: {
           type: Boolean,
           value: false
         },
@@ -837,7 +849,9 @@
           value: this.value
         };
 
-        this._handleSuggestions(event);
+        if (this.showResultsOnFocus) {
+          this._handleSuggestions(event);
+        }
 
         this._fireEvent(option, 'focus');
       },

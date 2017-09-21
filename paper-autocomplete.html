@@ -94,6 +94,9 @@
   - The height of each item is fixed and can be determined at any time. For example, if you want to use images in the
   results, make sure they have a placeholder or a fixed height.
 
+  By default, suggestions are only displayed after the user types, even if the current input should display them. If
+  you want to show suggestions on focus (when available), you should add the property `show-results-on-focus`.
+
   ### Styling
 
   `<paper-autocomplete>` provides the following custom properties and mixins
@@ -212,7 +215,8 @@
                                     event-namespace="[[eventNamespace]]"
                                     highlighted-suggestion="{{_highlightedSuggestion}}"
                                     is-open="{{_isSuggestionsOpened}}"
-                                    highlight-first="[[highlightFirst]]">
+                                    highlight-first="[[highlightFirst]]"
+                                    show-results-on-focus="[[showResultsOnFocus]]">
 
       <slot id="templates" name="autocomplete-custom-template"></slot>
 
@@ -404,6 +408,15 @@
          * If `true`, it will always highlight the first result each time new suggestions are presented.
          */
          highlightFirst: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * Set to `true` to show available suggestions on focus. This overrides the default behavior that only shows
+         * notifications after user types
+         */
+        showResultsOnFocus: {
           type: Boolean,
           value: false
         },

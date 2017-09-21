@@ -365,6 +365,7 @@
 
       describe('when element is focused', function () {
         beforeEach(function () {
+          element.showResultsOnFocus = true;
           sinon.stub(element.$.paperAutocompleteSuggestions, '_handleSuggestions');
         });
 
