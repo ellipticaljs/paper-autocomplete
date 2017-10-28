@@ -175,6 +175,7 @@
                    autocapitalize="[[autocapitalize]]"
                    no-label-float="[[noLabelFloat]]"
                    disabled="{{disabled}}"
+                   readonly="[[readonly]]"
                    auto-validate$="[[autoValidate]]"
                    error-message$="[[errorMessage]]"
                    required$="[[required]]"
@@ -290,6 +291,14 @@
          * `required` Set to true to mark the input as required.
          */
         required: {
+          type: Boolean,
+          value: false
+        },
+
+        /**
+         * `readonly` Set to true to mark the input as readonly.
+         */
+        readonly: {
           type: Boolean,
           value: false
         },
