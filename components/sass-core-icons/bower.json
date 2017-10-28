@@ -1,0 +1,46 @@
+{
+  "name": "sass-core-icons",
+  "description": "Core icon font",
+  "version":"1.0.6",
+  "main": "dist/elliptical.css",
+  "authors": [
+    "S. Francis"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "core",
+    "icon",
+    "font"
+  ],
+  "homepage": "https://github.com/ellipticaljs/sass-core-icons",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".gitignore",
+    ".npmignore",
+    "gulpfile.js",
+    "lib",
+    "docs",
+    "index.js",
+    "umd.js",
+    "package.json",
+    "demo",
+    "index.html",
+    "build.json",
+    "bundle.json",
+    ".nvmrc",
+    ".eslintrc",
+    "bin",
+    "CHANGELOG.md",
+    "demos",
+    "stylesheets",
+    "_index.scss",
+    "bk",
+    "sassdoc",
+    "svg"
+  ]
+}

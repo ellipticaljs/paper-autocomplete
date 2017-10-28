@@ -1,0 +1,23 @@
+{
+  "name": "css-docs",
+  "authors": [
+    "sfrancis@misinteractive.com"
+  ],
+  "description": "css assets for docs/demos",
+  "version":"1.0.3",
+  "main": "css-docs.html",
+  "moduleType": [],
+  "keywords": [
+    "docs",
+    "css"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ellipticaljs/css-docs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

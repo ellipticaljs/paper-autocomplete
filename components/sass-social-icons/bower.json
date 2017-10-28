@@ -1,0 +1,45 @@
+{
+  "name": "sass-social-icons",
+  "description": "Social icon font",
+  "version":"1.0.7",
+  "main": "dist/social.css",
+  "authors": [
+    "S. Francis"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "social",
+    "icon",
+    "font"
+  ],
+  "homepage": "https://github.com/ellipticaljs/sass-social-icons",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    ".gitignore",
+    ".npmignore",
+    "gulpfile.js",
+    "lib",
+    "docs",
+    "index.js",
+    "umd.js",
+    "package.json",
+    "demo",
+    "index.html",
+    "build.json",
+    "bundle.json",
+    ".nvmrc",
+    ".eslintrc",
+    "bin",
+    "CHANGELOG.md",
+    "demos",
+    "stylesheets",
+    "_index.scss",
+    "bk",
+    "sassdoc"
+  ]
+}
