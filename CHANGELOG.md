@@ -2,6 +2,10 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.4.0 (2017-10-28)
+### New Features
+- Component now exposes `readOnly` option.
+
 ## Release 3.3.0 (2017-09-21)
 ### New Features
 - Show results on focus is now disabled by default. The new feature introduced in previous version changed the default
