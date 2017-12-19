@@ -176,6 +176,7 @@
                    no-label-float="[[noLabelFloat]]"
                    disabled="{{disabled}}"
                    readonly="[[readonly]]"
+                   focused="{{ focused }}"
                    auto-validate$="[[autoValidate]]"
                    error-message$="[[errorMessage]]"
                    required$="[[required]]"
@@ -302,7 +303,15 @@
           type: Boolean,
           value: false
         },
-
+        /**
+         * `focused` If true, the element currently has focus.
+         */
+        focused: {
+          type: Boolean,
+          value: false,
+          notify: true,
+          readOnly: true
+        },
         /**
          * `source` Array of objects with the options to execute the autocomplete feature
          */
