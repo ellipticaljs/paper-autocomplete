@@ -2,6 +2,10 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.4.1 (2018-01-23)
+### Bug Fixes
+- Suggestion list will now work properly if text-property or value-property not set to default value. Fixes #66 and #103
+
 ## Release 3.4.0 (2017-10-28)
 ### New Features
 - Component now exposes `readOnly` option.
