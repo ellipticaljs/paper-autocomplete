@@ -6,7 +6,8 @@ This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.
 ### Bug Fixes
 - Suggestion list will now work properly if text-property or value-property not set to default value. Fixes #66 and #103. Thanks to [@christianaye](https://github.com/christianaye)
 ### New Features
-- Component now exposes `disabled` option. Fixes #96. Thanks to [@JaySunSyn](https://github.com/JaySunSyn)
+- Component now exposes `disabled` option. Fixes #96. Thanks to [@JaySunSyn](https://github.com/JaySunSyn).
+- `focused` property exposed. Fixes #102. Thanks to [@programmer4web](https://github.com/programmer4web).
 
 ## Release 3.4.0 (2017-10-28)
 ### New Features

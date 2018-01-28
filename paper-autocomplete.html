@@ -176,7 +176,7 @@
                    no-label-float="[[noLabelFloat]]"
                    disabled="{{disabled}}"
                    readonly="[[readonly]]"
-                   focused="{{ focused }}"
+                   focused="{{focused}}"
                    auto-validate$="[[autoValidate]]"
                    error-message$="[[errorMessage]]"
                    required$="[[required]]"
@@ -303,6 +303,7 @@
           type: Boolean,
           value: false
         },
+
         /**
          * `focused` If true, the element currently has focus.
          */
@@ -312,6 +313,7 @@
           notify: true,
           readOnly: true
         },
+
         /**
          * `disabled` Set to true to mark the input as disabled.
          */
