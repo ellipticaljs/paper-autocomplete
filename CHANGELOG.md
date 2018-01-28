@@ -2,9 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
-## Release 3.4.1 (2018-01-23)
+## Release 3.5.0 (2018-01-28)
 ### Bug Fixes
-- Suggestion list will now work properly if text-property or value-property not set to default value. Fixes #66 and #103
+- Suggestion list will now work properly if text-property or value-property not set to default value. Fixes #66 and #103. Thanks to [@christianaye](https://github.com/christianaye)
+### New Features
+- Component now exposes `disabled` option. Fixes #96. Thanks to [@JaySunSyn](https://github.com/JaySunSyn)
 
 ## Release 3.4.0 (2017-10-28)
 ### New Features
