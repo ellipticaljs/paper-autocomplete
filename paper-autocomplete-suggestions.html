@@ -918,10 +918,10 @@
           if (objText.toLowerCase().indexOf(query) === 0) {
             // NOTE: the structure of the result object matches with the current template. For custom templates, you
             // might need to return more data
-            queryResult.push({
-              text: objText,
-              value: objValue
-            });
+            var resultItem = {};
+            resultItem[this.textProperty] = objText;
+            resultItem[this.valueProperty] = objValue;
+            queryResult.push(resultItem);
           }
         }.bind(this));
 
