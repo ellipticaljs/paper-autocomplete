@@ -210,7 +210,7 @@
                                     min-length="[[minLength]]"
                                     text-property="[[textProperty]]"
                                     value-property="[[valueProperty]]"
-                                    selected-option="{{_selectedOption}}"
+                                    selected-option="{{selectedOption}}"
                                     source="[[source]]"
                                     remote-source="[[remoteSource]]"
                                     query-fn="[[queryFn]]"
@@ -480,8 +480,9 @@
         /**
          * Object containing the information of the currently selected option
          */
-        _selectedOption: {
-          type: Object
+        selectedOption: {
+          type: Object,
+          notify: true
         }
       },
 
