@@ -2,6 +2,13 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.6.0 (2018-02-2813)
+### Bug Fixes
+- Fix removed the `readOnly` attribute from the `focused` property. This was causing that the value was not being updated. Thanks to 
+[@programmer4web](https://github.com/programmer4web).
+### New Features
+- New `selected` property has been added that exposes the current selected value. Thanks to [@programmer4web](https://github.com/programmer4web).
+
 ## Release 3.5.0 (2018-01-28)
 ### Bug Fixes
 - Suggestion list will now work properly if text-property or value-property not set to default value. Fixes #66 and #103. Thanks to [@christianaye](https://github.com/christianaye)
