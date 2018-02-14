@@ -188,6 +188,7 @@
                    char-counter$="[[charCounter]]"
                    maxlength$="[[maxlength]]"
                    placeholder="[[placeholder]]"
+                   invalid="{{invalid}}"
 
                    role="textbox"
                    aria-autocomplete="list"
@@ -249,7 +250,14 @@
           type: Boolean,
           value: false
         },
-
+        /**
+         * Setter/getter manually invalid input
+         */
+        invalid : {
+          type: Boolean,
+          notify: true,
+          value: false
+        },
         /**
          * `autocapitalize` Sets auto-capitalization for the input element.
          */
