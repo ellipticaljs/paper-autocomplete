@@ -325,7 +325,8 @@
          * `source` Array of objects with the options to execute the autocomplete feature
          */
         source: {
-          type: Array
+          type: Array,
+          observer: '_sourceChanged'
         },
 
         /**
@@ -488,6 +489,21 @@
       observers: [
         '_textObserver(text)'
       ],
+
+      _sourceChanged: function (newSource) {
+        var text = this.text;
+        if (!Array.isArray(newSource) || newSource.length === 0 || text == null || text.length < this.minLength) {
+          return;
+        }
+        if (!this.$.autocompleteInput.focused) {
+          return;
+        }
+        this.$.paperAutocompleteSuggestions._handleSuggestions({
+          target: {
+            value: text
+          }
+        });
+      },
 
       // Element Lifecycle
       ready: function () {
