@@ -2,6 +2,11 @@
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
 
+## Release 3.7.0 (2018-04-15)
+### New Features
+- Add Setter/getter manually invalid input. Thanks to [@herberthobregon](https://github.com/herberthobregon).
+- When source changes update suggestions. Thanks to [@programmer4web](https://github.com/programmer4web).
+
 ## Release 3.6.0 (2018-02-2813)
 ### Bug Fixes
 - Fix removed the `readOnly` attribute from the `focused` property. This was causing that the value was not being updated. Thanks to 
