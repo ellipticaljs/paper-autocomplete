@@ -538,12 +538,14 @@
 
         if (value != null && value.length >= this.minLength) {
           value = value.toLowerCase();
-
-          // Search for the word in the source properties.
-          if (this.source && this.source.length > 0) {
-            // Call queryFn. User can override queryFn() to provide custom search functionality
-            this._suggestions = this.queryFn(this.source, value);
-          }
+        } else {
+          value = '';
+        }
+        
+        // Search for the word in the source properties.
+        if (this.source && this.source.length > 0) {
+          // Call queryFn. User can override queryFn() to provide custom search functionality
+          this._suggestions = this.queryFn(this.source, value);
         } else {
           this._suggestions = [];
         }
