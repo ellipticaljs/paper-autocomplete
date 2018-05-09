@@ -31,6 +31,7 @@
     "clean": "rm -rf bower_components bower_components-1.x bower-1.x.json"
   },
   "devDependencies": {
+    "bower": "^1.8.4",
     "eslint": "^4.0.0",
     "eslint-plugin-html": "^3.0.0",
     "sinon": "^3.0.0",
