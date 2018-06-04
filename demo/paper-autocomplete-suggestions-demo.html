@@ -5,19 +5,31 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <title>paper-autocomplete demo</title>
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-  <link rel="import" href="../../paper-toast/paper-toast.html">
-  <link rel="import" href="../../paper-input/paper-input.html">
-  <link rel="import" href="../../elliptical-sass/elliptical-sass.html">
-  <link rel="import" href="../../css-docs/css-docs.html">
-  <link rel="import" href="../paper-autocomplete-suggestions.html">
+  <script type="module" src="../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+  <script type="module" src="../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+  <script type="module" src="../../@polymer/paper-toast/paper-toast.js"></script>
+  <script type="module" src="../../@polymer/paper-input/paper-input.js"></script>
+  <script type="module" src="../../elliptical-sass/elliptical-sass.js"></script>
+  <script type="module" src="../../css-docs/css-docs.js"></script>
+  <script type="module" src="../paper-autocomplete-suggestions.js"></script>
 
   <link rel="stylesheet" href="demo.css">
 
-  <style is="custom-style" include="demo-pages-shared-styles">
+  <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+const $_documentContainer = document.createElement('template');
+$_documentContainer.setAttribute('style', 'display: none;');
+
+$_documentContainer.innerHTML = `<style is="custom-style" include="demo-pages-shared-styles">
     .vertical-section-container {
       max-width: 800px;
     }
@@ -30,12 +42,18 @@
       margin-left: auto;
       margin-right: auto;
     }
-  </style>
+  </style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
 </head>
 
 <body unresolved>
 
-  <div class="vertical-section-container centered">
+  <script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
     <h3>Using in combination with paper-input</h3>
     <p>
       Directly bind a local array to paper-autocomplete. The component internally will filter suggestions based on the
@@ -46,11 +64,11 @@
       <span class="bold">LOCAL DATA BINDING</span><br>
       <div>
         The component internally remaps the passed array to the template binding array (which will be an array of
-        objects with a `text` and `value` properties). The passed array can be a simple array of strings.
+        objects with a \`text\` and \`value\` properties). The passed array can be a simple array of strings.
       </div>
       <br>
       <div>
-        Public properties, `textProperty` and `valueProperty`, can be declaratively set in the element attributes,
+        Public properties, \`textProperty\` and \`valueProperty\`, can be declaratively set in the element attributes,
         allowing to bind an arbitrary object array to the component's <span class="bold">source</span> property.
       </div>
     </blockquote>
@@ -142,12 +160,10 @@
               });
             });
           });
-        </script>
+        &lt;/script>
       </template>
     </demo-snippet>
-  </div>
+  </div>`;
 
-  <paper-toast></paper-toast>
-</body>
-
-</html>
+document.body.appendChild($_documentContainer.content);
+</script>

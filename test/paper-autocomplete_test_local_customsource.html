@@ -6,10 +6,10 @@
   <title>Paper-autocomplete test</title>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes'>
-  <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
-  <script src='../../web-component-tester/browser.js'></script>
-  <script src='../../iron-test-helpers/mock-interactions.js'></script>
-  <link rel='import' href='../paper-autocomplete.html'>
+  <script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script src="../../wct-browser-legacy/browser.js"></script>
+  <script src="../../@polymer/iron-test-helpers/mock-interactions.js" type="module"></script>
+  <script type="module" src="../paper-autocomplete.js"></script>
 </head>
 
 <body>
@@ -37,375 +37,378 @@
     </template>
   </test-fixture>
 
-  <script>
-    describe('paper-autocomplete', function () {
-      var element, states;
+  <script type="module">
+import '../paper-autocomplete.js';
+import { flush, dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
+import { a11ySuite } from 'wct-browser-legacy/a11ySuite.js';
+describe('paper-autocomplete', function () {
+  var element, states;
 
-      beforeEach(function (done) {
-        element = fixture('basic');
+  beforeEach(function (done) {
+    element = fixture('basic');
 
-        states = [
-          {'titel': 'Alabama', 'code': 'AL'},
-          {'titel': 'Alaska', 'code': 'AK'},
-          {'titel': 'American Samoa', 'code': 'AS'},
-          {'titel': 'Arizona', 'code': 'AZ'},
-          {'titel': 'Arkansas', 'code': 'AR'},
-          {'titel': 'California', 'code': 'CA'},
-          {'titel': 'Colorado', 'code': 'CO'},
-          {'titel': 'Connecticut', 'code': 'CT'},
-          {'titel': 'Delaware', 'code': 'DE'},
-          {'titel': 'District Of Columbia', 'code': 'DC'},
-          {'titel': 'Federated States Of Micronesia', 'code': 'FM'},
-          {'titel': 'Florida', 'code': 'FL'},
-          {'titel': 'Georgia', 'code': 'GA'},
-          {'titel': 'Guam', 'code': 'GU'},
-          {'titel': 'Hawaii', 'code': 'HI'},
-          {'titel': 'Idaho', 'code': 'ID'},
-          {'titel': 'Illinois', 'code': 'IL'},
-          {'titel': 'Indiana', 'code': 'IN'},
-          {'titel': 'Iowa', 'code': 'IA'},
-          {'titel': 'Kansas', 'code': 'KS'},
-          {'titel': 'Kentucky', 'code': 'KY'},
-          {'titel': 'Louisiana', 'code': 'LA'},
-          {'titel': 'Maine', 'code': 'ME'},
-          {'titel': 'Marshall Islands', 'code': 'MH'},
-          {'titel': 'Maryland', 'code': 'MD'},
-          {'titel': 'Massachusetts', 'code': 'MA'},
-          {'titel': 'Michigan', 'code': 'MI'},
-          {'titel': 'Minnesota', 'code': 'MN'},
-          {'titel': 'Mississippi', 'code': 'MS'},
-          {'titel': 'Missouri', 'code': 'MO'},
-          {'titel': 'Montana', 'code': 'MT'},
-          {'titel': 'Nebraska', 'code': 'NE'},
-          {'titel': 'Nevada', 'code': 'NV'},
-          {'titel': 'New Hampshire', 'code': 'NH'},
-          {'titel': 'New Jersey', 'code': 'NJ'},
-          {'titel': 'New Mexico', 'code': 'NM'},
-          {'titel': 'New York', 'code': 'NY'},
-          {'titel': 'North Carolina', 'code': 'NC'},
-          {'titel': 'North Dakota', 'code': 'ND'},
-          {'titel': 'Northern Mariana Islands', 'code': 'MP'},
-          {'titel': 'Ohio', 'code': 'OH'},
-          {'titel': 'Oklahoma', 'code': 'OK'},
-          {'titel': 'Oregon', 'code': 'OR'},
-          {'titel': 'Palau', 'code': 'PW'},
-          {'titel': 'Pennsylvania', 'code': 'PA'},
-          {'titel': 'Puerto Rico', 'code': 'PR'},
-          {'titel': 'Rhode Island', 'code': 'RI'},
-          {'titel': 'South Carolina', 'code': 'SC'},
-          {'titel': 'South Dakota', 'code': 'SD'},
-          {'titel': 'Tennessee', 'code': 'TN'},
-          {'titel': 'Texas', 'code': 'TX'},
-          {'titel': 'Utah', 'code': 'UT'},
-          {'titel': 'Vermont', 'code': 'VT'},
-          {'titel': 'Virgin Islands', 'code': 'VI'},
-          {'titel': 'Virginia', 'code': 'VA'},
-          {'titel': 'Washington', 'code': 'WA'},
-          {'titel': 'West Virginia', 'code': 'WV'},
-          {'titel': 'Wisconsin', 'code': 'WI'},
-          {'titel': 'Wyoming', 'code': 'WY'}
-        ];
+    states = [
+      {'titel': 'Alabama', 'code': 'AL'},
+      {'titel': 'Alaska', 'code': 'AK'},
+      {'titel': 'American Samoa', 'code': 'AS'},
+      {'titel': 'Arizona', 'code': 'AZ'},
+      {'titel': 'Arkansas', 'code': 'AR'},
+      {'titel': 'California', 'code': 'CA'},
+      {'titel': 'Colorado', 'code': 'CO'},
+      {'titel': 'Connecticut', 'code': 'CT'},
+      {'titel': 'Delaware', 'code': 'DE'},
+      {'titel': 'District Of Columbia', 'code': 'DC'},
+      {'titel': 'Federated States Of Micronesia', 'code': 'FM'},
+      {'titel': 'Florida', 'code': 'FL'},
+      {'titel': 'Georgia', 'code': 'GA'},
+      {'titel': 'Guam', 'code': 'GU'},
+      {'titel': 'Hawaii', 'code': 'HI'},
+      {'titel': 'Idaho', 'code': 'ID'},
+      {'titel': 'Illinois', 'code': 'IL'},
+      {'titel': 'Indiana', 'code': 'IN'},
+      {'titel': 'Iowa', 'code': 'IA'},
+      {'titel': 'Kansas', 'code': 'KS'},
+      {'titel': 'Kentucky', 'code': 'KY'},
+      {'titel': 'Louisiana', 'code': 'LA'},
+      {'titel': 'Maine', 'code': 'ME'},
+      {'titel': 'Marshall Islands', 'code': 'MH'},
+      {'titel': 'Maryland', 'code': 'MD'},
+      {'titel': 'Massachusetts', 'code': 'MA'},
+      {'titel': 'Michigan', 'code': 'MI'},
+      {'titel': 'Minnesota', 'code': 'MN'},
+      {'titel': 'Mississippi', 'code': 'MS'},
+      {'titel': 'Missouri', 'code': 'MO'},
+      {'titel': 'Montana', 'code': 'MT'},
+      {'titel': 'Nebraska', 'code': 'NE'},
+      {'titel': 'Nevada', 'code': 'NV'},
+      {'titel': 'New Hampshire', 'code': 'NH'},
+      {'titel': 'New Jersey', 'code': 'NJ'},
+      {'titel': 'New Mexico', 'code': 'NM'},
+      {'titel': 'New York', 'code': 'NY'},
+      {'titel': 'North Carolina', 'code': 'NC'},
+      {'titel': 'North Dakota', 'code': 'ND'},
+      {'titel': 'Northern Mariana Islands', 'code': 'MP'},
+      {'titel': 'Ohio', 'code': 'OH'},
+      {'titel': 'Oklahoma', 'code': 'OK'},
+      {'titel': 'Oregon', 'code': 'OR'},
+      {'titel': 'Palau', 'code': 'PW'},
+      {'titel': 'Pennsylvania', 'code': 'PA'},
+      {'titel': 'Puerto Rico', 'code': 'PR'},
+      {'titel': 'Rhode Island', 'code': 'RI'},
+      {'titel': 'South Carolina', 'code': 'SC'},
+      {'titel': 'South Dakota', 'code': 'SD'},
+      {'titel': 'Tennessee', 'code': 'TN'},
+      {'titel': 'Texas', 'code': 'TX'},
+      {'titel': 'Utah', 'code': 'UT'},
+      {'titel': 'Vermont', 'code': 'VT'},
+      {'titel': 'Virgin Islands', 'code': 'VI'},
+      {'titel': 'Virginia', 'code': 'VA'},
+      {'titel': 'Washington', 'code': 'WA'},
+      {'titel': 'West Virginia', 'code': 'WV'},
+      {'titel': 'Wisconsin', 'code': 'WI'},
+      {'titel': 'Wyoming', 'code': 'WY'}
+    ];
 
-        element.source = states;
+    element.source = states;
 
+    done();
+  });
+
+  it('instantiates a paper-autocomplete element', function () {
+    expect(element.is).to.equal('paper-autocomplete');
+  });
+
+  it('has a label Select State', function () {
+    var label = element.$$('label');
+    expect(label.textContent).to.equal('Select State');
+  });
+
+  it('copies the required property to the input field', function () {
+    var input = element.$.autocompleteInput;
+    expect(input.required).to.equal(element.required);
+  });
+
+  it('loads the list of sources', function () {
+    expect(element.source).to.equal(states);
+  });
+
+  it('is closed when initialised', function () {
+    expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.not.equal('block');
+  });
+
+  it('should set the name attribute in the hidden input', function () {
+    expect(element.$$('input[type="hidden"]').getAttribute('name')).to.equal('state');
+  });
+
+  describe('when input is typed', function () {
+    var input, suggestions, suggestionItems;
+
+    beforeEach(function () {
+      input = element.$.autocompleteInput;
+      suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapper;
+    });
+
+    it('opens', function () {
+      enterCharacter(input, 'A');
+      suggestionItems = suggestions.querySelectorAll('paper-item');
+
+      expect(suggestionItems.length).to.equal(5);
+    });
+
+    it('does not activate an item on opening', function () {
+      enterCharacter(input, 'A');
+
+      var activeSuggestion = suggestions.querySelector('paper-item.active');
+      expect(activeSuggestion).to.equal(null);
+    });
+
+    it('refines the suggestions with every added key', function () {
+      enterCharacter(input, 'A');
+      enterCharacter(input, 'l');
+
+      suggestionItems = suggestions.querySelectorAll('paper-item');
+      expect(suggestionItems.length).to.equal(2);
+    });
+
+    it('show labels in suggestion list', function () {
+      enterCharacter(input, 'A');
+      enterCharacter(input, 'l');
+
+      suggestionItems = suggestions.querySelectorAll('paper-item');
+
+      expect(suggestionItems.length).to.equal(2);
+      expect(suggestionItems[0].children[0].innerText).to.equal('Alabama');
+      expect(suggestionItems[1].children[0].innerText).to.equal('Alaska');
+    });
+
+    it('selects the next and previous suggestions with arrow keys', function () {
+      enterCharacter(input, 'A');
+
+      var suggestionItems = suggestions.querySelectorAll('paper-item');
+
+      MockInteractions.keyUpOn(input, 40);
+      expect(activeSuggestion()).to.equal(suggestionItems[0]);
+
+      MockInteractions.keyUpOn(input, 40);
+      expect(activeSuggestion()).to.equal(suggestionItems[1]);
+
+      MockInteractions.keyUpOn(input, 38);
+      expect(activeSuggestion()).to.equal(suggestionItems[0]);
+
+      function activeSuggestion() {
+        return suggestions.querySelector('paper-item.active');
+      }
+    });
+
+    it('copies the suggestion to the value when clicked upon a suggestion and closes the suggestions', function (done) {
+      enterCharacter(input, 'A');
+      var suggestionItems = suggestions.querySelectorAll('paper-item');
+
+      suggestionItems[0].click();
+      expect(input.value).to.equal('Alabama');
+
+      flush();
+
+      setTimeout(function () {
+        expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('none');
+        done();
+      }, 300);
+    });
+
+    it('sets value and text in autocomplete when a selection is made', function () {
+      enterCharacter(input, 'A');
+      var suggestionItems = suggestions.querySelectorAll('paper-item');
+
+      suggestionItems[0].click();
+
+      expect(element.text).to.equal('Alabama');
+      expect(element.value).to.equal('AL');
+
+      // On selection, the hidden input field should have set the value, not the text
+      expect(element.$$('input[type="hidden"]').value).to.equal('AL');
+    });
+
+    describe('and after showing results', function () {
+      describe('when the autosuggest is closed', function () {
+        it('should clear previous results from the dom', function (done) {
+          enterCharacter(input, 'A');
+          var suggestionItems = suggestions.querySelectorAll('paper-item');
+
+          suggestionItems[0].click();
+
+          setTimeout(function () {
+            expect(suggestions.querySelectorAll('paper-item').length).to.equal(0);
+            done();
+          }, 300);
+        });
+      });
+    });
+
+    describe('the "disableShowClear" option should disable showing the clear X button', function () {
+
+      var input,
+        displayStyle;
+
+      var doInput = function (input, inputText) {
+        enterCharacter(input, inputText);
+        element._textObserver(inputText); // trigger an onInput event which in turn evaluates whether to display the button
+      };
+
+      beforeEach(function () {
+        input = element.$.autocompleteInput;
+      });
+
+      it('should disable the display of the clear button when the attribute is on the element', function () {
+        element.setAttribute('disable-show-clear', '');
+
+        doInput(input, 'Ne');
+        displayStyle = getClearButtonDisplayStyle();
+        expect(displayStyle).to.equal('');
+      });
+
+      it('should display of the clear button when the option is set to false (default)', function () {
+        doInput(input, 'New');
+        displayStyle = getClearButtonDisplayStyle();
+        expect(displayStyle).to.equal('inline-block');
+      });
+    });
+  });
+
+  describe('hideSuggestions()', function () {
+    var input;
+
+    beforeEach(function () {
+      input = element.$.autocompleteInput;
+    });
+
+    var doInput = function (input, inputText) {
+      enterCharacter(input, inputText);
+      element._textObserver(inputText); // trigger an onInput event which in turn evaluates whether to display the button
+    };
+
+    it('should hide the suggestion wrapper and clear button', function (done) {
+      doInput(input, 'A');
+
+      expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('block');
+      expect(getClearButtonDisplayStyle()).to.equal('inline-block');
+
+      element.hideSuggestions();
+
+      flush();
+
+      setTimeout(function () {
+        expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('none');
+        expect(getClearButtonDisplayStyle()).to.equal('none');
+
+        done();
+      }, 300);
+    });
+  });
+
+  describe('_clear()', function () {
+    beforeEach(function () {
+      element.value = 'AL';
+      element.text = 'Alabama';
+    });
+
+    it('should reset the content of the autocomplete', function () {
+      element._clear();
+
+      expect(element.value).to.be.null;
+      expect(element.text).to.equal('');
+    });
+
+    it('should hide the clear button', function () {
+      element.$.clear.style.display = 'block';
+      element._isClearButtonVisible = true;
+
+      element._clear();
+
+      expect(element.$.clear.style.display).to.equal('none');
+    });
+
+    it('should fire the correct event', function (done) {
+      element.addEventListener('autocomplete-reset-blur', function (event) {
+        expect(event.type).to.equal('autocomplete-reset-blur');
         done();
       });
 
-      it('instantiates a paper-autocomplete element', function () {
-        expect(element.is).to.equal('paper-autocomplete');
-      });
-
-      it('has a label Select State', function () {
-        var label = element.$$('label');
-        expect(label.textContent).to.equal('Select State');
-      });
-
-      it('copies the required property to the input field', function () {
-        var input = element.$.autocompleteInput;
-        expect(input.required).to.equal(element.required);
-      });
-
-      it('loads the list of sources', function () {
-        expect(element.source).to.equal(states);
-      });
-
-      it('is closed when initialised', function () {
-        expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.not.equal('block');
-      });
-
-      it('should set the name attribute in the hidden input', function () {
-        expect(element.$$('input[type="hidden"]').getAttribute('name')).to.equal('state');
-      });
-
-      describe('when input is typed', function () {
-        var input, suggestions, suggestionItems;
-
-        beforeEach(function () {
-          input = element.$.autocompleteInput;
-          suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapper;
-        });
-
-        it('opens', function () {
-          enterCharacter(input, 'A');
-          suggestionItems = suggestions.querySelectorAll('paper-item');
-
-          expect(suggestionItems.length).to.equal(5);
-        });
-
-        it('does not activate an item on opening', function () {
-          enterCharacter(input, 'A');
-
-          var activeSuggestion = suggestions.querySelector('paper-item.active');
-          expect(activeSuggestion).to.equal(null);
-        });
-
-        it('refines the suggestions with every added key', function () {
-          enterCharacter(input, 'A');
-          enterCharacter(input, 'l');
-
-          suggestionItems = suggestions.querySelectorAll('paper-item');
-          expect(suggestionItems.length).to.equal(2);
-        });
-
-        it('show labels in suggestion list', function () {
-          enterCharacter(input, 'A');
-          enterCharacter(input, 'l');
-
-          suggestionItems = suggestions.querySelectorAll('paper-item');
-
-          expect(suggestionItems.length).to.equal(2);
-          expect(suggestionItems[0].children[0].innerText).to.equal('Alabama');
-          expect(suggestionItems[1].children[0].innerText).to.equal('Alaska');
-        });
-
-        it('selects the next and previous suggestions with arrow keys', function () {
-          enterCharacter(input, 'A');
-
-          var suggestionItems = suggestions.querySelectorAll('paper-item');
-
-          MockInteractions.keyUpOn(input, 40);
-          expect(activeSuggestion()).to.equal(suggestionItems[0]);
-
-          MockInteractions.keyUpOn(input, 40);
-          expect(activeSuggestion()).to.equal(suggestionItems[1]);
-
-          MockInteractions.keyUpOn(input, 38);
-          expect(activeSuggestion()).to.equal(suggestionItems[0]);
-
-          function activeSuggestion() {
-            return suggestions.querySelector('paper-item.active');
-          }
-        });
-
-        it('copies the suggestion to the value when clicked upon a suggestion and closes the suggestions', function (done) {
-          enterCharacter(input, 'A');
-          var suggestionItems = suggestions.querySelectorAll('paper-item');
-
-          suggestionItems[0].click();
-          expect(input.value).to.equal('Alabama');
-
-          Polymer.dom.flush();
-
-          setTimeout(function () {
-            expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('none');
-            done();
-          }, 300);
-        });
-
-        it('sets value and text in autocomplete when a selection is made', function () {
-          enterCharacter(input, 'A');
-          var suggestionItems = suggestions.querySelectorAll('paper-item');
-
-          suggestionItems[0].click();
-
-          expect(element.text).to.equal('Alabama');
-          expect(element.value).to.equal('AL');
-
-          // On selection, the hidden input field should have set the value, not the text
-          expect(element.$$('input[type="hidden"]').value).to.equal('AL');
-        });
-
-        describe('and after showing results', function () {
-          describe('when the autosuggest is closed', function () {
-            it('should clear previous results from the dom', function (done) {
-              enterCharacter(input, 'A');
-              var suggestionItems = suggestions.querySelectorAll('paper-item');
-
-              suggestionItems[0].click();
-
-              setTimeout(function () {
-                expect(suggestions.querySelectorAll('paper-item').length).to.equal(0);
-                done();
-              }, 300);
-            });
-          });
-        });
-
-        describe('the "disableShowClear" option should disable showing the clear X button', function () {
-
-          var input,
-            displayStyle;
-
-          var doInput = function (input, inputText) {
-            enterCharacter(input, inputText);
-            element._textObserver(inputText); // trigger an onInput event which in turn evaluates whether to display the button
-          };
-
-          beforeEach(function () {
-            input = element.$.autocompleteInput;
-          });
-
-          it('should disable the display of the clear button when the attribute is on the element', function () {
-            element.setAttribute('disable-show-clear', '');
-
-            doInput(input, 'Ne');
-            displayStyle = getClearButtonDisplayStyle();
-            expect(displayStyle).to.equal('');
-          });
-
-          it('should display of the clear button when the option is set to false (default)', function () {
-            doInput(input, 'New');
-            displayStyle = getClearButtonDisplayStyle();
-            expect(displayStyle).to.equal('inline-block');
-          });
-        });
-      });
-
-      describe('hideSuggestions()', function () {
-        var input;
-
-        beforeEach(function () {
-          input = element.$.autocompleteInput;
-        });
-
-        var doInput = function (input, inputText) {
-          enterCharacter(input, inputText);
-          element._textObserver(inputText); // trigger an onInput event which in turn evaluates whether to display the button
-        };
-
-        it('should hide the suggestion wrapper and clear button', function (done) {
-          doInput(input, 'A');
-
-          expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('block');
-          expect(getClearButtonDisplayStyle()).to.equal('inline-block');
-
-          element.hideSuggestions();
-
-          Polymer.dom.flush();
-
-          setTimeout(function () {
-            expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('none');
-            expect(getClearButtonDisplayStyle()).to.equal('none');
-
-            done();
-          }, 300);
-        });
-      });
-
-      describe('_clear()', function () {
-        beforeEach(function () {
-          element.value = 'AL';
-          element.text = 'Alabama';
-        });
-
-        it('should reset the content of the autocomplete', function () {
-          element._clear();
-
-          expect(element.value).to.be.null;
-          expect(element.text).to.equal('');
-        });
-
-        it('should hide the clear button', function () {
-          element.$.clear.style.display = 'block';
-          element._isClearButtonVisible = true;
-
-          element._clear();
-
-          expect(element.$.clear.style.display).to.equal('none');
-        });
-
-        it('should fire the correct event', function (done) {
-          element.addEventListener('autocomplete-reset-blur', function (event) {
-            expect(event.type).to.equal('autocomplete-reset-blur');
-            done();
-          });
-
-          element._clear();
-        });
-      });
-
-      it('element with slot=preffix should be added as paper-input suffix', function () {
-        var suffixElement = fixture('suffixTest');
-        var children = Polymer.dom(suffixElement.$$('paper-input').$$('paper-input-container')).getEffectiveChildNodes();
-        var isSuffixBtnAdded = [].slice.call(children)
-          .filter(function (ele) {
-            return ele.id === 'suffixBtn';
-          }).length === 1;
-
-        expect(isSuffixBtnAdded).to.be.true;
-      });
-
-      describe('autocomplete option', function () {
-        it('if set to `true`, it should highlight always the first suggestion', function () {
-          element.setAttribute('highlight-first', '');
-
-          var suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapper;
-          var input = element.$.autocompleteInput;
-
-          enterCharacter(input, 'A');
-
-          var activeSuggestions = suggestions.querySelectorAll('paper-item.active');
-          var allSuggestions = suggestions.querySelectorAll('paper-item');
-
-          expect(allSuggestions).not.to.be.empty;
-          expect(activeSuggestions.length).to.equal(1);
-          expect(activeSuggestions[0]).to.equal(allSuggestions[0]);
-        });
-
-        it('with default value, it should not highlight the first suggestion', function () {
-          var suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapper;
-          var input = element.$.autocompleteInput;
-
-          enterCharacter(input, 'A');
-
-          var activeSuggestions = suggestions.querySelectorAll('paper-item.active');
-          var allSuggestions = suggestions.querySelectorAll('paper-item');
-
-          expect(allSuggestions).not.to.be.empty;
-          expect(activeSuggestions.length).to.equal(0);
-        });
-      });
-
-      describe('when element is focused', function () {
-        beforeEach(function () {
-          element.showResultsOnFocus = true;
-          sinon.stub(element.$.paperAutocompleteSuggestions, '_handleSuggestions');
-        });
-
-        it('should call _handleSuggestions', function () {
-          var event = {};
-          element.$.paperAutocompleteSuggestions._onFocus(event);
-
-          expect(element.$.paperAutocompleteSuggestions._handleSuggestions.calledWith(event)).to.be.true;
-        });
-      });
-
-      a11ySuite('basic', ['badAriaAttributeValue', 'nonExistentRelatedElement']);
-
-      // HELPERS
-
-      function enterCharacter(input, char) {
-        input.value += char;
-        MockInteractions.keyUpOn(input, char.charCodeAt(char.length - 1));
-
-        element.$.paperAutocompleteSuggestions.flushDebouncer('_onSuggestionChanged');
-      }
-
-      function getClearButtonDisplayStyle() {
-        return element.$.clear.style.display;
-      }
+      element._clear();
     });
-  </script>
+  });
+
+  it('element with slot=preffix should be added as paper-input suffix', function () {
+    var suffixElement = fixture('suffixTest');
+    var children = dom(suffixElement.$$('paper-input').$$('paper-input-container')).getEffectiveChildNodes();
+    var isSuffixBtnAdded = [].slice.call(children)
+      .filter(function (ele) {
+        return ele.id === 'suffixBtn';
+      }).length === 1;
+
+    expect(isSuffixBtnAdded).to.be.true;
+  });
+
+  describe('autocomplete option', function () {
+    it('if set to `true`, it should highlight always the first suggestion', function () {
+      element.setAttribute('highlight-first', '');
+
+      var suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapper;
+      var input = element.$.autocompleteInput;
+
+      enterCharacter(input, 'A');
+
+      var activeSuggestions = suggestions.querySelectorAll('paper-item.active');
+      var allSuggestions = suggestions.querySelectorAll('paper-item');
+
+      expect(allSuggestions).not.to.be.empty;
+      expect(activeSuggestions.length).to.equal(1);
+      expect(activeSuggestions[0]).to.equal(allSuggestions[0]);
+    });
+
+    it('with default value, it should not highlight the first suggestion', function () {
+      var suggestions = element.$.paperAutocompleteSuggestions.$.suggestionsWrapper;
+      var input = element.$.autocompleteInput;
+
+      enterCharacter(input, 'A');
+
+      var activeSuggestions = suggestions.querySelectorAll('paper-item.active');
+      var allSuggestions = suggestions.querySelectorAll('paper-item');
+
+      expect(allSuggestions).not.to.be.empty;
+      expect(activeSuggestions.length).to.equal(0);
+    });
+  });
+
+  describe('when element is focused', function () {
+    beforeEach(function () {
+      element.showResultsOnFocus = true;
+      sinon.stub(element.$.paperAutocompleteSuggestions, '_handleSuggestions');
+    });
+
+    it('should call _handleSuggestions', function () {
+      var event = {};
+      element.$.paperAutocompleteSuggestions._onFocus(event);
+
+      expect(element.$.paperAutocompleteSuggestions._handleSuggestions.calledWith(event)).to.be.true;
+    });
+  });
+
+  a11ySuite('basic', ['badAriaAttributeValue', 'nonExistentRelatedElement']);
+
+  // HELPERS
+
+  function enterCharacter(input, char) {
+    input.value += char;
+    MockInteractions.keyUpOn(input, char.charCodeAt(char.length - 1));
+
+    element.$.paperAutocompleteSuggestions.flushDebouncer('_onSuggestionChanged');
+  }
+
+  function getClearButtonDisplayStyle() {
+    return element.$.clear.style.display;
+  }
+});
+</script>
 
 </body>
 
