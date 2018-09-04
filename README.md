@@ -1,3 +1,6 @@
+[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/ellipticaljspaper-autocomplete)
+[![Stars on vaadin.com/directory](https://img.shields.io/vaadin-directory/star/ellipticaljspaper-autocomplete.svg)](https://vaadin.com/directory/component/ellipticaljspaper-autocomplete)
+
 # paper-autocomplete
 
 > Autocomplete component compatible with Polymer 1.x and 2.x
