@@ -697,6 +697,13 @@
         this.$.paperAutocompleteSuggestions.hideSuggestions();
       },
 
+      showSuggestions: function (query) {
+        if (query && this.$.autocompleteInput.value != query) {
+          this.$.autocompleteInput.value = query;
+        }
+        this.$.paperAutocompleteSuggestions.showSuggestions(query);
+      },
+
       /**
        * Allows calling the onSelect function from outside
        * This in time triggers the autocomplete-selected event

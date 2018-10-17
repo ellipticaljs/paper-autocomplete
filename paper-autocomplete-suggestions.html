@@ -894,6 +894,11 @@
         }.bind(this), 0);
       },
 
+      showSuggestions: function (query) {
+        query = query || '';
+        this._suggestions = this.queryFn(this.source, query.toLowerCase());
+      },
+
       /**
        * Query function is called on each keystroke to query the data source and returns the suggestions that matches
        * with the filtering logic included.
@@ -921,6 +926,7 @@
             var resultItem = {};
             resultItem[this.textProperty] = objText;
             resultItem[this.valueProperty] = objValue;
+            resultItem.model = item;
             queryResult.push(resultItem);
           }
         }.bind(this));
