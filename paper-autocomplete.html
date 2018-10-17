@@ -698,8 +698,8 @@
       },
 
       showSuggestions: function (query) {
-        if (query && this.$.autocompleteInput.value != query) {
-          this.$.autocompleteInput.value = query;
+        if (query !== undefined && this.$.autocompleteInput.value != query) {
+          this.$.autocompleteInput.value = query === null ? '' : query;
         }
         this.$.paperAutocompleteSuggestions.showSuggestions(query);
       },

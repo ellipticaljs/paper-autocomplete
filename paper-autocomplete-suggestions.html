@@ -128,7 +128,7 @@
       paper-material {
         display: none;
         position: absolute;
-        width: 100%;
+        min-width: 100%;
         z-index: 1000;
         background-color: white;
         max-height: 252px;
@@ -140,7 +140,7 @@
       paper-item,
       :host ::slotted(paper-item) {
         min-height: var(--paper-item-min-height, 36px);
-        padding: 0 16px;
+        padding: 4px 16px;
         position: relative;
         line-height: 18px;
 
@@ -160,6 +160,12 @@
         color: #333;
       }
 
+      div.item-text {
+        white-space: nowrap;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+      }
+
       /**
        * IE11 paper-item min-height bug: https://github.com/PolymerElements/paper-item/issues/35
        */
@@ -177,7 +183,7 @@
       <!-- Default suggestion template -->
       <template id="defaultTemplate">
         <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false" on-tap="_onSelect">
-          <div>[[_getItemText(item)]]</div>
+          <div class="item-text">[[_getItemText(item)]]</div>
           <paper-ripple></paper-ripple>
         </paper-item>
       </template>
@@ -201,7 +207,9 @@
       UP_ARROW: 38,
       DOWN_ARROW: 40,
       ENTER: 13,
-      ESCAPE: 27
+      ESCAPE: 27,
+      TAB: 9,
+      SHIFT: 16
     };
 
     Polymer({
@@ -418,6 +426,7 @@
 
       ready: function () {
         this._value = this.value;
+        this.__lastQuery = '';
 
         // This is important to be able to access component methods inside the templates used with Templatizer
         this.dataHost = this;
@@ -569,6 +578,7 @@
         var isPolymer1 = !Polymer.Element;
 
         this._clearSuggestions();
+        this._calcMaxWidth();
 
         [].slice.call(suggestions).forEach(function (result, index) {
           // clone the template and bind with the model
@@ -590,6 +600,10 @@
         var suggestionsContainer = Polymer.dom(this.$.suggestionsWrapper),
           last;
         while (last = suggestionsContainer.lastChild) suggestionsContainer.removeChild(last);
+      },
+
+      _calcMaxWidth: function() {
+        this.$.suggestionsWrapper.style.maxWidth = `${window.innerWidth - this.getBoundingClientRect().left - 16}px`;
       },
 
       /**
@@ -635,6 +649,7 @@
         this._value = this.value;
         this._text = this.text;
         this._emptyItems();
+        this.__lastQuery = '';
 
         this._fireEvent(selectedOption, 'selected');
 
@@ -680,7 +695,11 @@
 
         switch (keyCode) {
         case KEY_CODES.DOWN_ARROW:
-          this._moveHighlighted(DIRECTION.DOWN);
+          if (this.isOpen) {
+            this._moveHighlighted(DIRECTION.DOWN);
+          } else {
+            this.showSuggestions();
+          }
           break;
         case KEY_CODES.UP_ARROW:
           this._moveHighlighted(DIRECTION.UP);
@@ -695,6 +714,8 @@
         case KEY_CODES.LEFT_ARROW:
           // fall through
         case KEY_CODES.RIGHT_ARROW:
+        case KEY_CODES.TAB:
+        case KEY_CODES.SHIFT:
           break;
         default:
           this._handleSuggestions(event);
@@ -895,7 +916,7 @@
       },
 
       showSuggestions: function (query) {
-        query = query || '';
+        query = query === null ? '' : query === undefined ? this.__lastQuery : query;
         this._suggestions = this.queryFn(this.source, query.toLowerCase());
       },
 
@@ -908,6 +929,7 @@
        */
       queryFn: function (datasource, query) {
         var queryResult = [];
+        this.__lastQuery = query;
 
         datasource.forEach(function (item) {
           var objText, objValue;
