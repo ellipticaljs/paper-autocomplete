@@ -889,6 +889,7 @@
        * Hides the suggestions popup
        */
       hideSuggestions: function () {
+        this.cancelDebouncer('_onSuggestionChanged');
         setTimeout(function () {
           this._hideSuggestionsWrapper();
         }.bind(this), 0);
