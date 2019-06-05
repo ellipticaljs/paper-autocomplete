@@ -3,6 +3,8 @@
     "mocha": true
   },
   "globals": {
+    "WCT": true,
+    "sinon": true,
     "fixture": false,
     "expect": false,
     "a11ySuite": false,

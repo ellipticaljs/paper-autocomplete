@@ -6,10 +6,15 @@
   <title>Paper-autocomplete test</title>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes'>
-  <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
-  <script src='../../web-component-tester/browser.js'></script>
-  <script src='../../iron-test-helpers/mock-interactions.js'></script>
-  <link rel='import' href='../paper-autocomplete.html'>
+  <script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script src="/components/mocha/mocha.js"></script>
+  <script src="/components/wct-mocha/wct-mocha.js"></script>
+  <script src="/components/chai/chai.js"></script>
+  <script src="/components/sinon/pkg/sinon.js"></script>
+  <script src="https://unpkg.com/accessibility-developer-tools@2.12.0/dist/js/axs_testing.js"></script>
+  <script src="/components/@polymer/iron-test-helpers/mock-interactions.js" type="module"></script>
+  <script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+  <script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
 </head>
 
 <body>
@@ -21,7 +26,10 @@
                           required='true' name='state'></paper-autocomplete>
     </template>
   </test-fixture>
-  <script>
+
+  <script type="module">
+    import '../paper-autocomplete.js';
+
     describe('when several paper-autocomplete are used', function () {
       var element1, element2, states1, states2;
 

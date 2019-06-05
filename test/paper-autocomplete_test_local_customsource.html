@@ -6,10 +6,15 @@
   <title>Paper-autocomplete test</title>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes'>
-  <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
-  <script src='../../web-component-tester/browser.js'></script>
-  <script src='../../iron-test-helpers/mock-interactions.js'></script>
-  <link rel='import' href='../paper-autocomplete.html'>
+  <script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script src="/components/mocha/mocha.js"></script>
+  <script src="/components/wct-mocha/wct-mocha.js"></script>
+  <script src="/components/chai/chai.js"></script>
+  <script src="/components/sinon/pkg/sinon.js"></script>
+  <script src="https://unpkg.com/accessibility-developer-tools@2.12.0/dist/js/axs_testing.js"></script>
+  <script src="/components/@polymer/iron-test-helpers/mock-interactions.js" type="module"></script>
+  <script type="module" src="/components/@polymer/test-fixture/test-fixture.js"></script>
+  <script type="module" src="/components/@polymer/iron-test-helpers/iron-test-helpers.js"></script>
 </head>
 
 <body>
@@ -37,7 +42,11 @@
     </template>
   </test-fixture>
 
-  <script>
+  <script type="module">
+    import '../paper-autocomplete.js';
+    import { flush, dom } from '@polymer/polymer/lib/legacy/polymer.dom';
+    import { a11ySuite } from 'wct-browser-legacy/a11ySuite';
+
     describe('paper-autocomplete', function () {
       var element, states;
 
@@ -204,7 +213,7 @@
           suggestionItems[0].click();
           expect(input.value).to.equal('Alabama');
 
-          Polymer.dom.flush();
+          flush();
 
           setTimeout(function () {
             expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('none');
@@ -291,7 +300,7 @@
 
           element.hideSuggestions();
 
-          Polymer.dom.flush();
+          flush();
 
           setTimeout(function () {
             expect(element.$.paperAutocompleteSuggestions.$.suggestionsWrapper.style.display).to.equal('none');
@@ -336,7 +345,7 @@
 
       it('element with slot=preffix should be added as paper-input suffix', function () {
         var suffixElement = fixture('suffixTest');
-        var children = Polymer.dom(suffixElement.$$('paper-input').$$('paper-input-container')).getEffectiveChildNodes();
+        var children = dom(suffixElement.$$('paper-input').$$('paper-input-container')).getEffectiveChildNodes();
         var isSuffixBtnAdded = [].slice.call(children)
           .filter(function (ele) {
             return ele.id === 'suffixBtn';

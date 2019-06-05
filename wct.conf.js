@@ -4,7 +4,15 @@ module.exports = {
   plugins: {
     local: {
       disabled: true,
-      browsers: ['chrome', 'firefox']
+      browsers: ['chrome']
+    },
+    istanbul: {
+      dir: './coverage',
+      reporters: ['text-summary', 'lcov'],
+      include: [
+        '**/paper-autocomplete*.js'
+      ],
+      exclude: []
     },
     sauce: {
       disabled: true,

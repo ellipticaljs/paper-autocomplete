@@ -6,6 +6,9 @@
   "globals": {
     "Polymer": false
   },
+  "parserOptions": {
+    "sourceType": "module"
+  },
   "rules": {
     "comma-spacing": 2,
     "eol-last": 2,
