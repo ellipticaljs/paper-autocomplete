@@ -1,0 +1,8 @@
+{
+	"extends": "@neovici",
+	"rules": {
+		"new-cap": "off",
+		"valid-jsdoc": "off",
+		"no-cond-assign": "off"
+	}
+}
