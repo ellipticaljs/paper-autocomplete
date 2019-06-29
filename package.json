@@ -1,6 +1,6 @@
 {
-	"name": "paper-autocomplete",
-	"version": "3.7.0",
+	"name": "@neovici/paper-autocomplete",
+	"version": "4.0.0",
 	"description": "Material Design autocomplete component.",
 	"keywords": [
 		"paper-autocomplete",
@@ -30,6 +30,8 @@
 	"scripts": {
 		"analyze": "polymer analyze --input paper-*.js > analysis.json",
 		"lint": "eslint --cache paper-autocomplete*.js test/paper*.html && polymer lint paper-autocomplete*.js",
+		"preversion": "npm run lint && npm run test",
+		"postversion": "git push && git push --tags",
 		"publish-docs": "./publish-docs.sh",
 		"start": "polymer serve -o",
 		"test": "polymer test --plugin local",
