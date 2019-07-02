@@ -121,7 +121,7 @@ Polymer({
               }
             }
           </style>
-          <paper-item class="account-item" on-tap="_onSelect" id\$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
+          <paper-item class="account-item" on-tap="_onSelect" id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false">
             <div>
               <div class="company-name">[[item.companyName]]</div>
               <div class="account-number">[[item.accountNumber]]</div>

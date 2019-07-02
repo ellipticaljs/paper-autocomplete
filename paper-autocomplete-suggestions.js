@@ -191,7 +191,7 @@ Polymer({
 
       <!-- Default suggestion template -->
       <template id="defaultTemplate">
-        <paper-item id\$="[[_getSuggestionId(index)]]" role="option" aria-selected="false" on-tap="_onSelect">
+        <paper-item id$="[[_getSuggestionId(index)]]" role="option" aria-selected="false" on-tap="_onSelect">
           <div>[[_getItemText(item)]]</div>
           <paper-ripple></paper-ripple>
         </paper-item>

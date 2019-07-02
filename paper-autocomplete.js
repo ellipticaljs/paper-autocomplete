@@ -176,21 +176,21 @@ Polymer({
       }
     </style>
 
-    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded\$="[[_isSuggestionsOpened]]">
+    <div class="input-wrapper" role="combobox" aria-haspopup="true" aria-owns="suggestionsWrapper" aria-expanded$="[[_isSuggestionsOpened]]">
       <!-- For accessibility, it is needed to have a label or aria-label. Label is preferred -->
       <label for="autocompleteInput" class="sr-only">[[label]]</label>
 
       <!-- Adding a hidden input to integrate with iron-form, if required -->
-      <input type="hidden" name\$="[[name]]" value\$="[[value]]">
+      <input type="hidden" name$="[[name]]" value$="[[value]]">
 
       <paper-input id="autocompleteInput" label="[[label]]" autocapitalize="[[autocapitalize]]"
         no-label-float="[[noLabelFloat]]" disabled="{{disabled}}" readonly="[[readonly]]" focused="{{focused}}"
-        auto-validate\$="[[autoValidate]]" error-message\$="[[errorMessage]]" required\$="[[required]]"
+        auto-validate$="[[autoValidate]]" error-message$="[[errorMessage]]" required$="[[required]]"
         value="{{text}}" allowed-pattern="[[allowedPattern]]" pattern="[[pattern]]"
-        always-float-label="[[alwaysFloatLabel]]" char-counter\$="[[charCounter]]"
-        maxlength\$="[[maxlength]]" placeholder="[[placeholder]]" invalid="{{invalid}}"
+        always-float-label="[[alwaysFloatLabel]]" char-counter$="[[charCounter]]"
+        maxlength$="[[maxlength]]" placeholder="[[placeholder]]" invalid="{{invalid}}"
         role="textbox" aria-autocomplete="list" aria-multiline="false"
-        aria-activedescendant\$="[[_highlightedSuggestion.elementId]]" aria-disabled\$="[[disabled]]"
+        aria-activedescendant$="[[_highlightedSuggestion.elementId]]" aria-disabled$="[[disabled]]"
         aria-controls="autocompleteStatus suggestionsWrapper">
 
         <slot name="prefix" slot="prefix"></slot>
