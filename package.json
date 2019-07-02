@@ -30,7 +30,8 @@
 	"scripts": {
 		"analyze": "polymer analyze --input paper-*.js > analysis.json",
 		"lint": "eslint --cache paper-autocomplete*.js test/paper*.html && polymer lint paper-autocomplete*.js",
-		"preversion": "npm run lint && npm run test",
+		"pristine": "rm -rf node_modules yarn.lock && yarn",
+		"preversion": "npm run pristine && git add yarn.lock && npm run lint && npm run test",
 		"postversion": "git push && git push --tags",
 		"publish-docs": "./publish-docs.sh",
 		"start": "polymer serve -o",
