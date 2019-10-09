@@ -3,8 +3,7 @@ module.exports = {
 	suites: ['test'],
 	plugins: {
 		local: {
-			disabled: true,
-			browsers: ['chrome'],
+			browsers: ['chrome', 'firefox'],
 			browserOptions: {
 				chrome: [
 					'headless',
@@ -26,7 +25,6 @@ module.exports = {
 			exclude: []
 		},
 		sauce: {
-			disabled: true,
 			name: 'paper-autocomplete',
 			browsers: [
 				{
@@ -45,10 +43,6 @@ module.exports = {
 					browserName: 'microsoftedge',
 					platform: 'Windows 10',
 					version: ''
-				}, {
-					browserName: 'safari',
-					platform: 'macOS 10.12',
-					version: '10.0'
 				}, {
 					browserName: 'safari',
 					platform: 'OS X 10.11',

@@ -212,7 +212,7 @@ Polymer({
 		/**
      * Id of input
      */
-		'for': {
+		for: {
 			type: String
 		},
 

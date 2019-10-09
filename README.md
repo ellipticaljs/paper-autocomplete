@@ -1,13 +1,12 @@
-[![Published on Vaadin  Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/ellipticaljspaper-autocomplete)
-[![Stars on vaadin.com/directory](https://img.shields.io/vaadin-directory/star/ellipticaljspaper-autocomplete.svg)](https://vaadin.com/directory/component/ellipticaljspaper-autocomplete)
-
 # paper-autocomplete
 
 > Autocomplete component compatible with Polymer 3.x
 
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/ellipticaljs/paper-autocomplete)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/jhuesos.svg)](https://saucelabs.com/u/jhuesos)
+[![Build Status](https://github.com/Neovici/paper-autocomplete/workflows/Github%20CI/badge.svg)](https://github.com/Neovici/paper-autocomplete/actions?workflow=Github+CI)
+
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 `paper-autocomplete` extends earlier efforts such as this
 [https://github.com/rodo1111/paper-input-autocomplete](https://github.com/rodo1111/paper-input-autocomplete) to provide

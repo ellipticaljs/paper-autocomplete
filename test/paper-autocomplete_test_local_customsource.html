@@ -55,79 +55,79 @@
 			// HELPERS
 
 			const enterCharacter = function (input, char) {
-				input.value += char;
-				MockInteractions.keyUpOn(input, char.charCodeAt(char.length - 1));
+					input.value += char;
+					MockInteractions.keyUpOn(input, char.charCodeAt(char.length - 1));
 
-				element.$.paperAutocompleteSuggestions.flushDebouncer('_onSuggestionChanged');
-			};
+					element.$.paperAutocompleteSuggestions.flushDebouncer('_onSuggestionChanged');
+				},
 
-			const getClearButtonDisplayStyle = function () {
-				return element.$.clear.style.display;
-			};
+				getClearButtonDisplayStyle = function () {
+					return element.$.clear.style.display;
+				};
 
 			beforeEach(done => {
 				element = fixture('basic');
 
 				states = [
-					{'titel': 'Alabama', 'code': 'AL'},
-					{'titel': 'Alaska', 'code': 'AK'},
-					{'titel': 'American Samoa', 'code': 'AS'},
-					{'titel': 'Arizona', 'code': 'AZ'},
-					{'titel': 'Arkansas', 'code': 'AR'},
-					{'titel': 'California', 'code': 'CA'},
-					{'titel': 'Colorado', 'code': 'CO'},
-					{'titel': 'Connecticut', 'code': 'CT'},
-					{'titel': 'Delaware', 'code': 'DE'},
-					{'titel': 'District Of Columbia', 'code': 'DC'},
-					{'titel': 'Federated States Of Micronesia', 'code': 'FM'},
-					{'titel': 'Florida', 'code': 'FL'},
-					{'titel': 'Georgia', 'code': 'GA'},
-					{'titel': 'Guam', 'code': 'GU'},
-					{'titel': 'Hawaii', 'code': 'HI'},
-					{'titel': 'Idaho', 'code': 'ID'},
-					{'titel': 'Illinois', 'code': 'IL'},
-					{'titel': 'Indiana', 'code': 'IN'},
-					{'titel': 'Iowa', 'code': 'IA'},
-					{'titel': 'Kansas', 'code': 'KS'},
-					{'titel': 'Kentucky', 'code': 'KY'},
-					{'titel': 'Louisiana', 'code': 'LA'},
-					{'titel': 'Maine', 'code': 'ME'},
-					{'titel': 'Marshall Islands', 'code': 'MH'},
-					{'titel': 'Maryland', 'code': 'MD'},
-					{'titel': 'Massachusetts', 'code': 'MA'},
-					{'titel': 'Michigan', 'code': 'MI'},
-					{'titel': 'Minnesota', 'code': 'MN'},
-					{'titel': 'Mississippi', 'code': 'MS'},
-					{'titel': 'Missouri', 'code': 'MO'},
-					{'titel': 'Montana', 'code': 'MT'},
-					{'titel': 'Nebraska', 'code': 'NE'},
-					{'titel': 'Nevada', 'code': 'NV'},
-					{'titel': 'New Hampshire', 'code': 'NH'},
-					{'titel': 'New Jersey', 'code': 'NJ'},
-					{'titel': 'New Mexico', 'code': 'NM'},
-					{'titel': 'New York', 'code': 'NY'},
-					{'titel': 'North Carolina', 'code': 'NC'},
-					{'titel': 'North Dakota', 'code': 'ND'},
-					{'titel': 'Northern Mariana Islands', 'code': 'MP'},
-					{'titel': 'Ohio', 'code': 'OH'},
-					{'titel': 'Oklahoma', 'code': 'OK'},
-					{'titel': 'Oregon', 'code': 'OR'},
-					{'titel': 'Palau', 'code': 'PW'},
-					{'titel': 'Pennsylvania', 'code': 'PA'},
-					{'titel': 'Puerto Rico', 'code': 'PR'},
-					{'titel': 'Rhode Island', 'code': 'RI'},
-					{'titel': 'South Carolina', 'code': 'SC'},
-					{'titel': 'South Dakota', 'code': 'SD'},
-					{'titel': 'Tennessee', 'code': 'TN'},
-					{'titel': 'Texas', 'code': 'TX'},
-					{'titel': 'Utah', 'code': 'UT'},
-					{'titel': 'Vermont', 'code': 'VT'},
-					{'titel': 'Virgin Islands', 'code': 'VI'},
-					{'titel': 'Virginia', 'code': 'VA'},
-					{'titel': 'Washington', 'code': 'WA'},
-					{'titel': 'West Virginia', 'code': 'WV'},
-					{'titel': 'Wisconsin', 'code': 'WI'},
-					{'titel': 'Wyoming', 'code': 'WY'}
+					{titel: 'Alabama', code: 'AL'},
+					{titel: 'Alaska', code: 'AK'},
+					{titel: 'American Samoa', code: 'AS'},
+					{titel: 'Arizona', code: 'AZ'},
+					{titel: 'Arkansas', code: 'AR'},
+					{titel: 'California', code: 'CA'},
+					{titel: 'Colorado', code: 'CO'},
+					{titel: 'Connecticut', code: 'CT'},
+					{titel: 'Delaware', code: 'DE'},
+					{titel: 'District Of Columbia', code: 'DC'},
+					{titel: 'Federated States Of Micronesia', code: 'FM'},
+					{titel: 'Florida', code: 'FL'},
+					{titel: 'Georgia', code: 'GA'},
+					{titel: 'Guam', code: 'GU'},
+					{titel: 'Hawaii', code: 'HI'},
+					{titel: 'Idaho', code: 'ID'},
+					{titel: 'Illinois', code: 'IL'},
+					{titel: 'Indiana', code: 'IN'},
+					{titel: 'Iowa', code: 'IA'},
+					{titel: 'Kansas', code: 'KS'},
+					{titel: 'Kentucky', code: 'KY'},
+					{titel: 'Louisiana', code: 'LA'},
+					{titel: 'Maine', code: 'ME'},
+					{titel: 'Marshall Islands', code: 'MH'},
+					{titel: 'Maryland', code: 'MD'},
+					{titel: 'Massachusetts', code: 'MA'},
+					{titel: 'Michigan', code: 'MI'},
+					{titel: 'Minnesota', code: 'MN'},
+					{titel: 'Mississippi', code: 'MS'},
+					{titel: 'Missouri', code: 'MO'},
+					{titel: 'Montana', code: 'MT'},
+					{titel: 'Nebraska', code: 'NE'},
+					{titel: 'Nevada', code: 'NV'},
+					{titel: 'New Hampshire', code: 'NH'},
+					{titel: 'New Jersey', code: 'NJ'},
+					{titel: 'New Mexico', code: 'NM'},
+					{titel: 'New York', code: 'NY'},
+					{titel: 'North Carolina', code: 'NC'},
+					{titel: 'North Dakota', code: 'ND'},
+					{titel: 'Northern Mariana Islands', code: 'MP'},
+					{titel: 'Ohio', code: 'OH'},
+					{titel: 'Oklahoma', code: 'OK'},
+					{titel: 'Oregon', code: 'OR'},
+					{titel: 'Palau', code: 'PW'},
+					{titel: 'Pennsylvania', code: 'PA'},
+					{titel: 'Puerto Rico', code: 'PR'},
+					{titel: 'Rhode Island', code: 'RI'},
+					{titel: 'South Carolina', code: 'SC'},
+					{titel: 'South Dakota', code: 'SD'},
+					{titel: 'Tennessee', code: 'TN'},
+					{titel: 'Texas', code: 'TX'},
+					{titel: 'Utah', code: 'UT'},
+					{titel: 'Vermont', code: 'VT'},
+					{titel: 'Virgin Islands', code: 'VI'},
+					{titel: 'Virginia', code: 'VA'},
+					{titel: 'Washington', code: 'WA'},
+					{titel: 'West Virginia', code: 'WV'},
+					{titel: 'Wisconsin', code: 'WI'},
+					{titel: 'Wyoming', code: 'WY'}
 				];
 
 				element.source = states;
@@ -207,9 +207,9 @@
 				it('selects the next and previous suggestions with arrow keys', () => {
 					enterCharacter(input, 'A');
 
-					const suggestionItems = suggestions.querySelectorAll('paper-item');
+					const suggestionItems = suggestions.querySelectorAll('paper-item'),
 
-					const activeSuggestion = () => suggestions.querySelector('paper-item.active');
+						activeSuggestion = () => suggestions.querySelector('paper-item.active');
 
 					MockInteractions.keyUpOn(input, 40);
 					expect(activeSuggestion()).to.equal(suggestionItems[0]);
