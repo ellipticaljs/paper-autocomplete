@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/Neovici/paper-autocomplete/compare/v4.0.2...v4.0.3) (2019-10-09)
+
+
+### Bug Fixes
+
+* **ci:** adopt semantic release ([0f9d5d5](https://github.com/Neovici/paper-autocomplete/commit/0f9d5d5))
+
 # Changelog
 
 This component follows *Semantic Versioning* (aka SemVer), visit (http://semver.org/) to learn more about it.
