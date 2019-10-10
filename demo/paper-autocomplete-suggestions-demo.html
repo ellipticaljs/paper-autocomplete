@@ -5,18 +5,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <title>paper-autocomplete demo</title>
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-  <link rel="import" href="../../paper-toast/paper-toast.html">
-  <link rel="import" href="../../paper-input/paper-input.html">
-  <link rel="import" href="../../elliptical-sass/elliptical-sass.html">
-  <link rel="import" href="../../css-docs/css-docs.html">
-  <link rel="import" href="../paper-autocomplete-suggestions.html">
+  <script type="module" src="/components/@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+  <script type="module" src="/components/@polymer/iron-demo-helpers/demo-snippet.js"></script>
+  <script type="module" src="/components/@polymer/paper-toast/paper-toast.js"></script>
+  <script type="module" src="/components/@polymer/paper-input/paper-input.js"></script>
+  <script type="module" src="../paper-autocomplete-suggestions.js"></script>
 
   <link rel="stylesheet" href="demo.css">
-
   <style is="custom-style" include="demo-pages-shared-styles">
     .vertical-section-container {
       max-width: 800px;
@@ -31,10 +28,10 @@
       margin-right: auto;
     }
   </style>
+</script>
 </head>
 
 <body unresolved>
-
   <div class="vertical-section-container centered">
     <h3>Using in combination with paper-input</h3>
     <p>
@@ -46,11 +43,11 @@
       <span class="bold">LOCAL DATA BINDING</span><br>
       <div>
         The component internally remaps the passed array to the template binding array (which will be an array of
-        objects with a `text` and `value` properties). The passed array can be a simple array of strings.
+        objects with a \`text\` and \`value\` properties). The passed array can be a simple array of strings.
       </div>
       <br>
       <div>
-        Public properties, `textProperty` and `valueProperty`, can be declaratively set in the element attributes,
+        Public properties, \`textProperty\` and \`valueProperty\`, can be declaratively set in the element attributes,
         allowing to bind an arbitrary object array to the component's <span class="bold">source</span> property.
       </div>
     </blockquote>
@@ -60,13 +57,15 @@
         <div class="autocomplete-wrapper">
           <paper-input id="myInput" label="Select State"></paper-input>
 
-          <paper-autocomplete-suggestions for="myInput" source="[[accounts]]"></paper-autocomplete-suggestions>
+          <paper-autocomplete-suggestions for="myInput"></paper-autocomplete-suggestions>
         </div>
 
-        <script>
+        <script type="module">
+          import { Base } from '/components/@polymer/polymer/polymer-legacy.js';
+
           window.addEventListener('WebComponentsReady', function () {
             // Async call needed here for IE11/Edge compatibility.
-            Polymer.Base.async(function () {
+            Base.async(function () {
 
               var states = [
                 {"text": "Alabama", "value": "AL"},

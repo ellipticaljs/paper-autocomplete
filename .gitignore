@@ -52,3 +52,5 @@ demo_components
 
 build/
 .eslintcache
+
+/coverage

@@ -5,21 +5,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <title>paper-autocomplete demo</title>
-  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="/components/@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
 
-  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-  <link rel="import" href="../../paper-toast/paper-toast.html">
-  <link rel="import" href="../../paper-icon-button/paper-icon-button.html">
-  <link rel="import" href="../../iron-form/iron-form.html">
-  <link rel="import" href="../../elliptical-sass/elliptical-sass.html">
-  <link rel="import" href="../../css-docs/css-docs.html">
-  <link rel="import" href="../paper-autocomplete.html">
+  <script type="module" src="/components/@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+  <script type="module" src="/components/@polymer/iron-demo-helpers/demo-snippet.js"></script>
+  <script type="module" src="/components/@polymer/paper-toast/paper-toast.js"></script>
+  <script type="module" src="/components/@polymer/paper-icon-button/paper-icon-button.js"></script>
+  <script type="module" src="/components/@polymer/iron-form/iron-form.js"></script>
+  <script type="module" src="../paper-autocomplete.js"></script>
 
-  <link rel="import" href="account-autocomplete.html">
+  <script type="module" src="./account-autocomplete.js"></script>
 
   <link rel="stylesheet" href="demo.css">
-
   <custom-style>
     <style is="custom-style" include="demo-pages-shared-styles">
       .vertical-section-container {
@@ -38,7 +35,6 @@
 </head>
 
 <body unresolved>
-
   <div class="vertical-section-container centered">
     <h3>Local Data-Source Binding</h3>
     <p>
@@ -50,83 +46,64 @@
       <span class="bold">LOCAL DATA BINDING</span><br>
       <div>
         The component internally remaps the passed array to the template binding array (which will be an array of
-        objects with a `text` and `value` properties). The passed array can be a simple array of strings.
+        objects with a \`text\` and \`value\` properties). The passed array can be a simple array of strings.
       </div>
       <br>
       <div>
-        Public properties, `textProperty` and `valueProperty`, can be declaratively set in the element attributes,
+        Public properties, \`textProperty\` and \`valueProperty\`, can be declaratively set in the element attributes,
         allowing to bind an arbitrary object array to the component's <span class="bold">source</span> property.
       </div>
     </blockquote>
 
     <demo-snippet>
       <template>
-        <paper-autocomplete class="autocomplete-states"
-                            label="Select State"
-                            id="input-local"
-                            no-label-float>
+        <paper-autocomplete class="autocomplete-states" label="Select State" id="input-local" no-label-float="">
         </paper-autocomplete>
       </template>
     </demo-snippet>
 
     <demo-snippet>
       <template>
-        <paper-autocomplete class="autocomplete-states"
-                            placeholder="With a placeholder"
-                            label="State"
-                            id="input-local-placeholder"
-                            always-float-label>
+        <paper-autocomplete class="autocomplete-states" placeholder="With a placeholder" label="State" id="input-local-placeholder" always-float-label="">
         </paper-autocomplete>
       </template>
     </demo-snippet>
 
     <demo-snippet>
       <template>
-        <paper-autocomplete id="styled"
-                            class="autocomplete-states"
-                            label="State (custom styled)">
+        <paper-autocomplete id="styled" class="autocomplete-states" label="State (custom styled)">
         </paper-autocomplete>
       </template>
     </demo-snippet>
 
     <demo-snippet>
       <template>
-        <paper-autocomplete id="suffix"
-                            class="autocomplete-states"
-                            label="Using suffix">
+        <paper-autocomplete id="suffix" class="autocomplete-states" label="Using suffix">
 
-          <paper-icon-button slot="suffix" suffix icon="search"></paper-icon-button>
+          <paper-icon-button slot="suffix" suffix="" icon="search"></paper-icon-button>
         </paper-autocomplete>
       </template>
     </demo-snippet>
 
     <demo-snippet>
       <template>
-        <paper-autocomplete id="prefix"
-                            class="autocomplete-states"
-                            label="Using prefix">
+        <paper-autocomplete id="prefix" class="autocomplete-states" label="Using prefix">
 
-          <paper-icon-button slot="prefix" prefix icon="search"></paper-icon-button>
+          <paper-icon-button slot="prefix" prefix="" icon="search"></paper-icon-button>
         </paper-autocomplete>
       </template>
     </demo-snippet>
 
     <demo-snippet>
       <template>
-        <paper-autocomplete id="highlightFirst"
-                            class="autocomplete-states"
-                            label="Auto highlight first option"
-                            highlight-first>
+        <paper-autocomplete id="highlightFirst" class="autocomplete-states" label="Auto highlight first option" highlight-first="">
         </paper-autocomplete>
       </template>
     </demo-snippet>
 
     <demo-snippet>
       <template>
-        <paper-autocomplete id="show"
-                            class="autocomplete-states"
-                            label="Show results on focus"
-                            show-results-on-focus>
+        <paper-autocomplete id="show" class="autocomplete-states" label="Show results on focus" show-results-on-focus="">
         </paper-autocomplete>
       </template>
     </demo-snippet>
@@ -149,15 +126,12 @@
 
     <demo-snippet>
       <template>
-        <paper-autocomplete label="Select User"
-                            id="input-remote-users"
-                            remote-source
-                            min-length="2">
+        <paper-autocomplete label="Select User" id="input-remote-users" remote-source="" min-length="2">
         </paper-autocomplete>
       </template>
     </demo-snippet>
 
-    <h3>Remote Data-Source Binding with Custom Text & Value properties</h3>
+    <h3>Remote Data-Source Binding with Custom Text &amp; Value properties</h3>
     <p>
       Mock remote bind to a user API. Remote data binding delegates the responsibility of filtering the data source
       to the calling app. Set a listener for the <span class="bold">autocomplete.change</span> event and pass the
@@ -167,19 +141,14 @@
 
     <demo-snippet>
       <template>
-        <paper-autocomplete label="Select User"
-                            id="input-remote-custom-properties"
-                            text-property="login"
-                            value-property="id"
-                            min-length="2"
-                            remote-source>
+        <paper-autocomplete label="Select User" id="input-remote-custom-properties" text-property="login" value-property="id" min-length="2" remote-source="">
         </paper-autocomplete>
       </template>
     </demo-snippet>
 
     <h3>Custom template</h3>
     <p>
-      This is an example using custom template. Open the file `demo/account-autocomplete.html` in this repository to see
+      This is an example using custom template. Open the file \`demo/account-autocomplete.js\` in this repository to see
       how it works internally. You can use that one as an example when you need to implement your own.
     </p>
 
@@ -195,10 +164,7 @@
       <template>
         <iron-form id="form">
           <form method="GET">
-            <paper-autocomplete label="State"
-                                id="ironFormExample"
-                                disable-show-clear="true"
-                                name="state">
+            <paper-autocomplete label="State" id="ironFormExample" disable-show-clear="true" name="state">
             </paper-autocomplete>
             <paper-input label="City" name="city"></paper-input>
             <button type="submit">Submit</button>
@@ -210,10 +176,18 @@
       </template>
     </demo-snippet>
   </div>
-
   <paper-toast></paper-toast>
 
-  <script>
+  <script type="module">
+    import '@polymer/iron-demo-helpers/demo-pages-shared-styles';
+    import '@polymer/iron-demo-helpers/demo-snippet';
+    import '@polymer/paper-toast/paper-toast';
+    import '@polymer/paper-icon-button/paper-icon-button';
+    import '@polymer/iron-form/iron-form';
+    import '../paper-autocomplete';
+    import './account-autocomplete';
+    import { Base } from '@polymer/polymer/polymer-legacy';
+
     function createMockString() {
       var textString = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
       var length = Math.random() * (10 - 4) + 4;
@@ -304,85 +278,84 @@
       {"text": "Wyoming", "value": "WY"}
     ];
 
-    window.addEventListener('WebComponentsReady', function () {
-      Polymer.Base.async(function () {
-        // This will initialize all paper-autocomplete with class autocomplete-states in this demo page.
-        var allAutoCompleteStates = document.querySelectorAll('paper-autocomplete.autocomplete-states');
-        allAutoCompleteStates.forEach(function (element) {
-          element.source = states;
+    Base.async(function () {
+      // This will initialize all paper-autocomplete with class autocomplete-states in this demo page.
+      var allAutoCompleteStates = document.querySelectorAll('paper-autocomplete.autocomplete-states');
+      allAutoCompleteStates.forEach(function (element) {
+        element.source = states;
 
-          element.addEventListener('autocomplete-selected', function (event) {
-            var paperToast = document.querySelector('paper-toast');
-            var selected = event.detail.text;
-            paperToast.text = 'Selected: ' + selected;
-            paperToast.show();
-          });
-        });
-
-        // Mock remote users data binding
-        var usersData = createMockData('text', 'value');
-        document.querySelector('#input-remote-users').addEventListener('autocomplete-selected', onRemoteUsersSelect);
-        document.querySelector('#input-remote-users').addEventListener('autocomplete-change', onRemoteUsersChange);
-
-        function onRemoteUsersSelect(event) {
+        element.addEventListener('autocomplete-selected', function (event) {
           var paperToast = document.querySelector('paper-toast');
           var selected = event.detail.text;
           paperToast.text = 'Selected: ' + selected;
           paperToast.show();
-        }
-
-        function onRemoteUsersChange(event) {
-          var input = document.querySelector('#input-remote-users');
-          var search = event.detail.option.text;
-          var delay = Math.random() * (500 - 100) + 100;
-          setTimeout(function () {
-            input.suggestions(usersData.filter(function (obj) {
-              return obj.text.toLowerCase().indexOf(search) !== -1;
-            }));
-          }.bind(this), delay);
-        }
-
-        // Remote Data-Source Binding with Custom Text & Value properties
-        var dataCustomProperties = createMockData('login', 'id');
-        var autocomplete = document.querySelector('#input-remote-custom-properties');
-        autocomplete.addEventListener('autocomplete-selected', onCustomPropertiesSelect);
-        autocomplete.addEventListener('autocomplete-change', onCustomPropertiesChange);
-
-        function onCustomPropertiesChange(event) {
-          var input = document.querySelector('#input-remote-custom-properties');
-          var search = event.detail.option.text;
-          var delay = Math.random() * (500 - 100) + 100;
-          setTimeout(function () {
-            input.suggestions(dataCustomProperties.filter(function (obj) {
-              return obj[autocomplete.textProperty].toLowerCase().indexOf(search) !== -1;
-            }));
-          }.bind(this), delay);
-        }
-        function onCustomPropertiesSelect(event) {
-          var paperToast = document.querySelector('paper-toast');
-          var selected = event.detail.text;
-          paperToast.text = 'Selected: ' + selected + ' with a value ' + event.detail.value;
-          paperToast.show();
-        }
-
-        // Custom template (account-autocomplete)
-
-        // Integration with iron-form
-        var autocompleteFormExample = document.getElementById('ironFormExample');
-        autocompleteFormExample.source = states;
-
-        document.getElementById('form').addEventListener('iron-form-submit', function (event) {
-          var formContent;
-          formContent = this.serializeForm();
-          document.getElementById('output').innerHTML = JSON.stringify(formContent, null, 3);
         });
+      });
 
-        // preventDefault() for ENTER. See issue: https://github.com/ellipticaljs/paper-autocomplete/issues/52
-        autocompleteFormExample.addEventListener('keydown', function (event) {
-          if (event.which === 13) {
-            event.preventDefault();
-          }
-        });
+      // Mock remote users data binding
+      var usersData = createMockData('text', 'value');
+      document.querySelector('#input-remote-users').addEventListener('autocomplete-selected', onRemoteUsersSelect);
+      document.querySelector('#input-remote-users').addEventListener('autocomplete-change', onRemoteUsersChange);
+
+      function onRemoteUsersSelect(event) {
+        var paperToast = document.querySelector('paper-toast');
+        var selected = event.detail.text;
+        paperToast.text = 'Selected: ' + selected;
+        paperToast.show();
+      }
+
+      function onRemoteUsersChange(event) {
+        var input = document.querySelector('#input-remote-users');
+        var search = event.detail.option.text;
+        var delay = Math.random() * (500 - 100) + 100;
+        setTimeout(function () {
+          input.suggestions(usersData.filter(function (obj) {
+            return obj.text.toLowerCase().indexOf(search) !== -1;
+          }));
+        }.bind(this), delay);
+      }
+
+      // Remote Data-Source Binding with Custom Text & Value properties
+      var dataCustomProperties = createMockData('login', 'id');
+      var autocomplete = document.querySelector('#input-remote-custom-properties');
+      autocomplete.addEventListener('autocomplete-selected', onCustomPropertiesSelect);
+      autocomplete.addEventListener('autocomplete-change', onCustomPropertiesChange);
+
+      function onCustomPropertiesChange(event) {
+        var input = document.querySelector('#input-remote-custom-properties');
+        var search = event.detail.option.text;
+        var delay = Math.random() * (500 - 100) + 100;
+        setTimeout(function () {
+          input.suggestions(dataCustomProperties.filter(function (obj) {
+            return obj[autocomplete.textProperty].toLowerCase().indexOf(search) !== -1;
+          }));
+        }.bind(this), delay);
+      }
+      function onCustomPropertiesSelect(event) {
+        var paperToast = document.querySelector('paper-toast');
+        var selected = event.detail.text;
+        paperToast.text = 'Selected: ' + selected + ' with a value ' + event.detail.value;
+        paperToast.show();
+      }
+
+      // Custom template (account-autocomplete)
+
+      // Integration with iron-form
+      var autocompleteFormExample = document.getElementById('ironFormExample');
+      autocompleteFormExample.source = states;
+
+      document.getElementById('form').addEventListener('iron-form-submit', function (event) {
+        var formContent;
+        formContent = this.serializeForm();
+        document.getElementById('output').innerHTML = JSON.stringify(formContent, null, 3);
+      });
+
+      // preventDefault() for ENTER. See issue: https://github.com/ellipticaljs/paper-autocomplete/issues/52
+      autocompleteFormExample.addEventListener('keydown', function (event) {
+        if (event.which === 13) {
+          event.preventDefault();
+        }
       });
     });
   </script>
+</body>
