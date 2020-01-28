@@ -534,7 +534,7 @@ Polymer({
 		this._currentIndex = -1;
 		this._scrollIndex = 0;
 
-		let value = event.target.value;
+		let value = event.target.value || '';
 
 		// eslint-disable-next-line eqeqeq
 		if (value != null && value.length >= this.minLength) {
