@@ -646,11 +646,11 @@ Polymer({
 				const items = this.$.suggestionsWrapper.querySelectorAll('.item-text');
 				const searchText = this._input.value.toLowerCase();
 				items.forEach(item => {
-					var matchStart = item.innerText.toLowerCase().indexOf(`${searchText}`);
-					var matchEnd = matchStart + searchText.length - 1;
-					var beforeMatch = item.innerText.slice(0, matchStart);
-					var matchText = item.innerText.slice(matchStart, matchEnd + 1);
-					var afterMatch = item.innerText.slice(matchEnd + 1);
+					let matchStart = item.innerText.toLowerCase().indexOf(`${searchText}`);
+					let matchEnd = matchStart + searchText.length - 1;
+					let beforeMatch = item.innerText.slice(0, matchStart);
+					let matchText = item.innerText.slice(matchStart, matchEnd + 1);
+					let afterMatch = item.innerText.slice(matchEnd + 1);
 					item.innerHTML = `${beforeMatch}<b style="color:var(--app-primary-color)">${matchText}</b>${afterMatch}`;
 				});
 			}
