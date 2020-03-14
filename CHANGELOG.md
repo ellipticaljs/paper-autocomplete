@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/Neovici/paper-autocomplete/compare/v4.0.4...v4.1.0) (2020-03-14)
+
+
+### Features
+
+* handles suggestions on clear ([1052e2f](https://github.com/Neovici/paper-autocomplete/commit/1052e2f))
+
 ## [4.0.4](https://github.com/Neovici/paper-autocomplete/compare/v4.0.3...v4.0.4) (2020-01-28)
 
 
