@@ -650,7 +650,9 @@ Polymer({
 	validate() {
 		const valid = this.$.autocompleteInput.validate();
 		if (this.restricted && valid) {
-			return !(this.$.autocompleteInput.invalid = !this.value);
+			const hasValue = this.value != null && this.value !== '';
+			this.$.autocompleteInput.invalid = !hasValue;
+			return hasValue;
 		}
 		return valid;
 	},
