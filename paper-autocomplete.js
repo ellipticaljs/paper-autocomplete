@@ -195,7 +195,7 @@ Polymer({
 
         <slot name="prefix" slot="prefix"></slot>
         <!-- TODO: remove tabindex workaround when  is fixed https://github.com/PolymerElements/paper-input/issues/324 -->
-        <paper-icon-button slot="suffix" suffix="" id="clear" icon="clear" on-click="_clear" tabindex="-1"></paper-icon-button>
+        <paper-icon-button slot="suffix" suffix="" id="clear" icon="clear" on-click="clear" tabindex="-1"></paper-icon-button>
         <slot name="suffix" slot="suffix"></slot>
       </paper-input>
       <!-- to announce current selection to screen reader -->
@@ -497,7 +497,7 @@ Polymer({
 	/**
    * Clears the input text
    */
-	_clear() {
+	clear() {
 		const option = {
 			text: this.text,
 			value: this.value
@@ -656,17 +656,10 @@ Polymer({
 	},
 
 	/**
-   * Clears the current input
-   */
-	clear() {
-		this._clear();
-	},
-
-	/**
    * Resets the current input (DEPRECATED: please use clear)
    */
 	reset() {
-		this._clear();
+		this.clear();
 	},
 
 	/**
