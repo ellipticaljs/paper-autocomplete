@@ -278,6 +278,14 @@ Polymer({
 		},
 
 		/**
+     * `restricted` Set to true to only permit selections from the list.
+     */
+		restricted: {
+			type: Boolean,
+			value: false
+		},
+
+		/**
      * `readonly` Set to true to mark the input as readonly.
      */
 		readonly: {
@@ -547,6 +555,7 @@ Polymer({
    * On text event handler
    */
 	_textObserver(text) {
+		this.value = '';
 		if (text && text.trim()) {
 			this._showClearButton();
 		} else {
@@ -652,7 +661,11 @@ Polymer({
    * @returns {Boolean}
    */
 	validate() {
-		return this.$.autocompleteInput.validate();
+		const valid = this.$.autocompleteInput.validate();
+		if (this.restricted && valid) {
+			return !(this.$.autocompleteInput.invalid = !this.value);
+		}
+		return valid;
 	},
 
 	/**
