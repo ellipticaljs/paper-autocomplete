@@ -441,15 +441,6 @@ Polymer({
 		/*************
     * PRIVATE
     *************/
-		// TODO: check if we need _value and _text properties. It seems they can be removed
-		_value: {
-			value: undefined
-		},
-
-		_text: {
-			value: undefined
-		},
-
 		/**
      * Indicates whether the clear button is visible or not
      */
@@ -497,8 +488,6 @@ Polymer({
 
 	// Element Lifecycle
 	ready() {
-		this._value = this.value;
-
 		this.addEventListener(
 			'autocomplete' + this.eventNamespace + 'selected',
 			this._onAutocompleteSelected.bind(this)
@@ -514,10 +503,8 @@ Polymer({
 			value: this.value
 		};
 
-		this.value = null;
-		this._value = null;
 		this.text = '';
-		this._text = '';
+		this.value = null;
 
 		this._fireEvent(option, 'reset-blur');
 
@@ -672,8 +659,6 @@ Polymer({
    * Clears the current input
    */
 	clear() {
-		this._value = '';
-		this._text = '';
 		this._clear();
 	},
 
