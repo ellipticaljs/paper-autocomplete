@@ -1,14 +1,13 @@
 
 {
-	"eslint.autoFixOnSave": true,
 	"eslint.packageManager": "yarn",
-	"eslint.validate": [
-		{ "language": "javascript", "autoFix": true },
-		{ "language": "html", "autoFix": true }
-	],
+	"eslint.validate": [ "javascript" ],
 	"files.watcherExclude": {
 		"**/.git/objects/**": true,
 		"**/.git/subtree-cache/**": true,
 		"**/node_modules/**": true
+	},
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
 	}
 }
