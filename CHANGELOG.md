@@ -1,3 +1,10 @@
+## [4.1.2](https://github.com/Neovici/paper-autocomplete/compare/v4.1.1...v4.1.2) (2020-03-21)
+
+
+### Bug Fixes
+
+* show suggestions on unedited source change ([855d638](https://github.com/Neovici/paper-autocomplete/commit/855d638))
+
 ## [4.1.1](https://github.com/Neovici/paper-autocomplete/compare/v4.1.0...v4.1.1) (2020-03-18)
 
 
