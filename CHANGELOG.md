@@ -1,3 +1,10 @@
+## [4.1.3](https://github.com/Neovici/paper-autocomplete/compare/v4.1.2...v4.1.3) (2020-03-22)
+
+
+### Bug Fixes
+
+* text change clear _value instead of value ([49cb0f3](https://github.com/Neovici/paper-autocomplete/commit/49cb0f3))
+
 ## [4.1.2](https://github.com/Neovici/paper-autocomplete/compare/v4.1.1...v4.1.2) (2020-03-21)
 
 
