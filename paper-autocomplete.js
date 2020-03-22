@@ -504,7 +504,7 @@ Polymer({
 		};
 
 		this.text = '';
-		this.value = null;
+		this.value = this._value = null;
 
 		this._fireEvent(option, 'reset-blur');
 
@@ -542,7 +542,7 @@ Polymer({
    * On text event handler
    */
 	_textObserver(text) {
-		this.value = '';
+		this._value = null;
 		if (text && text.trim()) {
 			this._showClearButton();
 		} else {
@@ -556,7 +556,7 @@ Polymer({
 	_onAutocompleteSelected(event) {
 		const selection = event.detail;
 
-		this.value = selection.value;
+		this.value = this._value = selection.value;
 		this.text = selection.text;
 	},
 
@@ -650,7 +650,7 @@ Polymer({
 	validate() {
 		const valid = this.$.autocompleteInput.validate();
 		if (this.restricted && valid) {
-			const hasValue = this.value != null && this.value !== '';
+			const hasValue = this._value != null && this._value !== '';
 			this.$.autocompleteInput.invalid = !hasValue;
 			return hasValue;
 		}
