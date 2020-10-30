@@ -1,3 +1,10 @@
+## [4.1.4](https://github.com/Neovici/paper-autocomplete/compare/v4.1.3...v4.1.4) (2020-10-30)
+
+
+### Bug Fixes
+
+* restricted validation ([#25](https://github.com/Neovici/paper-autocomplete/issues/25)) ([a46979b](https://github.com/Neovici/paper-autocomplete/commit/a46979b))
+
 ## [4.1.3](https://github.com/Neovici/paper-autocomplete/compare/v4.1.2...v4.1.3) (2020-03-22)
 
 
