@@ -467,7 +467,8 @@ Polymer({
 	},
 
 	observers: [
-		'_textObserver(text)'
+		'_textObserver(text)',
+		'_valueObserver(value)'
 	],
 
 	_sourceChanged(newSource) {
@@ -550,14 +551,18 @@ Polymer({
 		}
 	},
 
+	_valueObserver(value) {
+		this._value = value;
+	},
+
 	/**
    * On autocomplete selection
    */
 	_onAutocompleteSelected(event) {
 		const selection = event.detail;
 
-		this.value = this._value = selection.value;
 		this.text = selection.text;
+		this.value = this._value = selection.value;
 	},
 
 	/**
