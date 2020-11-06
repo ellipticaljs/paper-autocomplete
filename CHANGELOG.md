@@ -1,3 +1,10 @@
+## [4.1.5](https://github.com/Neovici/paper-autocomplete/compare/v4.1.4...v4.1.5) (2020-11-06)
+
+
+### Bug Fixes
+
+* update _value when value changes ([6406210](https://github.com/Neovici/paper-autocomplete/commit/6406210))
+
 ## [4.1.4](https://github.com/Neovici/paper-autocomplete/compare/v4.1.3...v4.1.4) (2020-10-30)
 
 
