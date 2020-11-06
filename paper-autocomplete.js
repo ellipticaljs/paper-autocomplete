@@ -462,15 +462,13 @@ Polymer({
      */
 		selectedOption: {
 			type: Object,
-			notify: true,
-			observer: function () { // eslint-disable-line object-shorthand
-				this.setOption(this.selectedOption);
-			}
+			notify: true
 		}
 	},
 
 	observers: [
-		'_textObserver(text)'
+		'_textObserver(text)',
+		'_valueObserver(value)'
 	],
 
 	_sourceChanged(newSource) {
@@ -553,13 +551,18 @@ Polymer({
 		}
 	},
 
+	_valueObserver(value) {
+		this._value = value;
+	},
+
 	/**
    * On autocomplete selection
    */
 	_onAutocompleteSelected(event) {
 		const selection = event.detail;
-		this.value = this._value = selection.value;
+
 		this.text = selection.text;
+		this.value = this._value = selection.value;
 	},
 
 	/**
@@ -618,11 +621,8 @@ Polymer({
    * @param {Object} option
    */
 	setOption(option) {
-		if (option == null) {
-			return;
-		}
 		this.text = option[this.textProperty] || option.text;
-		this.value = this._value = option[this.valueProperty] || option.value;
+		this.value = option[this.valueProperty] || option.value;
 		this._showClearButton();
 	},
 
