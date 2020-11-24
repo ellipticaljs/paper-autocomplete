@@ -515,12 +515,6 @@ Polymer({
 		if (!this.$.autocompleteInput.focused) {
 			this.$.autocompleteInput.focus();
 		}
-
-		this.$.paperAutocompleteSuggestions._handleSuggestions({
-			target: {
-				value: ''
-			}
-		});
 	},
 
 	/**
