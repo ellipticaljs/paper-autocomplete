@@ -3,19 +3,17 @@
 
 # paper-autocomplete
 
-> Autocomplete component compatible with Polymer 1.x and 2.x
+> Autocomplete component compatible with Polymer 3.x
 
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/ellipticaljs/paper-autocomplete)
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/jhuesos.svg)](https://saucelabs.com/u/jhuesos)
+[![Build Status](https://github.com/Neovici/paper-autocomplete/workflows/Github%20CI/badge.svg)](https://github.com/Neovici/paper-autocomplete/actions?workflow=Github+CI)
 
-`paper-autocomplete` extends earlier efforts such as this 
-[https://github.com/rodo1111/paper-input-autocomplete](https://github.com/rodo1111/paper-input-autocomplete) to provide 
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+
+`paper-autocomplete` extends earlier efforts such as this
+[https://github.com/rodo1111/paper-input-autocomplete](https://github.com/rodo1111/paper-input-autocomplete) to provide
 keyboard support, remote binding and results scrolling.
-
-# About Polymer 1.x and 2.x Compatibility
-From version `3.x.x`, this component work with both Polymer 1.7+ or Polymer 2.0+ Please take a look to the 
-[MIGRATION.md](./MIGRATION.md) file that contains more information.
 
 # Installation
 
@@ -39,13 +37,13 @@ bower install paper-autocomplete
 
 http://ellipticaljs.github.io/paper-autocomplete/
 
-**Important: The demos only work with browers which are ES2015/ES6 compatible.**. This component is compatible with older 
+**Important: The demos only work with browers which are ES2015/ES6 compatible.**. This component is compatible with older
 browsers as well, but the code need to be transpiled to ES5. `polymer build` and `polymer serve` can do that for you.
 This code from this page is not transpiled.
 
 # Want to contribute?
 
-Check out our [Contributing guide](./CONTRIBUTING.md)! 
+Check out our [Contributing guide](./CONTRIBUTING.md)!
 
 # For Developers
 
